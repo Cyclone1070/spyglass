@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 interface Props {
@@ -21,25 +21,16 @@ export function DropDownButton({
 	setCurrentActiveButtonId,
 	children,
 }: Props) {
-	const [isActive, setIsActive] = useState(false);
 	const id = useRef(uuidv4());
 	if (staticId) {
 		id.current = staticId;
 	}
 	const dropdownAreaRef = useRef<HTMLDivElement>(null);
 
-	/* unactive self if another button is active */
-	useEffect(() => {
-		if (currentActiveButtonId !== id.current) {
-			setIsActive(false);
-		}
-	}, [currentActiveButtonId, id]);
-
 	/* reset all trackers if outside click is detected */
 	useEffect(() => {
 		function outsideClickHandler(event: MouseEvent) {
-			if (dropdownAreaRef.current && !dropdownAreaRef.current.contains(event.target as Node)) {
-				setIsActive(false);
+			if (dropdownAreaRef.current && !dropdownAreaRef.current.contains(event.target as Node) && currentActiveButtonId === id.current) {
 				setCurrentActiveButtonId(null);
 			}
 		}
@@ -47,7 +38,7 @@ export function DropDownButton({
 		return () => {
 			document.removeEventListener("mousedown", outsideClickHandler);
 		};
-	}, [dropdownAreaRef, setCurrentActiveButtonId]);
+	}, [dropdownAreaRef, setCurrentActiveButtonId, currentActiveButtonId]);
 
 	return (
 		<div className={`relative`} ref={dropdownAreaRef}>
@@ -60,7 +51,6 @@ export function DropDownButton({
 					} else {
 						setCurrentActiveButtonId(null);
 					}
-					setIsActive(!isActive);
 				}}
 				className={`relative ${className}`}
 				style={buttonBgColor ? { backgroundColor: buttonBgColor } : {}}
@@ -73,14 +63,14 @@ export function DropDownButton({
 						active: { backgroundColor: "#00000039" },
 					}}
 					initial="default"
-					whileHover={isActive ? "active" : "hover"}
-					animate={isActive ? "active" : "default"}
+					whileHover={currentActiveButtonId === id.current ? "active" : "hover"}
+					animate={currentActiveButtonId === id.current ? "active" : "default"}
 					className="absolute z-30 top-0 left-0 w-full h-full rounded-[inherit]"
 				></motion.div>
 				{buttonContent}
 			</button>
 			<AnimatePresence>
-				{isActive && children}
+				{currentActiveButtonId === id.current && children}
 			</AnimatePresence>
 		</div>
 	);
