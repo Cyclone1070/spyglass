@@ -27,7 +27,7 @@ export function SearchBar({
 	const [currentActiveButtonID, setCurrentActiveButtonID] = useState<string | null>(null);
 
 	return (
-		<form className="" action="GET" onSubmit={handleSubmit}>
+		<form action="GET" onSubmit={handleSubmit}>
 			{/* searchbar wrapper */}
 			<div className={`flex relative bg-[--layer-1] rounded-lg ${className}`}>
 				<DropDownButton

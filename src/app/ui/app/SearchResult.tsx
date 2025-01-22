@@ -1,4 +1,5 @@
 import { Result } from "@/app/type";
+import Image from "next/image";
 import React from "react";
 import sanitizeHtml from "sanitize-html";
 
@@ -15,13 +16,17 @@ export function SearchResult({ result }: Props) {
 					{result.map((item) => (
 						<div key={item.link} className="flex flex-col shadow-md p-2 gap-2 rounded-md bg-[#decaab]">
 							<div>{item.displayLink}</div>
-							<div dangerouslySetInnerHTML={{__html: sanitizeHtml(item.htmlTitle)}}></div>
-							<div dangerouslySetInnerHTML={{__html: sanitizeHtml(item.htmlSnippet)}}></div>
-							<div dangerouslySetInnerHTML={{__html: sanitizeHtml(item.htmlFormattedUrl)}}></div>
+							<div dangerouslySetInnerHTML={{ __html: sanitizeHtml(item.htmlTitle) }}></div>
+							<div dangerouslySetInnerHTML={{ __html: sanitizeHtml(item.htmlSnippet) }}></div>
+							<div dangerouslySetInnerHTML={{ __html: sanitizeHtml(item.htmlFormattedUrl) }}></div>
 						</div>
 					))}
 				</div>
-			) : null}
+			) : (
+				<div className="relative flex-1 w-[20rem]">
+					<Image src="spyglass-dark-mode.svg" alt="a badass spyglass" fill />
+				</div>
+			)}
 		</>
 	);
 }

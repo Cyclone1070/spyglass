@@ -12,7 +12,7 @@ export default function App() {
 		{ name: "All", color: "#e8e8e8" },
 		{ name: "Games", color: "#FFAC27" },
 		{ name: "Videos", color: "#FF2528" },
-		{ name: "Books", color: "#00BFFF	" },
+		{ name: "Books", color: "#00BFFF" },
 	]);
 	const [currentSearchType, setCurrentSearchType] = useState<SearchType>(searchTypeList[0]);
 
@@ -24,14 +24,16 @@ export default function App() {
 		setApi(formData.get("api") as string);
 		setCx(formData.get("cx") as string);
 	}
+
 	useEffect(() => {
 		const api = localStorage.getItem("api");
 		const cx = localStorage.getItem("cx");
 		if (api) setApi(api);
 		if (cx) setCx(cx);
 	}, []);
+
 	return (
-		<div className="flex flex-col items-center gap-4 p-3">
+		<div className="flex flex-col items-center gap-4 p-3 h-screen">
 			{(!api || !cx) && (
 				<form action="" className="grid grid-cols-[1fr_2fr] grid-rows-2 gap-2" onSubmit={handleSubmit}>
 					<label htmlFor="api">API: </label>
