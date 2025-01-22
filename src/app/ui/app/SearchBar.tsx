@@ -4,6 +4,7 @@ import { Result, SearchType } from "@/app/type";
 import Image from "next/image";
 import { DropDownButton } from "./DropDownButton";
 import { DropDownContainer } from "./DropDownContainer";
+import { motion } from "motion/react";
 
 interface Props {
 	api: string | null;
@@ -60,8 +61,18 @@ export function SearchBar({
 										setCurrentSearchType(type);
 										setCurrentActiveButtonID(null);
 									}}
-									className="flex justify-center items-center h-full w-full p-2 text-[--background] font-bold shadow-lg"
+									className="flex relative justify-center items-center h-full w-full p-2 text-[--background] font-bold shadow-lg"
 								>
+									{/* darken background overlay */}
+									<motion.div
+										variants={{
+											default: { backgroundColor: "#00000000" },
+											hover: { backgroundColor: "#00000029" },
+										}}
+										initial="default"
+										whileHover={"hover"}
+										className="absolute z-30 top-0 left-0 w-full h-full rounded-[inherit]"
+									></motion.div>
 									{type.name}
 								</button>
 							))}
