@@ -1,3 +1,7 @@
+export interface SearchType {
+	name: string;
+	color: string;
+}
 // Reference: https://developers.google.com/custom-search/v1/reference/rest/v1/Search
 export interface Search {
 	kind: string;
@@ -95,23 +99,34 @@ export interface Result {
 	cacheId: string;
 	formattedUrl: string;
 	htmlFormattedUrl: string;
-	pagemap: any;
+	pagemap: {
+		cse_thumbnail: [
+			{
+				src: string;
+				width: string;
+				height: string;
+			}
+		];
+		metatags: [
+			{
+				"og:image": string;
+				"og:type": string;
+				"twitter:card": string;
+				"twitter:title": string;
+				"og:site_name": string;
+				"twitter:url": string;
+				"og:title": string;
+				"og:description": string;
+				"twitter:description": string;
+				"og:url": string;
+			}
+		];
+		cse_image: [
+			{
+				src: string;
+			}
+		];
+	};
 	mime: string;
 	fileFormat: string;
-	image: {
-		contextLink: string;
-		height: number;
-		width: number;
-		byteSize: number;
-		thumbnailLink: string;
-		thumbnailHeight: number;
-		thumbnailWidth: number;
-	};
-	labels: [
-		{
-			name: string;
-			displayName: string;
-			label_with_op: string;
-		}
-	];
 }
