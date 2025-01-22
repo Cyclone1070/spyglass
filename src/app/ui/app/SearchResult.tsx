@@ -5,13 +5,14 @@ import sanitizeHtml from "sanitize-html";
 
 interface Props {
 	result: Result[] | null;
+	className?: string;
 }
-export function SearchResult({ result }: Props) {
+export function SearchResult({ result, className }: Props) {
 	return (
 		<>
 			{result ? (
 				/* page container */
-				<div className="grid grid-cols-5 gap-3">
+				<div className={`grid grid-cols-5 gap-3 ${className}`}>
 					{/* item cards */}
 					{result.map((item) => (
 						<div key={item.link} className="flex flex-col shadow-md p-2 gap-2 rounded-md bg-[#decaab]">
@@ -23,7 +24,7 @@ export function SearchResult({ result }: Props) {
 					))}
 				</div>
 			) : (
-				<div className="relative flex-1 w-[20rem]">
+				<div className={`relative h-full w-[min(20rem,100%)] ${className}`}>
 					<Image src="spyglass-dark-mode.svg" alt="a badass spyglass" fill />
 				</div>
 			)}
