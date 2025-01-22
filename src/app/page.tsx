@@ -1,13 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
 import { SearchBar } from "./ui/app/SearchBar";
-import { Result } from "./type";
+import { Result, SearchType } from "./type";
 import { SearchResult } from "./ui/app/SearchResult";
 
 export default function App() {
 	const [api, setApi] = useState<string | null>(null);
 	const [cx, setCx] = useState<string | null>(null);
 	const [result, setResult] = useState<Result[] | null>(null);
+	const [searchTypeList, setSearchTypeList] = useState<SearchType[]>([
+		{ name: "All", color: "#e8e8e8" },
+		{ name: "Games", color: "#FFAC27" },
+		{ name: "Videos", color: "#FF2528" },
+		{ name: "Books", color: "#00BFFF	" },
+	]);
+	const [currentSearchType, setCurrentSearchType] = useState<SearchType>(searchTypeList[0]);
 
 	function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
@@ -34,7 +41,7 @@ export default function App() {
 					<button className="col-start-2 border border-black">Connect</button>
 				</form>
 			)}
-			<SearchBar api={api} cx={cx} setResult={setResult} className="mt-[28vh] w-[70vw]" />
+			<SearchBar currentSearchType={currentSearchType} setCurrentSearchType={setCurrentSearchType} searchTypeList={searchTypeList} api={api} cx={cx} setResult={setResult} className="mt-[28vh] w-[70vw]" />
 			<SearchResult result={result} />
 		</div>
 	);
