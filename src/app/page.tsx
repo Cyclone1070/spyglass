@@ -41,7 +41,7 @@ export default function App() {
 					<button className="col-start-2 border border-black">Connect</button>
 				</form>
 			)}
-			<SearchBar currentSearchType={currentSearchType} setCurrentSearchType={setCurrentSearchType} searchTypeList={searchTypeList} api={api} cx={cx} setResult={setResult} className="mt-[28vh] w-[70vw]" />
+			<SearchBar currentSearchType={currentSearchType} setCurrentSearchType={setCurrentSearchType} searchTypeList={searchTypeList} api={api} cx={cx} setResult={setResult} className="mt-[20vh] w-[70vw]" />
 			<SearchResult result={result} />
 		</div>
 	);
