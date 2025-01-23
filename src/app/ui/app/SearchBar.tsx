@@ -44,7 +44,7 @@ export function SearchBar({
 								currentActiveButtonId === "mode" ? "rotate-180" : ""
 							}`}
 						>
-							<Image src="drop-down-arrow-dark-mode.svg" alt="drop-down-icon" fill />
+							<Image src="drop-down-arrow.svg" alt="drop-down-icon" fill />
 						</div>
 					</>
 				}
@@ -94,7 +94,7 @@ export function SearchBar({
 			<button className="flex items-center relative w-[8rem]">
 				<div className="absolute h-[70%] w-[1px] bg-[--foreground]"></div>
 				<div className="relative h-[70%] w-full">
-					<Image src="search-dark-mode.svg" alt="search-icon" fill />
+					<Image src="search.svg" alt="search-icon" fill />
 				</div>
 			</button>
 		</form>

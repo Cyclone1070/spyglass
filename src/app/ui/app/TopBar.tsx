@@ -27,7 +27,7 @@ export function TopBar({ className, currentActiveButtonId, setCurrentActiveButto
 				currentActiveButtonId={currentActiveButtonId}
 				setCurrentActiveButtonId={setCurrentActiveButtonId}
 				className="w-8 h-8"
-				buttonContent={<Image src="/setting-dark-mode.svg" alt="setting" fill />}
+				buttonContent={<Image src="/setting.svg" alt="setting" fill />}
 			>
 				<DropDownContainer>
 					<form

@@ -25,7 +25,7 @@ export function SearchResult({ result, className }: Props) {
 				</div>
 			) : (
 				<div className={`relative h-full w-[min(20rem,100%)] ${className}`}>
-					<Image src="spyglass-dark-mode.svg" alt="a badass spyglass" fill />
+					<Image src="spyglass.svg" alt="a badass spyglass" fill />
 				</div>
 			)}
 		</>
