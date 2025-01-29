@@ -1,6 +1,5 @@
-import { Result } from "@/app/type";
+import { Result } from "@/app/types";
 import Image from "next/image";
-import React from "react";
 import sanitizeHtml from "sanitize-html";
 
 interface Props {

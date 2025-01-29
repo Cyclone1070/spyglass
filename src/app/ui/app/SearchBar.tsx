@@ -1,15 +1,14 @@
-import React from "react";
-import { fetchSearchResult } from "@/app/lib/app/fetchSearchResult";
-import { Result, SearchType } from "@/app/type";
+import { SearchType } from "@/app/types";
+import { motion } from "motion/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import React from "react";
 import { DropDownButton } from "./DropDownButton";
 import { DropDownContainer } from "./DropDownContainer";
-import { motion } from "motion/react";
 
 interface Props {
 	api: string | null;
 	cx: string | null;
-	setResult: React.Dispatch<React.SetStateAction<Result[] | null>>;
 	className?: string;
 	searchTypeList: SearchType[];
 	currentSearchType: SearchType;
@@ -21,7 +20,6 @@ interface Props {
 export function SearchBar({
 	api,
 	cx,
-	setResult,
 	className,
 	searchTypeList,
 	currentSearchType,
@@ -29,6 +27,7 @@ export function SearchBar({
 	currentActiveButtonId,
 	setCurrentActiveButtonId,
 }: Props) {
+	const router = useRouter();
 	return (
 		<form className={`flex relative bg-[--layer-1] rounded-lg ${className}`} action="GET" onSubmit={handleSubmit}>
 			{/* search mode selector */}
@@ -50,6 +49,7 @@ export function SearchBar({
 				}
 				currentActiveButtonId={currentActiveButtonId}
 				setCurrentActiveButtonId={setCurrentActiveButtonId}
+				hoverOverlayTheme="darker"
 			>
 				<DropDownContainer className="rounded-lg overflow-hidden w-[8rem]">
 					<>
@@ -104,12 +104,14 @@ export function SearchBar({
 		if (api && cx) {
 			e.preventDefault();
 			const formData = new FormData(e.currentTarget);
-			const query = formData.get("search") as string;
-			if (query) {
-				fetchSearchResult(query, api, cx).then((data) => {
-					console.log(data);
-					setResult(data.items);
-				});
+			const query = formData.get("search")?.toString().trim();
+			const queryType = currentSearchType.name.toLowerCase();
+			const params = new URLSearchParams();
+
+			if (query && queryType) {
+				params.set("q", query);
+				params.set("type", queryType);
+				router.push(`?${params.toString()}`);
 			}
 		} else {
 			alert("Please enter API and Search Engine ID first");
