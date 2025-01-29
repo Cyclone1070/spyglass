@@ -15,6 +15,7 @@ interface Props {
 	setCurrentSearchType: React.Dispatch<React.SetStateAction<SearchType>>;
 	currentActiveButtonId: string | null;
 	setCurrentActiveButtonId: React.Dispatch<React.SetStateAction<string | null>>;
+	query: string | null;
 }
 
 export function SearchBar({
@@ -26,6 +27,7 @@ export function SearchBar({
 	setCurrentSearchType,
 	currentActiveButtonId,
 	setCurrentActiveButtonId,
+	query,
 }: Props) {
 	const router = useRouter();
 	return (
@@ -88,6 +90,7 @@ export function SearchBar({
 				className={`outline-none px-5 py-2 w-full rounded-lg bg-[--layer-1]`}
 				placeholder="Enter your search phrase"
 				type="text"
+				defaultValue={query ? query : ""}
 			/>
 
 			{/* search button */}

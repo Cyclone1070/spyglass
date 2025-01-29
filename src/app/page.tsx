@@ -1,9 +1,10 @@
 "use client";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchSearchResult } from "./lib/app/fetchSearchResult";
 import { Result, SearchType } from "./types";
+import { ButtonWithOverlay } from "./ui/app/ButtonWithOverlay";
 import { SearchBar } from "./ui/app/SearchBar";
 import { SearchResult } from "./ui/app/SearchResult";
 import { TopBar } from "./ui/app/TopBar";
@@ -23,6 +24,7 @@ export default function App() {
 	const searchParams = useSearchParams();
 	const queryType = searchParams.get("type");
 	const query = searchParams.get("q");
+	const router = useRouter();
 
 	useEffect(() => {
 		if (query && queryType && api && cx) {
@@ -40,6 +42,12 @@ export default function App() {
 	}, [query, api, cx, queryType]);
 
 	useEffect(() => {
+		if (!query) {
+			setResult(null);
+		}
+	}, [query]);
+
+	useEffect(() => {
 		const api = localStorage.getItem("api");
 		const cx = localStorage.getItem("cx");
 		if (api) setApi(api);
@@ -48,10 +56,19 @@ export default function App() {
 
 	return (
 		<div className="grid grid-cols-[1fr_5fr_1fr] grid-rows-[4rem_20vh_1fr] items-center gap-4 p-3 h-screen">
+			{/* home icon */}
 			<div className="px-4 justify-self-start">
-				<div className="relative w-8 h-8">
-					<Image src={"home.svg"} alt={"a badass spyglass"} fill />
-				</div>
+				<ButtonWithOverlay
+					onClick={() => {
+						router.push("/");
+					}}
+					className="p-2 rounded-lg"
+					hoverOverlayTheme="lighter"
+				>
+					<div className="relative w-8 h-8">
+						<Image src={"home.svg"} alt={"home button"} fill />
+					</div>
+				</ButtonWithOverlay>
 			</div>
 			<TopBar
 				setApi={setApi}
@@ -69,6 +86,7 @@ export default function App() {
 				api={api}
 				cx={cx}
 				className={result ? "col-start-2 row-start-1" : "col-start-2 self-end"}
+				query={query}
 			/>
 			<SearchResult
 				result={result}

@@ -26,8 +26,13 @@ export function TopBar({ className, currentActiveButtonId, setCurrentActiveButto
 			<DropDownButton
 				currentActiveButtonId={currentActiveButtonId}
 				setCurrentActiveButtonId={setCurrentActiveButtonId}
-				className="w-8 h-8"
-				buttonContent={<Image src="/setting.svg" alt="setting" fill />}
+				className="p-2 rounded-lg"
+				buttonContent={
+					<div className="relative w-8 h-8">
+						<Image src="/setting.svg" alt="setting" fill />
+					</div>
+				}
+				hoverOverlayTheme="lighter"
 			>
 				<DropDownContainer>
 					<form
@@ -38,12 +43,22 @@ export function TopBar({ className, currentActiveButtonId, setCurrentActiveButto
 						<div>
 							<label htmlFor="cx">Engine ID: </label>
 							<br />
-							<input type="text" name="cx" id="cx" className="border focus:border-[--foreground] border-[--input-border] bg-[--input-bg] outline-none py-1 px-2 rounded-md" />
+							<input
+								type="text"
+								name="cx"
+								id="cx"
+								className="border focus:border-[--foreground] border-[--input-border] bg-[--input-bg] outline-none py-1 px-2 rounded-md"
+							/>
 						</div>
 						<div>
 							<label htmlFor="api">API: </label>
 							<br />
-							<input type="text" name="api" id="api" className="border focus:border-[--foreground] border-[--input-border] bg-[--input-bg] outline-none py-1 px-2 rounded-md" />
+							<input
+								type="text"
+								name="api"
+								id="api"
+								className="border focus:border-[--foreground] border-[--input-border] bg-[--input-bg] outline-none py-1 px-2 rounded-md"
+							/>
 						</div>
 						<button className="text-[--background] bg-[--foreground] py-1 px-4 self-center justify-self-end rounded-xl">
 							Save
