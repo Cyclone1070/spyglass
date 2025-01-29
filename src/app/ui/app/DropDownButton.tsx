@@ -10,6 +10,7 @@ interface Props {
 	currentActiveButtonId: string | null;
 	setCurrentActiveButtonId: React.Dispatch<React.SetStateAction<string | null>>;
 	children: React.ReactNode;
+	hoverOverlayTheme?: "darker" | "lighter";
 }
 
 export function DropDownButton({
@@ -20,6 +21,7 @@ export function DropDownButton({
 	currentActiveButtonId,
 	setCurrentActiveButtonId,
 	children,
+	hoverOverlayTheme,
 }: Props) {
 	const id = useRef(uuidv4());
 	if (staticId) {
@@ -56,17 +58,17 @@ export function DropDownButton({
 				style={buttonBgColor ? { backgroundColor: buttonBgColor } : {}}
 			>
 				{/* darken background overlay */}
-				<motion.div
+				{hoverOverlayTheme ? <motion.div
 					variants={{
-						default: { backgroundColor: "#00000000" },
-						hover: { backgroundColor: "#00000029" },
-						active: { backgroundColor: "#00000039" },
+						default: { backgroundColor: "#00000000"},
+						hover: { backgroundColor: hoverOverlayTheme === "darker" ? "#00000029" : "#ffffff29"},
+						active: { backgroundColor: hoverOverlayTheme === "darker" ? "#00000039" : "#ffffff39"},
 					}}
 					initial="default"
 					whileHover={currentActiveButtonId === id.current ? "active" : "hover"}
 					animate={currentActiveButtonId === id.current ? "active" : "default"}
 					className="absolute z-30 top-0 left-0 w-full h-full rounded-[inherit]"
-				></motion.div>
+				></motion.div> : null}
 				{buttonContent}
 			</button>
 			<AnimatePresence>
