@@ -95,7 +95,7 @@ export function SearchBar({
 			{/* search button */}
 			<button className="flex items-center justify-center relative w-[8rem]">
 				<div className="absolute left-0 h-[70%] w-[1px] bg-[--foreground]"></div>
-				<Search className="relative h-[70%] w-full w-6" />
+				<Search className="relative h-[70%] w-6" />
 			</button>
 		</form>
 	);
