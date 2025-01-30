@@ -1,7 +1,8 @@
 import React from "react";
+
 import { DropDownButton } from "./DropDownButton";
 import { DropDownContainer } from "./DropDownContainer";
-import Image from "next/image";
+import Setting from "/public/Setting.svg";
 
 interface Props {
 	className?: string;
@@ -27,11 +28,7 @@ export function TopBar({ className, currentActiveButtonId, setCurrentActiveButto
 				currentActiveButtonId={currentActiveButtonId}
 				setCurrentActiveButtonId={setCurrentActiveButtonId}
 				className="p-2 rounded-lg"
-				buttonContent={
-					<div className="relative w-8 h-8">
-						<Image src="/setting.svg" alt="setting" fill />
-					</div>
-				}
+				buttonContent={<Setting className="relative w-8 h-8" />}
 				hoverOverlayTheme="lighter"
 			>
 				<DropDownContainer>

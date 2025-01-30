@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchSearchResult } from "./lib/app/fetchSearchResult";
@@ -8,6 +7,7 @@ import { ButtonWithOverlay } from "./ui/app/ButtonWithOverlay";
 import { SearchBar } from "./ui/app/SearchBar";
 import { SearchResult } from "./ui/app/SearchResult";
 import { TopBar } from "./ui/app/TopBar";
+import Home from "/public/Home.svg";
 
 export default function App() {
 	const [api, setApi] = useState<string | null>(null);
@@ -65,9 +65,7 @@ export default function App() {
 					className="p-2 rounded-lg"
 					hoverOverlayTheme="lighter"
 				>
-					<div className="relative w-8 h-8">
-						<Image src={"home.svg"} alt={"home button"} fill />
-					</div>
+					<Home className="relative w-8 h-8"/>
 				</ButtonWithOverlay>
 			</div>
 			<TopBar

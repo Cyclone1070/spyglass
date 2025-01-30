@@ -1,10 +1,11 @@
 import { SearchType } from "@/app/types";
 import { motion } from "motion/react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { DropDownButton } from "./DropDownButton";
 import { DropDownContainer } from "./DropDownContainer";
+import DropDownArrow from "/public/DropDownArrow.svg";
+import Search from "/public/search.svg";
 
 interface Props {
 	api: string | null;
@@ -40,13 +41,11 @@ export function SearchBar({
 				buttonContent={
 					<>
 						<span>{currentSearchType.name}</span>
-						<div
-							className={`absolute w-4 h-4 right-[0.8rem] top-1/2 transform -translate-y-1/2 transition-all duration-300 ${
+						<DropDownArrow
+							className={`absolute w-4 h-4 right-[0.8rem] top-1/2 transform -translate-y-1/2 transition-all duration-300 text-[#121212] ${
 								currentActiveButtonId === "mode" ? "rotate-180" : ""
 							}`}
-						>
-							<Image src="drop-down-arrow.svg" alt="drop-down-icon" fill />
-						</div>
+						/>
 					</>
 				}
 				currentActiveButtonId={currentActiveButtonId}
@@ -96,9 +95,7 @@ export function SearchBar({
 			{/* search button */}
 			<button className="flex items-center relative w-[8rem]">
 				<div className="absolute h-[70%] w-[1px] bg-[--foreground]"></div>
-				<div className="relative h-[70%] w-full">
-					<Image src="search.svg" alt="search-icon" fill />
-				</div>
+				<Search className="relative h-[70%] w-full px-7" />
 			</button>
 		</form>
 	);

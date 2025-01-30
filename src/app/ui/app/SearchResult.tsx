@@ -1,6 +1,6 @@
 import { Result } from "@/app/types";
-import Image from "next/image";
 import sanitizeHtml from "sanitize-html";
+import Spyglass from "/public/Spyglass.svg";
 
 interface Props {
 	result: Result[] | null;
@@ -23,9 +23,7 @@ export function SearchResult({ result, className }: Props) {
 					))}
 				</div>
 			) : (
-				<div className={`relative h-full w-[min(20rem,100%)] ${className}`}>
-					<Image src="spyglass.svg" alt="a badass spyglass" fill />
-				</div>
+				<Spyglass className={`relative h-full w-[min(20rem,100%)] ${className}`} />
 			)}
 		</>
 	);
