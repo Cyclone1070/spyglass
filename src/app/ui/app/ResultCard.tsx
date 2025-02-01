@@ -14,9 +14,15 @@ interface Props {
 export function ResultCard({ result, searchTypeList }: Props) {
 	const [isCardHovered, setIsCardHovered] = useState(false);
 	const [isTextHovered, setIsTextHovered] = useState(false);
-	const [isImageAvailable, setIsImageAvailable] = useState(result.pagemap.cse_image && result.pagemap.cse_image[0]?.src ? true : false);
+	const [isImageAvailable, setIsImageAvailable] = useState(
+		result.pagemap.cse_image && result.pagemap.cse_image[0]?.src ? true : false
+	);
+
 	return (
-		<div
+		<a
+			href={result.link}
+			target="_blank"
+			rel="noopener noreferrer"
 			className="relative w-[15rem] h-[20rem] flex flex-col shadow-md p-2 gap-2 rounded-md bg-[--layer-1] overflow-hidden"
 			onMouseEnter={() => {
 				setIsCardHovered(true);
@@ -28,8 +34,8 @@ export function ResultCard({ result, searchTypeList }: Props) {
 			{/* link */}
 			<div
 				className={`text-[--link] ${
-					isCardHovered ? "underline" : ""
-				} flex items-center gap-2 transition-all duration-300`}
+					isCardHovered && !isImageAvailable ? "underline" : ""
+				} ${isCardHovered && isImageAvailable ? "opacity-0" : "opacity-100"} flex items-center gap-2 transition-all duration-300`}
 			>
 				<Star className="w-4 h-4 text-[--star] flex-shrink-0" />
 				<span className="whitespace-normal break-all">{result.displayLink}</span>
@@ -44,12 +50,19 @@ export function ResultCard({ result, searchTypeList }: Props) {
 						exit={{ opacity: 0 }}
 						className="absolute inset-0 z-10"
 					>
-						<Image src={result.pagemap.cse_image[0].src} alt={"result's thumbnail"} fill onError={() => {setIsImageAvailable(false)}} />
+						<Image
+							src={result.pagemap.cse_image[0].src}
+							alt={"result's thumbnail"}
+							fill
+							onError={() => {
+								setIsImageAvailable(false);
+							}}
+						/>
 					</motion.div>
 				) : null}
 			</AnimatePresence>
 			<Games
-				className={`absolute left-1/2 -translate-x-1/2 top-[10%] h-[50%]`}
+				className={`absolute left-1/2 -translate-x-1/2 top-[10%] h-[50%] transition-opacity duration-300 ${isCardHovered && isImageAvailable ? "opacity-0" : "opacity-100"}`}
 				style={{ color: searchTypeList.find((type) => type.name === "Games")?.color }}
 			/>
 			{/* result text wrapper */}
@@ -75,6 +88,6 @@ export function ResultCard({ result, searchTypeList }: Props) {
 					dangerouslySetInnerHTML={{ __html: sanitizeHtml(result.htmlSnippet) }}
 				></div>
 			</div>
-		</div>
+		</a>
 	);
 }
