@@ -5,14 +5,14 @@ import { fetchSearchResult } from "./lib/app/fetchSearchResult";
 import { Result, SearchType } from "./types";
 import { ButtonWithOverlay } from "./ui/app/ButtonWithOverlay";
 import { SearchBar } from "./ui/app/SearchBar";
-import { SearchResult } from "./ui/app/SearchResult";
+import { SearchResults } from "./ui/app/SearchResults";
 import { TopBar } from "./ui/app/TopBar";
 import Home from "/public/Home.svg";
 
 export default function App() {
 	const [api, setApi] = useState<string | null>(null);
 	const [cx, setCx] = useState<string | null>(null);
-	const [result, setResult] = useState<Result[] | null>(null);
+	const [resultList, setResultList] = useState<Result[] | null>(null);
 	const [searchTypeList, setSearchTypeList] = useState<SearchType[]>([
 		{ name: "All", color: "#e8e8e8" },
 		{ name: "Games", color: "#FFAC27" },
@@ -33,7 +33,7 @@ export default function App() {
 					console.log(query);
 					console.log(queryType);
 					console.log(data);
-					setResult(data.items);
+					setResultList(data.items);
 				})
 				.catch((error) => {
 					console.log(error);
@@ -43,7 +43,7 @@ export default function App() {
 
 	useEffect(() => {
 		if (!query) {
-			setResult(null);
+			setResultList(null);
 		}
 	}, [query]);
 
@@ -65,7 +65,7 @@ export default function App() {
 					className="p-2 rounded-lg"
 					hoverOverlayTheme="lighter"
 				>
-					<Home className="relative w-8 h-8"/>
+					<Home className="relative w-8 h-8" />
 				</ButtonWithOverlay>
 			</div>
 			<TopBar
@@ -83,12 +83,17 @@ export default function App() {
 				searchTypeList={searchTypeList}
 				api={api}
 				cx={cx}
-				className={result ? "col-start-2 row-start-1" : "col-start-2 self-end"}
+				className={resultList ? "col-start-2 row-start-1" : "col-start-2 self-end"}
 				query={query}
 			/>
-			<SearchResult
-				result={result}
-				className={result ? "row-start-2 row-span-2 col-span-3" : "row-start-3 col-start-2 justify-self-center"}
+			<SearchResults
+				resultList={resultList}
+				searchTypeList={searchTypeList}
+				className={
+					resultList
+						? "row-start-2 row-span-2 col-span-3 self-start"
+						: "row-start-3 col-start-2 justify-self-center"
+				}
 			/>
 		</div>
 	);

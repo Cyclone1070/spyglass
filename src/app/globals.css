@@ -8,14 +8,17 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #121212;
-    --foreground: #e8e8e8;
-	--layer-1: #2c2c2c;
-	--layer-2: #333333;
-	--input-bg: #272727;
-	--input-border: #6E6E6E;
-  }
+	:root {
+		--background: #121212;
+		--foreground: #e8e8e8;
+		--layer-1: #2c2c2c;
+		--layer-2: #333333;
+		--link: #8bbeff;
+		--input-bg: #272727;
+		--input-border: #6e6e6e;
+		--star: #ffff00;
+		--result-text-bg: #202020E6
+	}
 }
 body {
 	color: var(--foreground);

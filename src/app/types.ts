@@ -1,6 +1,7 @@
 export interface SearchType {
 	name: string;
 	color: string;
+	icon?: string;
 }
 // Reference: https://developers.google.com/custom-search/v1/reference/rest/v1/Search
 export interface Search {
