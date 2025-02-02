@@ -9,10 +9,12 @@ interface Props {
 	currentActiveButtonId: string | null;
 	setCurrentActiveButtonId: React.Dispatch<React.SetStateAction<string | null>>;
 	setApi: React.Dispatch<React.SetStateAction<string | null>>;
+	api: string | null;
 	setCx: React.Dispatch<React.SetStateAction<string | null>>;
+	cx: string | null;
 }
 
-export function TopBar({ className, currentActiveButtonId, setCurrentActiveButtonId, setApi, setCx }: Props) {
+export function TopBar({ className, currentActiveButtonId, setCurrentActiveButtonId, setApi, api, setCx, cx }: Props) {
 	function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
@@ -21,7 +23,7 @@ export function TopBar({ className, currentActiveButtonId, setCurrentActiveButto
 		setApi(formData.get("api") as string);
 		setCx(formData.get("cx") as string);
 	}
-
+	
 	return (
 		<div className={`${className}`}>
 			<DropDownButton
@@ -45,6 +47,7 @@ export function TopBar({ className, currentActiveButtonId, setCurrentActiveButto
 								name="cx"
 								id="cx"
 								className="border focus:border-[--foreground] border-[--input-border] bg-[--input-bg] outline-none py-1 px-2 rounded-md"
+								defaultValue={cx ? cx : ""}
 							/>
 						</div>
 						<div>
@@ -55,6 +58,7 @@ export function TopBar({ className, currentActiveButtonId, setCurrentActiveButto
 								name="api"
 								id="api"
 								className="border focus:border-[--foreground] border-[--input-border] bg-[--input-bg] outline-none py-1 px-2 rounded-md"
+								defaultValue={api ? api : ""}
 							/>
 						</div>
 						<button className="text-[--background] bg-[--foreground] py-1 px-4 self-center justify-self-end rounded-xl">

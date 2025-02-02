@@ -74,7 +74,9 @@ export default function App() {
 			</div>
 			<TopBar
 				setApi={setApi}
+				api={api}
 				setCx={setCx}
+				cx={cx}
 				className="col-start-3 justify-self-end px-4"
 				currentActiveButtonId={currentActiveButtonId}
 				setCurrentActiveButtonId={setCurrentActiveButtonId}
