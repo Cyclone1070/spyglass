@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
 				protocol: "https",
 				hostname: "**", // Allows all domains (or specify a specific domain like "example.com")
 			},
+			{
+				protocol: "http",
+				hostname: "**",
+			},
 		],
 	},
 	/* config options here */

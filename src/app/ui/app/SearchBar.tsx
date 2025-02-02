@@ -106,12 +106,13 @@ export function SearchBar({
 			const formData = new FormData(e.currentTarget);
 			const query = formData.get("search")?.toString().trim();
 			const queryType = currentSearchType.name.toLowerCase();
-			const params = new URLSearchParams();
+			const searchParams = new URLSearchParams();
 
 			if (query && queryType) {
-				params.set("q", query);
-				params.set("type", queryType);
-				router.push(`?${params.toString()}`);
+				searchParams.set("q", query);
+				searchParams.set("type", queryType);
+				searchParams.set("start", "1");
+				router.push(`?${searchParams.toString()}`);
 			}
 		} else {
 			alert("Please enter API and Search Engine ID first");

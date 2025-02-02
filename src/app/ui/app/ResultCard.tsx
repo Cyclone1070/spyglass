@@ -42,18 +42,18 @@ export function ResultCard({ result, searchTypeList }: Props) {
 			</div>
 			{/* thumbnail */}
 			<AnimatePresence>
-				{isImageAvailable && isCardHovered ? (
+				{isImageAvailable ? (
 					<motion.div
 						key={result.link}
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
+						animate={isCardHovered ? { opacity: 1 } : { opacity: 0 }}
 						exit={{ opacity: 0 }}
-						className="absolute inset-0 z-10"
+						className={`absolute inset-0 z-10`}
 					>
 						<Image
 							src={result.pagemap.cse_image[0].src}
 							alt={"result's thumbnail"}
 							fill
+							sizes="15rem"
 							onError={() => {
 								setIsImageAvailable(false);
 							}}

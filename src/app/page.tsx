@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { fetchSearchResult } from "./lib/app/fetchSearchResult";
 import { Result, SearchType } from "./types";
 import { ButtonWithOverlay } from "./ui/app/ButtonWithOverlay";
+import { PageNumbers } from "./ui/app/PageNumbers";
 import { SearchBar } from "./ui/app/SearchBar";
 import { SearchResults } from "./ui/app/SearchResults";
 import { TopBar } from "./ui/app/TopBar";
@@ -21,14 +22,17 @@ export default function App() {
 	]);
 	const [currentSearchType, setCurrentSearchType] = useState<SearchType>(searchTypeList[0]);
 	const [currentActiveButtonId, setCurrentActiveButtonId] = useState<string | null>(null);
+
+	/* get search param query */
 	const searchParams = useSearchParams();
 	const queryType = searchParams.get("type");
 	const query = searchParams.get("q");
+	const startIndex = Number(searchParams.get("start"));
 	const router = useRouter();
 
 	useEffect(() => {
-		if (query && queryType && api && cx) {
-			fetchSearchResult(query, api, cx)
+		if (query && queryType && api && cx && startIndex) {
+			fetchSearchResult(query, api, cx, startIndex)
 				.then((data) => {
 					console.log(query);
 					console.log(queryType);
@@ -39,7 +43,7 @@ export default function App() {
 					console.log(error);
 				});
 		}
-	}, [query, api, cx, queryType]);
+	}, [query, api, cx, queryType, startIndex]);
 
 	useEffect(() => {
 		if (!query) {
@@ -55,7 +59,7 @@ export default function App() {
 	}, []);
 
 	return (
-		<div className="grid grid-cols-[1fr_5fr_1fr] grid-rows-[4rem_20vh_1fr] items-center gap-4 p-3 h-screen">
+		<div className="grid grid-cols-[1fr_5fr_1fr] grid-rows-[4rem_20vh_auto_4rem] items-center gap-4 p-3 h-screen">
 			{/* home icon */}
 			<div className="px-4 justify-self-start">
 				<ButtonWithOverlay
@@ -95,6 +99,7 @@ export default function App() {
 						: "row-start-3 col-start-2 justify-self-center"
 				}
 			/>
+			<PageNumbers searchParams={searchParams} className="col-span-3"></PageNumbers>
 		</div>
 	);
 }
