@@ -1,4 +1,4 @@
-# Search Engine For Piracy Megathread
+# Front End For Custom Search Engine
 Powered by Google Custom Search Engine API.
 ## Free Usage
 In order to use the search engine for free, you need to sign up for these 2 free services from google:
