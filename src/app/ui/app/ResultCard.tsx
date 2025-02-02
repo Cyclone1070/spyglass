@@ -15,7 +15,11 @@ export function ResultCard({ result, searchTypeList }: Props) {
 	const [isCardHovered, setIsCardHovered] = useState(false);
 	const [isTextHovered, setIsTextHovered] = useState(false);
 	const [isImageAvailable, setIsImageAvailable] = useState(
-		result.pagemap.cse_image && result.pagemap.cse_image[0]?.src ? true : false
+		result?.pagemap?.cse_image &&
+			result.pagemap.cse_image[0]?.src &&
+			/^https?:\/\//.test(result.pagemap.cse_image[0]?.src)
+			? true
+			: false
 	);
 
 	return (
@@ -33,9 +37,9 @@ export function ResultCard({ result, searchTypeList }: Props) {
 		>
 			{/* link */}
 			<div
-				className={`text-[--link] ${
-					isCardHovered && !isImageAvailable ? "underline" : ""
-				} ${isCardHovered && isImageAvailable ? "opacity-0" : "opacity-100"} flex items-center gap-2 transition-all duration-300`}
+				className={`text-[--link] ${isCardHovered && !isImageAvailable ? "underline" : ""} ${
+					isCardHovered && isImageAvailable ? "opacity-0" : "opacity-100"
+				} flex items-center gap-2 transition-all duration-300`}
 			>
 				<Star className="w-4 h-4 text-[--star] flex-shrink-0" />
 				<span className="whitespace-normal break-all">{result.displayLink}</span>
@@ -62,7 +66,9 @@ export function ResultCard({ result, searchTypeList }: Props) {
 				) : null}
 			</AnimatePresence>
 			<Games
-				className={`absolute left-1/2 -translate-x-1/2 top-[10%] h-[50%] transition-opacity duration-300 ${isCardHovered && isImageAvailable ? "opacity-0" : "opacity-100"}`}
+				className={`absolute left-1/2 -translate-x-1/2 top-[10%] h-[50%] transition-opacity duration-300 ${
+					isCardHovered && isImageAvailable ? "opacity-0" : "opacity-100"
+				}`}
 				style={{ color: searchTypeList.find((type) => type.name === "Games")?.color }}
 			/>
 			{/* result text wrapper */}
