@@ -67,7 +67,7 @@ export function DropDownButton({
 					initial="default"
 					whileHover={currentActiveButtonId === id.current ? "active" : "hover"}
 					animate={currentActiveButtonId === id.current ? "active" : "default"}
-					className={`absolute z-30 top-0 left-0 w-full h-full rounded-[inherit] ${hoverOverlayTheme === "fontColor" ? "bg-[--font-color-hover]" : "bg-[--bg-color-hover]"}`}
+					className={`absolute z-30 top-0 left-0 w-full h-full rounded-[inherit] ${hoverOverlayTheme === "fontColor" ? "bg-[--fg-color-hover]" : "bg-[--bg-color-hover]"}`}
 				></motion.div> : null}
 				{buttonContent}
 			</button>

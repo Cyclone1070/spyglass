@@ -36,13 +36,13 @@ export function SearchBar({
 			{/* search mode selector */}
 			<DropDownButton
 				staticId="mode"
-				className={`text-[--background] font-bold rounded-l-lg w-[8rem] h-full`}
+				className={`text-[--on-dropdown] font-bold rounded-l-lg w-[8rem] h-full`}
 				buttonBgColor={currentSearchType.color}
 				buttonContent={
 					<>
 						<span>{currentSearchType.name}</span>
 						<DropDownArrow
-							className={`absolute w-4 h-4 right-[0.8rem] top-1/2 transform -translate-y-1/2 transition-all duration-300 text-[#121212] ${
+							className={`absolute w-4 h-4 right-[0.8rem] top-1/2 transform -translate-y-1/2 transition-all duration-300 ${
 								currentActiveButtonId === "mode" ? "rotate-180" : ""
 							}`}
 						/>
@@ -63,7 +63,7 @@ export function SearchBar({
 									setCurrentSearchType(type);
 									setCurrentActiveButtonId(null);
 								}}
-								className="flex relative justify-center items-center h-full w-full p-2 text-[--background] font-bold shadow-lg"
+								className="flex relative justify-center items-center h-full w-full p-2 text-[--on-dropdown] font-bold shadow-lg"
 							>
 								{/* darken background overlay */}
 								<motion.div
@@ -94,8 +94,9 @@ export function SearchBar({
 
 			{/* search button */}
 			<button className="flex items-center justify-center relative w-[8rem]">
-				<div className="absolute left-0 h-[70%] w-[1px] bg-[--foreground]"></div>
-				<Search className="relative h-[70%] w-6" />
+				{/* search divider */}
+				<div className="absolute left-0 h-[70%] w-[1px] bg-[--icon]"></div>
+				<Search className="relative h-[70%] w-6 text-[--icon]" />
 			</button>
 		</form>
 	);

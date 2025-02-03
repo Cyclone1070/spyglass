@@ -3,10 +3,12 @@
 @tailwind utilities;
 
 :root {
-	--background: #e8e8e8;
-	--foreground: #121212;
-	--font-color-hover: #000000;
+	--background: #ffffff;
+	--foreground: #000000;
+	--fg-color-hover: #000000;
 	--bg-color-hover: #ffffff;
+	--on-dropdown: #000000;
+	--icon: #BF360C;
 }
 
 .dark {
@@ -15,12 +17,14 @@
 	--layer-1: #2c2c2c;
 	--layer-2: #333333;
 	--link: #8bbeff;
+	--icon: #e8e8e8;
 	--input-bg: #272727;
 	--input-border: #6e6e6e;
 	--star: #ffff00;
 	--result-text-bg: #202020e6;
-	--font-color-hover: #ffffff;
+	--fg-color-hover: #ffffff;
 	--bg-color-hover: #000000;
+	--on-dropdown: #121212;
 }
 
 body {

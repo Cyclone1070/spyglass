@@ -38,7 +38,7 @@ export function TopBar({ className, currentActiveButtonId, setCurrentActiveButto
 	return (
 		<div className={`${className}`}>
 			<ButtonWithOverlay
-				className="text-[--foreground] p-2 rounded-lg"
+				className="text-[--icon] p-2 rounded-lg"
 				hoverOverlayTheme="fontColor"
 				onClick={() => {
 					setTheme((theme) => (theme === "dark" ? "light" : "dark"));
@@ -56,7 +56,7 @@ export function TopBar({ className, currentActiveButtonId, setCurrentActiveButto
 				currentActiveButtonId={currentActiveButtonId}
 				setCurrentActiveButtonId={setCurrentActiveButtonId}
 				className="p-2 rounded-lg"
-				buttonContent={<Setting className="relative w-8 h-8" />}
+				buttonContent={<Setting className="relative w-8 h-8 text-[--icon]" />}
 				hoverOverlayTheme="fontColor"
 			>
 				<DropDownContainer>

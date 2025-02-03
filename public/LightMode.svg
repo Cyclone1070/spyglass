@@ -8,7 +8,7 @@
 	viewBox="0 0 682.66669 682.66669"
 	xmlns="http://www.w3.org/2000/svg"
 	xmlns:svg="http://www.w3.org/2000/svg"
-	fill="currentColor"
+	stroke="currentColor"
 >
 	<defs id="defs907">
 		<clipPath clipPathUnits="userSpaceOnUse" id="clipPath917">
@@ -26,7 +26,6 @@
 						d="M 0,0 V -48.2"
 						style="
 							fill: none;
-							stroke: #121212;
 							stroke-width: 30;
 							stroke-linecap: round;
 							stroke-linejoin: round;
@@ -42,7 +41,6 @@
 						d="M 0,0 V -48.2"
 						style="
 							fill: none;
-							stroke: #121212;
 							stroke-width: 30;
 							stroke-linecap: round;
 							stroke-linejoin: round;
@@ -58,7 +56,6 @@
 						d="M 0,0 H -48.2"
 						style="
 							fill: none;
-							stroke: #121212;
 							stroke-width: 30;
 							stroke-linecap: round;
 							stroke-linejoin: round;
@@ -74,7 +71,6 @@
 						d="M 0,0 H -48.2"
 						style="
 							fill: none;
-							stroke: #121212;
 							stroke-width: 30;
 							stroke-linecap: round;
 							stroke-linejoin: round;
@@ -92,7 +88,6 @@
 				d="M 0,0 -34.077,-34.077"
 				style="
 					fill: none;
-					stroke: #121212;
 					stroke-width: 30;
 					stroke-linecap: round;
 					stroke-linejoin: round;
@@ -108,7 +103,6 @@
 				d="M 0,0 -34.077,-34.077"
 				style="
 					fill: none;
-					stroke: #121212;
 					stroke-width: 30;
 					stroke-linecap: round;
 					stroke-linejoin: round;
@@ -124,7 +118,6 @@
 				d="M 0,0 -34.077,34.077"
 				style="
 					fill: none;
-					stroke: #121212;
 					stroke-width: 30;
 					stroke-linecap: round;
 					stroke-linejoin: round;
@@ -140,7 +133,6 @@
 				d="M 0,0 -34.077,34.077"
 				style="
 					fill: none;
-					stroke: #121212;
 					stroke-width: 30;
 					stroke-linecap: round;
 					stroke-linejoin: round;
@@ -158,7 +150,6 @@
 						d="m 0,0 c 62.073,0 112.467,-50.394 112.467,-112.467 0,-62.073 -50.394,-112.467 -112.467,-112.467 -62.073,0 -112.467,50.394 -112.467,112.467 C -112.467,-50.394 -62.073,0 0,0 Z"
 						style="
 							fill: none;
-							stroke: #121212;
 							stroke-width: 30;
 							stroke-linecap: round;
 							stroke-linejoin: round;

@@ -17,7 +17,7 @@ export default function App() {
 	const [searchTypeList, setSearchTypeList] = useState<SearchType[]>([
 		{ name: "All", color: "#e8e8e8" },
 		{ name: "Games", color: "#FFAC27" },
-		{ name: "Videos", color: "#FF2528" },
+		{ name: "Videos", color: "#FF3B3F" },
 		{ name: "Books", color: "#00BFFF" },
 	]);
 	const [currentSearchType, setCurrentSearchType] = useState<SearchType>(searchTypeList[0]);
@@ -69,7 +69,7 @@ export default function App() {
 					className="p-2 rounded-lg"
 					hoverOverlayTheme="fontColor"
 				>
-					<Home className="relative w-8 h-8" />
+					<Home className="relative w-8 h-8 text-[--icon]" />
 				</ButtonWithOverlay>
 			</div>
 			<TopBar

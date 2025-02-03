@@ -19,7 +19,7 @@ export function SearchResults({ resultList, className, searchTypeList }: Props) 
 					))}
 				</div>
 			) : (
-				<Spyglass className={`relative h-full w-[min(20rem,100%)] ${className}`} />
+				<Spyglass className={`relative h-full w-[min(20rem,100%)] text-[--icon] ${className}`} />
 			)}
 		</>
 	);
