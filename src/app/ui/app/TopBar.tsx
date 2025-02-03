@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 
+import { useTheme } from "next-themes";
+import { ButtonWithOverlay } from "./ButtonWithOverlay";
 import { DropDownButton } from "./DropDownButton";
 import { DropDownContainer } from "./DropDownContainer";
+import DarkMode from "/public/DarkMode.svg";
+import LightMode from "/public/LightMode.svg";
 import Setting from "/public/Setting.svg";
 
 interface Props {
@@ -15,7 +19,14 @@ interface Props {
 }
 
 export function TopBar({ className, currentActiveButtonId, setCurrentActiveButtonId, setApi, api, setCx, cx }: Props) {
-	function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+	const { setTheme, resolvedTheme } = useTheme();
+	const [mounted, setMounted] = React.useState(false);
+
+	useEffect(() => {
+		setMounted(true);
+	}, [setMounted]);
+
+	function handleApiSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
 		localStorage.setItem("api", formData.get("api") as string);
@@ -23,21 +34,36 @@ export function TopBar({ className, currentActiveButtonId, setCurrentActiveButto
 		setApi(formData.get("api") as string);
 		setCx(formData.get("cx") as string);
 	}
-	
+
 	return (
 		<div className={`${className}`}>
+			<ButtonWithOverlay
+				className="text-[--foreground] p-2 rounded-lg"
+				hoverOverlayTheme="fontColor"
+				onClick={() => {
+					setTheme((theme) => (theme === "dark" ? "light" : "dark"));
+				}}
+			>
+				{!mounted ? (
+					<div className="w-8 h-8 bg-gray-400 dark:bg-gray-700 rounded-lg animate-pulse" style={{animationDuration: "1s"}} />
+				) : resolvedTheme === "dark" ? (
+					<DarkMode className="w-8 h-8" />
+				) : (
+					<LightMode className="w-8 h-8" />
+				)}
+			</ButtonWithOverlay>
 			<DropDownButton
 				currentActiveButtonId={currentActiveButtonId}
 				setCurrentActiveButtonId={setCurrentActiveButtonId}
 				className="p-2 rounded-lg"
 				buttonContent={<Setting className="relative w-8 h-8" />}
-				hoverOverlayTheme="lighter"
+				hoverOverlayTheme="fontColor"
 			>
 				<DropDownContainer>
 					<form
 						action=""
 						className="bg-[--layer-2] grid grid-rows-3 gap-7 p-7 rounded-lg shadow-lg"
-						onSubmit={handleSubmit}
+						onSubmit={handleApiSubmit}
 					>
 						<div>
 							<label htmlFor="cx">Engine ID: </label>

@@ -3,23 +3,26 @@
 @tailwind utilities;
 
 :root {
-	--background: #d4b58f;
-	--foreground: #171717;
+	--background: #e8e8e8;
+	--foreground: #121212;
+	--font-color-hover: #000000;
+	--bg-color-hover: #ffffff;
 }
 
-@media (prefers-color-scheme: dark) {
-	:root {
-		--background: #121212;
-		--foreground: #e8e8e8;
-		--layer-1: #2c2c2c;
-		--layer-2: #333333;
-		--link: #8bbeff;
-		--input-bg: #272727;
-		--input-border: #6e6e6e;
-		--star: #ffff00;
-		--result-text-bg: #202020E6
-	}
+.dark {
+	--background: #121212;
+	--foreground: #e8e8e8;
+	--layer-1: #2c2c2c;
+	--layer-2: #333333;
+	--link: #8bbeff;
+	--input-bg: #272727;
+	--input-border: #6e6e6e;
+	--star: #ffff00;
+	--result-text-bg: #202020e6;
+	--font-color-hover: #ffffff;
+	--bg-color-hover: #000000;
 }
+
 body {
 	color: var(--foreground);
 	background: var(--background);

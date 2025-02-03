@@ -50,7 +50,7 @@ export function SearchBar({
 				}
 				currentActiveButtonId={currentActiveButtonId}
 				setCurrentActiveButtonId={setCurrentActiveButtonId}
-				hoverOverlayTheme="darker"
+				hoverOverlayTheme="bgColor"
 			>
 				<DropDownContainer className="rounded-lg overflow-hidden w-[8rem]">
 					<>

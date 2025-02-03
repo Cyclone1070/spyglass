@@ -67,7 +67,7 @@ export default function App() {
 						router.push("/");
 					}}
 					className="p-2 rounded-lg"
-					hoverOverlayTheme="lighter"
+					hoverOverlayTheme="fontColor"
 				>
 					<Home className="relative w-8 h-8" />
 				</ButtonWithOverlay>
@@ -77,7 +77,7 @@ export default function App() {
 				api={api}
 				setCx={setCx}
 				cx={cx}
-				className="col-start-3 justify-self-end px-4"
+				className="col-start-3 justify-self-end flex gap-2 px-4"
 				currentActiveButtonId={currentActiveButtonId}
 				setCurrentActiveButtonId={setCurrentActiveButtonId}
 			/>
@@ -101,7 +101,7 @@ export default function App() {
 						: "row-start-3 col-start-2 justify-self-center"
 				}
 			/>
-			<PageNumbers searchParams={searchParams} className="col-span-3"></PageNumbers>
+			{resultList ? <PageNumbers searchParams={searchParams} className="col-span-3"></PageNumbers> : null}
 		</div>
 	);
 }
