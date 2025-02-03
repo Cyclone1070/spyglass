@@ -45,7 +45,7 @@ export function TopBar({ className, currentActiveButtonId, setCurrentActiveButto
 				}}
 			>
 				{!mounted ? (
-					<div className="w-8 h-8 bg-gray-400 dark:bg-gray-700 rounded-lg animate-pulse" style={{animationDuration: "1s"}} />
+					<div className="w-8 h-8 bg-gray-400 dark:bg-gray-700 rounded-lg animate-pulse" />
 				) : resolvedTheme === "dark" ? (
 					<DarkMode className="w-8 h-8" />
 				) : (
