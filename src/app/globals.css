@@ -5,10 +5,18 @@
 :root {
 	--background: #ffffff;
 	--foreground: #000000;
+	--layer-1: #ffffff;
+	--layer-2: #f2f2f2;
+	--link: #8bbeff;
 	--fg-color-hover: #000000;
 	--bg-color-hover: #ffffff;
 	--on-dropdown: #000000;
-	--icon: #BF360C;
+	--icon: #4a352f;
+	--input-border-focus: #4e9bff;
+	--all: #e8e8e8;
+	--games: #ffac27;
+	--videos: #ff3b3f;
+	--books: #00bfff;
 }
 
 .dark {
@@ -20,11 +28,16 @@
 	--icon: #e8e8e8;
 	--input-bg: #272727;
 	--input-border: #6e6e6e;
+	--input-boder-focus: #e8e8e8;
 	--star: #ffff00;
 	--result-text-bg: #202020e6;
 	--fg-color-hover: #ffffff;
 	--bg-color-hover: #000000;
 	--on-dropdown: #121212;
+	--all: #e8e8e8;
+	--games: #ffac27;
+	--videos: #ff3b3f;
+	--books: #00bfff;
 }
 
 body {

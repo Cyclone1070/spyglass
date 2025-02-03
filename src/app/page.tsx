@@ -14,13 +14,7 @@ export default function App() {
 	const [api, setApi] = useState<string | null>(null);
 	const [cx, setCx] = useState<string | null>(null);
 	const [resultList, setResultList] = useState<Result[] | null>(null);
-	const [searchTypeList, setSearchTypeList] = useState<SearchType[]>([
-		{ name: "All", color: "#e8e8e8" },
-		{ name: "Games", color: "#FFAC27" },
-		{ name: "Videos", color: "#FF3B3F" },
-		{ name: "Books", color: "#00BFFF" },
-	]);
-	const [currentSearchType, setCurrentSearchType] = useState<SearchType>(searchTypeList[0]);
+	const [currentSearchType, setCurrentSearchType] = useState<SearchType>("All");
 	const [currentActiveButtonId, setCurrentActiveButtonId] = useState<string | null>(null);
 
 	/* get search param query */
@@ -86,7 +80,6 @@ export default function App() {
 				setCurrentSearchType={setCurrentSearchType}
 				currentActiveButtonId={currentActiveButtonId}
 				setCurrentActiveButtonId={setCurrentActiveButtonId}
-				searchTypeList={searchTypeList}
 				api={api}
 				cx={cx}
 				className={resultList ? "col-start-2 row-start-1" : "col-start-2 self-end"}
@@ -94,7 +87,6 @@ export default function App() {
 			/>
 			<SearchResults
 				resultList={resultList}
-				searchTypeList={searchTypeList}
 				className={
 					resultList
 						? "row-start-2 row-span-2 col-span-3 self-start"

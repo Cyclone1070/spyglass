@@ -3,13 +3,12 @@ import React from "react";
 
 interface Props {
 	className?: string;
-	buttonBgColor?: string;
 	children: React.ReactNode;
 	hoverOverlayTheme?: "fontColor" | "bgColor";
 	onClick: () => void;
 }
 
-export function ButtonWithOverlay({ className, children, buttonBgColor, hoverOverlayTheme, onClick }: Props) {
+export function ButtonWithOverlay({ className, children,  hoverOverlayTheme, onClick }: Props) {
 	const [isActive, setIsActive] = React.useState(false);
 
 	return (
@@ -24,7 +23,6 @@ export function ButtonWithOverlay({ className, children, buttonBgColor, hoverOve
 				onClick();
 			}}
 			className={`relative ${className}`}
-			style={buttonBgColor ? { backgroundColor: buttonBgColor } : {}}
 		>
 			{/* darken background overlay */}
 			{hoverOverlayTheme ? (

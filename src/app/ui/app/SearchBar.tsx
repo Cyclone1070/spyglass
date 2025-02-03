@@ -11,7 +11,6 @@ interface Props {
 	api: string | null;
 	cx: string | null;
 	className?: string;
-	searchTypeList: SearchType[];
 	currentSearchType: SearchType;
 	setCurrentSearchType: React.Dispatch<React.SetStateAction<SearchType>>;
 	currentActiveButtonId: string | null;
@@ -23,24 +22,37 @@ export function SearchBar({
 	api,
 	cx,
 	className,
-	searchTypeList,
 	currentSearchType,
 	setCurrentSearchType,
 	currentActiveButtonId,
 	setCurrentActiveButtonId,
 	query,
 }: Props) {
+	const searchTypeList: SearchType[] = ["All", "Games", "Videos", "Books"];
 	const router = useRouter();
 	return (
-		<form className={`flex relative bg-[--layer-1] rounded-lg ${className}`} action="GET" onSubmit={handleSubmit}>
+		<form
+			className={`flex relative bg-[--layer-1] shadow-[0_2px_8px_0_rgba(60,64,67,0.25)] dark:shadow-none rounded-lg ${className}`}
+			action="GET"
+			onSubmit={handleSubmit}
+		>
 			{/* search mode selector */}
 			<DropDownButton
 				staticId="mode"
-				className={`text-[--on-dropdown] font-bold rounded-l-lg w-[8rem] h-full`}
-				buttonBgColor={currentSearchType.color}
+				className={`text-[--on-dropdown] font-bold rounded-l-lg w-[8rem] h-full ${
+					currentSearchType === "All"
+						? "bg-[--all]"
+						: currentSearchType === "Games"
+						? "bg-[--games]"
+						: currentSearchType === "Videos"
+						? "bg-[--videos]"
+						: currentSearchType === "Books"
+						? "bg-[--books]"
+						: ""
+				}`}
 				buttonContent={
 					<>
-						<span>{currentSearchType.name}</span>
+						<span>{currentSearchType}</span>
 						<DropDownArrow
 							className={`absolute w-4 h-4 right-[0.8rem] top-1/2 transform -translate-y-1/2 transition-all duration-300 ${
 								currentActiveButtonId === "mode" ? "rotate-180" : ""
@@ -57,13 +69,22 @@ export function SearchBar({
 						{searchTypeList.map((type) => (
 							<button
 								type="button"
-								key={type.name}
-								style={{ backgroundColor: `${type.color}` }}
+								key={type}
 								onClick={() => {
 									setCurrentSearchType(type);
 									setCurrentActiveButtonId(null);
 								}}
-								className="flex relative justify-center items-center h-full w-full p-2 text-[--on-dropdown] font-bold shadow-lg"
+								className={`flex relative justify-center items-center h-full w-full p-2 text-[--on-dropdown] font-bold shadow-lg ${
+									type === "All"
+										? "bg-[--all]"
+										: type === "Games"
+										? "bg-[--games]"
+										: type === "Videos"
+										? "bg-[--videos]"
+										: type === "Books"
+										? "bg-[--books]"
+										: ""
+								}`}
 							>
 								{/* darken background overlay */}
 								<motion.div
@@ -75,7 +96,7 @@ export function SearchBar({
 									whileHover={"hover"}
 									className="absolute z-30 top-0 left-0 w-full h-full rounded-[inherit]"
 								></motion.div>
-								{type.name}
+								{type}
 							</button>
 						))}
 					</>
@@ -106,7 +127,7 @@ export function SearchBar({
 			e.preventDefault();
 			const formData = new FormData(e.currentTarget);
 			const query = formData.get("search")?.toString().trim();
-			const queryType = currentSearchType.name.toLowerCase();
+			const queryType = currentSearchType.toLowerCase();
 			const searchParams = new URLSearchParams();
 
 			if (query && queryType) {

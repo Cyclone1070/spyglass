@@ -62,7 +62,7 @@ export function TopBar({ className, currentActiveButtonId, setCurrentActiveButto
 				<DropDownContainer>
 					<form
 						action=""
-						className="bg-[--layer-2] grid grid-rows-3 gap-7 p-7 rounded-lg shadow-lg"
+						className="bg-[--layer-2] grid grid-rows-3 gap-7 p-7 rounded-lg shadow-xl"
 						onSubmit={handleApiSubmit}
 					>
 						<div>
@@ -72,7 +72,7 @@ export function TopBar({ className, currentActiveButtonId, setCurrentActiveButto
 								type="text"
 								name="cx"
 								id="cx"
-								className="border focus:border-[--foreground] border-[--input-border] bg-[--input-bg] outline-none py-1 px-2 rounded-md"
+								className="border focus:border-[--input-border-focus] border-[--input-border] bg-[--input-bg] outline-none py-1 px-2 rounded-md"
 								defaultValue={cx ? cx : ""}
 							/>
 						</div>
@@ -83,7 +83,7 @@ export function TopBar({ className, currentActiveButtonId, setCurrentActiveButto
 								type="text"
 								name="api"
 								id="api"
-								className="border focus:border-[--foreground] border-[--input-border] bg-[--input-bg] outline-none py-1 px-2 rounded-md"
+								className="border focus:border-[--input-border-focus] border-[--input-border] bg-[--input-bg] outline-none py-1 px-2 rounded-md"
 								defaultValue={api ? api : ""}
 							/>
 						</div>

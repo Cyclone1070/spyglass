@@ -6,7 +6,6 @@ interface Props {
 	staticId?: string;
 	buttonContent?: React.ReactNode;
 	className?: string;
-	buttonBgColor?: string;
 	currentActiveButtonId: string | null;
 	setCurrentActiveButtonId: React.Dispatch<React.SetStateAction<string | null>>;
 	children: React.ReactNode;
@@ -17,7 +16,6 @@ export function DropDownButton({
 	staticId,
 	buttonContent,
 	className,
-	buttonBgColor,
 	currentActiveButtonId,
 	setCurrentActiveButtonId,
 	children,
@@ -55,7 +53,6 @@ export function DropDownButton({
 					}
 				}}
 				className={`relative ${className}`}
-				style={buttonBgColor ? { backgroundColor: buttonBgColor } : {}}
 			>
 				{/* darken background overlay */}
 				{hoverOverlayTheme ? <motion.div
