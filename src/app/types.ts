@@ -1,4 +1,4 @@
-export type SearchType = "All" | "Games" | "Videos" | "Books";
+export type SearchType = "All" | "Games" | "Movies" | "Books";
 // Reference: https://developers.google.com/custom-search/v1/reference/rest/v1/Search
 export interface Search {
 	kind: string;

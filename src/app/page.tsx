@@ -16,12 +16,12 @@ export default function App() {
 	const [api, setApi] = useState<string | null>(null);
 	const [cx, setCx] = useState<string | null>(null);
 	const [resultList, setResultList] = useState<Result[] | null>(null);
-	const searchTypeList: SearchType[] = ["All", "Games", "Videos", "Books"];
+	const searchTypeList: SearchType[] = ["All", "Games", "Movies", "Books"];
 	const [currentSearchType, setCurrentSearchType] = useState<SearchType>("All");
 	const [currentActiveButtonId, setCurrentActiveButtonId] = useState<string | null>(null);
 	/* get search param query */
 	const searchParams = useSearchParams();
-	const queryType = searchParams.get("type");
+	const queryType = searchParams.get("type") || "all";
 	const query = searchParams.get("q");
 	const startIndex = Number(searchParams.get("start"));
 	const router = useRouter();
@@ -36,7 +36,7 @@ export default function App() {
 					setResultList(data.items);
 				})
 				.catch((error) => {
-					console.log(error);
+					console.error(error);
 				});
 		}
 	}, [query, api, cx, queryType, startIndex]);
@@ -64,8 +64,8 @@ export default function App() {
 				case "Games":
 					document.documentElement.style.setProperty("--icon", "var(--games)");
 					break;
-				case "Videos":
-					document.documentElement.style.setProperty("--icon", "var(--videos)");
+				case "Movies":
+					document.documentElement.style.setProperty("--icon", "var(--movies)");
 					break;
 				case "Books":
 					document.documentElement.style.setProperty("--icon", "var(--books)");
