@@ -1,13 +1,12 @@
-import { Result, SearchType } from "@/app/types";
+import { Result } from "@/app/types";
 import { ResultCard } from "./ResultCard";
 import Spyglass from "/public/Spyglass.svg";
 
 interface Props {
 	resultList: Result[] | null;
 	className?: string;
-	searchTypeList: SearchType[];
 }
-export function SearchResults({ resultList, className, searchTypeList }: Props) {
+export function SearchResults({ resultList, className}: Props) {
 	return (
 		<>
 			{resultList ? (
@@ -15,7 +14,7 @@ export function SearchResults({ resultList, className, searchTypeList }: Props) 
 				<div className={`flex flex-wrap justify-center gap-6 ${className}`}>
 					{/* item cards */}
 					{resultList.map((result) => (
-						<ResultCard key={result.link} searchTypeList={searchTypeList} result={result}/>
+						<ResultCard key={result.link} result={result}/>
 					))}
 				</div>
 			) : (

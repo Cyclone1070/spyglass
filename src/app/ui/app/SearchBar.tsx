@@ -11,6 +11,7 @@ interface Props {
 	api: string | null;
 	cx: string | null;
 	className?: string;
+	searchTypeList: SearchType[];
 	currentSearchType: SearchType;
 	setCurrentSearchType: React.Dispatch<React.SetStateAction<SearchType>>;
 	currentActiveButtonId: string | null;
@@ -22,17 +23,17 @@ export function SearchBar({
 	api,
 	cx,
 	className,
+	searchTypeList,
 	currentSearchType,
 	setCurrentSearchType,
 	currentActiveButtonId,
 	setCurrentActiveButtonId,
 	query,
 }: Props) {
-	const searchTypeList: SearchType[] = ["All", "Games", "Videos", "Books"];
 	const router = useRouter();
 	return (
 		<form
-			className={`flex relative bg-[--layer-1] shadow-[0_2px_8px_0_rgba(60,64,67,0.25)] dark:shadow-none rounded-lg ${className}`}
+			className={`flex relative bg-[--layer-1] shadow-[0_0.1rem_0.5rem_0_rgba(60,64,67,0.25)] dark:shadow-none rounded-lg ${className}`}
 			action="GET"
 			onSubmit={handleSubmit}
 		>
@@ -89,12 +90,12 @@ export function SearchBar({
 								{/* darken background overlay */}
 								<motion.div
 									variants={{
-										default: { backgroundColor: "#00000000" },
-										hover: { backgroundColor: "#00000029" },
+										default: { opacity: 0 },
+										hover: { opacity: 0.16 },
 									}}
 									initial="default"
 									whileHover={"hover"}
-									className="absolute z-30 top-0 left-0 w-full h-full rounded-[inherit]"
+									className="absolute z-30 top-0 left-0 w-full h-full rounded-[inherit] bg-[--bg-color-hover]"
 								></motion.div>
 								{type}
 							</button>

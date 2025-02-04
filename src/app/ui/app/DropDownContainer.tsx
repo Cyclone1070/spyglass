@@ -15,14 +15,11 @@ export function DropDownContainer({ className, children }: Props) {
 
 			// Get initial position from CSS (centered below trigger)
 			const parent = dropDown.parentElement;
-			console.log(parent);
 			if (!parent) return;
 
 			// Get viewport measurements
 			const dropDownRect = dropDown.getBoundingClientRect();
 			const parentRect = parent.getBoundingClientRect();
-			console.log("drop down", dropDownRect);
-			console.log("parent", parentRect);
 			const viewportWidth = window.innerWidth;
 			const viewportHeight = window.innerHeight;
 

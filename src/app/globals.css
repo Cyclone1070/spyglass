@@ -3,20 +3,25 @@
 @tailwind utilities;
 
 :root {
-	--background: #ffffff;
-	--foreground: #000000;
-	--layer-1: #ffffff;
-	--layer-2: #f2f2f2;
-	--link: #8bbeff;
+	--background: #f8f8f8;
+	--foreground: #212121;
+	--layer-1: #f3f3f3;
+	--layer-2: #f0f0f0;
+	--link: #3B82F6;
+	--star: #f2ce00;
 	--fg-color-hover: #000000;
 	--bg-color-hover: #ffffff;
-	--on-dropdown: #000000;
-	--icon: #4a352f;
-	--input-border-focus: #4e9bff;
-	--all: #e8e8e8;
-	--games: #ffac27;
-	--videos: #ff3b3f;
-	--books: #00bfff;
+	--on-dropdown: #f8f8f8;
+	--result-text-bg: #e6e6e6e6;
+	--icon: #ff7518;
+	--input-border: #c0c0c0;
+	--input-border-focus: #3c90ff;
+	--input-border-shadow: #9bc6ff;
+	--all: #212121;
+	--games: #ff7518;
+	--videos: #dc143c;
+	--books: #0d47a1;
+	/* good green #00796b */
 }
 
 .dark {
@@ -28,7 +33,8 @@
 	--icon: #e8e8e8;
 	--input-bg: #272727;
 	--input-border: #6e6e6e;
-	--input-boder-focus: #e8e8e8;
+	--input-border-focus: #e8e8e8;
+	--input-border-shadow: #757575;
 	--star: #ffff00;
 	--result-text-bg: #202020e6;
 	--fg-color-hover: #ffffff;

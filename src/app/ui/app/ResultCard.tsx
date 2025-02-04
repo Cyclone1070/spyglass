@@ -1,4 +1,4 @@
-import { Result, SearchType } from "@/app/types";
+import { Result } from "@/app/types";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { useState } from "react";
@@ -8,10 +8,9 @@ import Star from "/public/Star.svg";
 
 interface Props {
 	result: Result;
-	searchTypeList: SearchType[];
 }
 
-export function ResultCard({ result, searchTypeList }: Props) {
+export function ResultCard({ result}: Props) {
 	const [isCardHovered, setIsCardHovered] = useState(false);
 	const [isTextHovered, setIsTextHovered] = useState(false);
 	const [isImageAvailable, setIsImageAvailable] = useState(
@@ -27,7 +26,7 @@ export function ResultCard({ result, searchTypeList }: Props) {
 			href={result.link}
 			target="_blank"
 			rel="noopener noreferrer"
-			className="relative w-[15rem] h-[20rem] flex flex-col shadow-md p-2 gap-2 rounded-md bg-[--layer-1] overflow-hidden"
+			className="relative w-[15rem] h-[20rem] flex flex-col shadow-[0_0.1rem_0.5rem_rgb(0,0,0,0.2)] p-2 gap-2 rounded-md bg-[--layer-1] overflow-hidden"
 			onMouseEnter={() => {
 				setIsCardHovered(true);
 			}}
@@ -68,8 +67,7 @@ export function ResultCard({ result, searchTypeList }: Props) {
 			<Games
 				className={`absolute left-1/2 -translate-x-1/2 top-[10%] h-[50%] transition-opacity duration-300 ${
 					isCardHovered && isImageAvailable ? "opacity-0" : "opacity-100"
-				}`}
-				style={{ color: searchTypeList.find((type) => type.name === "Games")?.color }}
+				} text-[--games]`}
 			/>
 			{/* result text wrapper */}
 			<div

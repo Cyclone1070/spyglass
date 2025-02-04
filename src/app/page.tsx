@@ -1,4 +1,5 @@
 "use client";
+import { useTheme } from "next-themes";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchSearchResult } from "./lib/app/fetchSearchResult";
@@ -11,12 +12,13 @@ import { TopBar } from "./ui/app/TopBar";
 import Home from "/public/Home.svg";
 
 export default function App() {
+	const { setTheme, resolvedTheme } = useTheme();
 	const [api, setApi] = useState<string | null>(null);
 	const [cx, setCx] = useState<string | null>(null);
 	const [resultList, setResultList] = useState<Result[] | null>(null);
+	const searchTypeList: SearchType[] = ["All", "Games", "Videos", "Books"];
 	const [currentSearchType, setCurrentSearchType] = useState<SearchType>("All");
 	const [currentActiveButtonId, setCurrentActiveButtonId] = useState<string | null>(null);
-
 	/* get search param query */
 	const searchParams = useSearchParams();
 	const queryType = searchParams.get("type");
@@ -52,6 +54,28 @@ export default function App() {
 		if (cx) setCx(cx);
 	}, []);
 
+	/* changing icon colors based on currentSearchType */
+	useEffect(() => {
+		if (resolvedTheme === "light") {
+			switch (currentSearchType) {
+				case "All":
+					document.documentElement.style.setProperty("--icon", "var(--all)");
+					break;
+				case "Games":
+					document.documentElement.style.setProperty("--icon", "var(--games)");
+					break;
+				case "Videos":
+					document.documentElement.style.setProperty("--icon", "var(--videos)");
+					break;
+				case "Books":
+					document.documentElement.style.setProperty("--icon", "var(--books)");
+					break;
+			}
+		} else {
+			document.documentElement.style.removeProperty("--icon");
+		}
+	});
+
 	return (
 		<div className="grid grid-cols-[1fr_5fr_1fr] grid-rows-[4rem_20vh_auto_4rem] items-center gap-4 p-3 h-screen">
 			{/* home icon */}
@@ -67,6 +91,8 @@ export default function App() {
 				</ButtonWithOverlay>
 			</div>
 			<TopBar
+				setTheme={setTheme}
+				resolvedTheme={resolvedTheme}
 				setApi={setApi}
 				api={api}
 				setCx={setCx}
@@ -76,6 +102,7 @@ export default function App() {
 				setCurrentActiveButtonId={setCurrentActiveButtonId}
 			/>
 			<SearchBar
+				searchTypeList={searchTypeList}
 				currentSearchType={currentSearchType}
 				setCurrentSearchType={setCurrentSearchType}
 				currentActiveButtonId={currentActiveButtonId}

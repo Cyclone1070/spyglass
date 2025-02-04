@@ -20,8 +20,8 @@ export function ButtonWithOverlay({ className, children,  hoverOverlayTheme, onC
 			}}
 			onMouseUp={() => {
 				setIsActive(false);
-				onClick();
 			}}
+			onClick={onClick}
 			className={`relative ${className}`}
 		>
 			{/* darken background overlay */}

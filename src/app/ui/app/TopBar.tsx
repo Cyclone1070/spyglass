@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 
-import { useTheme } from "next-themes";
 import { ButtonWithOverlay } from "./ButtonWithOverlay";
 import { DropDownButton } from "./DropDownButton";
 import { DropDownContainer } from "./DropDownContainer";
@@ -16,10 +15,21 @@ interface Props {
 	api: string | null;
 	setCx: React.Dispatch<React.SetStateAction<string | null>>;
 	cx: string | null;
+	setTheme: React.Dispatch<React.SetStateAction<string>>;
+	resolvedTheme: string | undefined;
 }
 
-export function TopBar({ className, currentActiveButtonId, setCurrentActiveButtonId, setApi, api, setCx, cx }: Props) {
-	const { setTheme, resolvedTheme } = useTheme();
+export function TopBar({
+	className,
+	currentActiveButtonId,
+	setCurrentActiveButtonId,
+	setApi,
+	api,
+	setCx,
+	cx,
+	setTheme,
+	resolvedTheme,
+}: Props) {
 	const [mounted, setMounted] = React.useState(false);
 
 	useEffect(() => {
@@ -62,7 +72,7 @@ export function TopBar({ className, currentActiveButtonId, setCurrentActiveButto
 				<DropDownContainer>
 					<form
 						action=""
-						className="bg-[--layer-2] grid grid-rows-3 gap-7 p-7 rounded-lg shadow-xl"
+						className="bg-[--layer-2] grid grid-rows-3 gap-7 p-7 rounded-lg shadow-[0_0.1rem_1rem_0_rgba(0,0,0,0.25)]"
 						onSubmit={handleApiSubmit}
 					>
 						<div>
@@ -72,7 +82,7 @@ export function TopBar({ className, currentActiveButtonId, setCurrentActiveButto
 								type="text"
 								name="cx"
 								id="cx"
-								className="border focus:border-[--input-border-focus] border-[--input-border] bg-[--input-bg] outline-none py-1 px-2 rounded-md"
+								className="border focus:border-[--input-border-focus] focus:shadow-[0_0_1px_2px_var(--input-border-shadow)] border-[--input-border] bg-[--input-bg] outline-none py-1 px-2 rounded-md"
 								defaultValue={cx ? cx : ""}
 							/>
 						</div>
@@ -83,11 +93,11 @@ export function TopBar({ className, currentActiveButtonId, setCurrentActiveButto
 								type="text"
 								name="api"
 								id="api"
-								className="border focus:border-[--input-border-focus] border-[--input-border] bg-[--input-bg] outline-none py-1 px-2 rounded-md"
+								className="border focus:border-[--input-border-focus] focus:shadow-[0_0_1px_2px_var(--input-border-shadow)] border-[--input-border] bg-[--input-bg] outline-none py-1 px-2 rounded-md"
 								defaultValue={api ? api : ""}
 							/>
 						</div>
-						<button className="text-[--background] bg-[--foreground] py-1 px-4 self-center justify-self-end rounded-xl">
+						<button className="text-[--on-dropdown] bg-[--icon] dark:text-[--background] dark:bg-[--foreground] py-1 px-4 self-center justify-self-end rounded-xl">
 							Save
 						</button>
 					</form>
