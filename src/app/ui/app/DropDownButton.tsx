@@ -12,7 +12,7 @@ interface Props {
 	hoverOverlayTheme?: "fontColor" | "bgColor";
 }
 
-export function DropDownButton({
+export function DropdownButton({
 	staticId,
 	buttonContent,
 	className,

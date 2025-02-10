@@ -2,9 +2,9 @@ import { SearchType } from "@/app/types";
 import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { DropDownButton } from "./DropDownButton";
-import { DropDownContainer } from "./DropDownContainer";
-import DropDownArrow from "/public/DropDownArrow.svg";
+import { DropdownButton } from "./DropdownButton";
+import { DropdownContainer } from "./DropdownContainer";
+import DropdownArrow from "/public/DropdownArrow.svg";
 import Search from "/public/search.svg";
 
 interface Props {
@@ -38,7 +38,7 @@ export function SearchBar({
 			onSubmit={handleSubmit}
 		>
 			{/* search mode selector */}
-			<DropDownButton
+			<DropdownButton
 				staticId="mode"
 				className={`text-[--on-dropdown] font-bold rounded-l-lg w-[8rem] h-full ${
 					currentSearchType === "All"
@@ -54,7 +54,7 @@ export function SearchBar({
 				buttonContent={
 					<>
 						<span>{currentSearchType}</span>
-						<DropDownArrow
+						<DropdownArrow
 							className={`absolute w-4 h-4 right-[0.8rem] top-1/2 transform -translate-y-1/2 transition-all duration-300 ${
 								currentActiveButtonId === "mode" ? "rotate-180" : ""
 							}`}
@@ -65,7 +65,7 @@ export function SearchBar({
 				setCurrentActiveButtonId={setCurrentActiveButtonId}
 				hoverOverlayTheme="bgColor"
 			>
-				<DropDownContainer className="rounded-lg overflow-hidden w-[8rem]">
+				<DropdownContainer className="rounded-lg overflow-hidden w-[8rem]">
 					<>
 						{searchTypeList.map((type) => (
 							<button
@@ -101,8 +101,8 @@ export function SearchBar({
 							</button>
 						))}
 					</>
-				</DropDownContainer>
-			</DropDownButton>
+				</DropdownContainer>
+			</DropdownButton>
 
 			{/* input field */}
 			<input

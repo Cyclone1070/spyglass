@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 
 import { ButtonWithOverlay } from "./ButtonWithOverlay";
-import { DropDownButton } from "./DropDownButton";
-import { DropDownContainer } from "./DropDownContainer";
+import { DropdownButton } from "./DropdownButton";
+import { DropdownContainer } from "./DropdownContainer";
 import DarkMode from "/public/DarkMode.svg";
 import LightMode from "/public/LightMode.svg";
 import Setting from "/public/Setting.svg";
@@ -62,14 +62,14 @@ export function TopBar({
 					<LightMode className="w-8 h-8" />
 				)}
 			</ButtonWithOverlay>
-			<DropDownButton
+			<DropdownButton
 				currentActiveButtonId={currentActiveButtonId}
 				setCurrentActiveButtonId={setCurrentActiveButtonId}
 				className="p-2 rounded-lg"
 				buttonContent={<Setting className="relative w-8 h-8 text-[--icon]" />}
 				hoverOverlayTheme="fontColor"
 			>
-				<DropDownContainer>
+				<DropdownContainer>
 					<form
 						action=""
 						className="bg-[--layer-2] grid grid-rows-3 gap-7 p-7 rounded-lg shadow-[0_0.1rem_1rem_0_rgba(0,0,0,0.25)]"
@@ -101,8 +101,8 @@ export function TopBar({
 							Save
 						</button>
 					</form>
-				</DropDownContainer>
-			</DropDownButton>
+				</DropdownContainer>
+			</DropdownButton>
 		</div>
 	);
 }

@@ -5,36 +5,36 @@ interface Props {
 	className?: string;
 	children?: React.ReactNode;
 }
-export function DropDownContainer({ className, children }: Props) {
-	const dropDownRef = useRef<HTMLDivElement>(null);
+export function DropdownContainer({ className, children }: Props) {
+	const dropdownRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		function calculatePosition() {
-			const dropDown = dropDownRef.current;
-			if (!dropDown) return;
+			const dropdown = dropdownRef.current;
+			if (!dropdown) return;
 
 			// Get initial position from CSS (centered below trigger)
-			const parent = dropDown.parentElement;
+			const parent = dropdown.parentElement;
 			if (!parent) return;
 
 			// Get viewport measurements
-			const dropDownRect = dropDown.getBoundingClientRect();
+			const dropdownRect = dropdown.getBoundingClientRect();
 			const parentRect = parent.getBoundingClientRect();
 			const viewportWidth = window.innerWidth;
 			const viewportHeight = window.innerHeight;
 
-			let desiredLeft = parentRect.left + parentRect.width / 2 - dropDownRect.width / 2;
+			let desiredLeft = parentRect.left + parentRect.width / 2 - dropdownRect.width / 2;
 			let desiredTop = parentRect.bottom;
 
 			// Horizontal overflow check
-			desiredLeft = Math.min(Math.max(0, desiredLeft), viewportWidth - dropDownRect.width - 8);
+			desiredLeft = Math.min(Math.max(0, desiredLeft), viewportWidth - dropdownRect.width - 8);
 
 			// Vertical overflow check
-			desiredTop = Math.min(Math.max(0, desiredTop), viewportHeight - dropDownRect.height - 8);
+			desiredTop = Math.min(Math.max(0, desiredTop), viewportHeight - dropdownRect.height - 8);
 
 			// Apply adjusted positioning
-			dropDown.style.left = `${desiredLeft}px`;
-			dropDown.style.top = `${desiredTop}px`;
+			dropdown.style.left = `${desiredLeft}px`;
+			dropdown.style.top = `${desiredTop}px`;
 		}
 		calculatePosition();
 		window.addEventListener("resize", calculatePosition);
@@ -47,7 +47,7 @@ export function DropDownContainer({ className, children }: Props) {
 
 	return (
 		<motion.div
-			ref={dropDownRef}
+			ref={dropdownRef}
 			variants={{
 				hidden: { opacity: 0, y: "-0.5rem" },
 				visible: { opacity: 1, y: 0 },
