@@ -5,7 +5,7 @@ import React from "react";
 import { DropdownButton } from "./DropdownButton";
 import { DropdownContainer } from "./DropdownContainer";
 import DropdownArrow from "/public/DropdownArrow.svg";
-import Search from "/public/search.svg";
+import Search from "/public/Search.svg";
 
 interface Props {
 	api: string | null;
