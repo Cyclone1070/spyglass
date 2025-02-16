@@ -16,6 +16,8 @@ export default function App() {
 	const [api, setApi] = useState<string | null>(null);
 	const [cx, setCx] = useState<string | null>(null);
 	const [resultList, setResultList] = useState<Result[] | null>(null);
+	const [prevPage, setPrevPage] = useState(false);
+	const [nextPage, setNextPage] = useState(false);
 	const searchTypeList: SearchType[] = ["All", "Games", "Movies", "Books"];
 	const [currentSearchType, setCurrentSearchType] = useState<SearchType>("All");
 	const [currentActiveButtonId, setCurrentActiveButtonId] = useState<string | null>(null);
@@ -34,6 +36,8 @@ export default function App() {
 					console.log(queryType);
 					console.log(data);
 					setResultList(data.items);
+					setPrevPage(data.queries.previousPage ? true : false);
+					setNextPage(data.queries.nextPage ? true : false);
 				})
 				.catch((error) => {
 					console.error(error);
@@ -120,7 +124,7 @@ export default function App() {
 						: "row-start-3 col-start-2 justify-self-center"
 				}
 			/>
-			{resultList ? <PageNumbers searchParams={searchParams} className="col-span-3"></PageNumbers> : null}
+			{resultList ? <PageNumbers prevPage={prevPage} nextPage={nextPage} searchParams={searchParams} className="col-span-3"></PageNumbers> : null}
 		</div>
 	);
 }
