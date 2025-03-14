@@ -1,6 +1,6 @@
 # spyglass
 
-Front End For Custom Search Engine.
+A frontend For Custom Search Engine.
 
 Currently powered by Google Custom Search Engine API as proof of concept.
 
