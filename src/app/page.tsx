@@ -13,8 +13,18 @@ import Home from "/public/Home.svg";
 
 export default function App() {
 	const { setTheme, resolvedTheme } = useTheme();
-	const [api, setApi] = useState<string | null>(null);
-	const [cx, setCx] = useState<string | null>(null);
+	const [api, setApi] = useState(() => {
+		if (typeof window !== "undefined") {
+			return localStorage.getItem("api") || "AIzaSyCPtZpZO_C55Sxpi0InxiFDOVomIN6ZS8I";
+		}
+		return null;
+	});
+	const [cx, setCx] = useState(() => {
+		if (typeof window !== "undefined") {
+				return localStorage.getItem("cx") || "c321272d7a06c4961";
+		}
+		return null;
+	});
 	const [resultList, setResultList] = useState<Result[] | null>(null);
 	const [prevPage, setPrevPage] = useState(false);
 	const [nextPage, setNextPage] = useState(false);
@@ -24,6 +34,7 @@ export default function App() {
 	/* get search param query */
 	const searchParams = useSearchParams();
 	const queryType = searchParams.get("type") || "all";
+
 	const query = searchParams.get("q");
 	const startIndex = Number(searchParams.get("start"));
 	const router = useRouter();
@@ -50,13 +61,6 @@ export default function App() {
 			setResultList(null);
 		}
 	}, [query]);
-
-	useEffect(() => {
-		const api = localStorage.getItem("api");
-		const cx = localStorage.getItem("cx");
-		if (api) setApi(api);
-		if (cx) setCx(cx);
-	}, []);
 
 	/* changing icon colors based on currentSearchType */
 	useEffect(() => {
@@ -124,7 +128,14 @@ export default function App() {
 						: "row-start-3 col-start-2 justify-self-center"
 				}
 			/>
-			{resultList ? <PageNumbers prevPage={prevPage} nextPage={nextPage} searchParams={searchParams} className="col-span-3"></PageNumbers> : null}
+			{resultList ? (
+				<PageNumbers
+					prevPage={prevPage}
+					nextPage={nextPage}
+					searchParams={searchParams}
+					className="col-span-3"
+				></PageNumbers>
+			) : null}
 		</div>
 	);
 }
