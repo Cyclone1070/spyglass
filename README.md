@@ -1,6 +1,6 @@
 # spyglass
 
-A frontend for custom search engine.
+A frontend for custom search engine. Desktop only for now, project on hold due to uni.
 
 Currently powered by Google Custom Search Engine API as proof of concept. Default free API is subjected to rate limit from Google.
 
