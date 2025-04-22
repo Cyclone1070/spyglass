@@ -21,7 +21,7 @@ export default function App() {
 	});
 	const [cx, setCx] = useState(() => {
 		if (typeof window !== "undefined") {
-				return localStorage.getItem("cx") || "c321272d7a06c4961";
+			return localStorage.getItem("cx") || "c321272d7a06c4961";
 		}
 		return null;
 	});
@@ -123,9 +123,7 @@ export default function App() {
 			<SearchResults
 				resultList={resultList}
 				className={
-					resultList
-						? "row-start-2 row-span-2 col-span-3 self-start"
-						: "row-start-3 col-start-2 justify-self-center"
+					resultList ? "row-start-2 row-span-2 col-span-3" : "row-start-3 col-start-2 justify-self-center"
 				}
 			/>
 			{resultList ? (
