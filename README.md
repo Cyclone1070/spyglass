@@ -1,8 +1,10 @@
 # spyglass
 
-A frontend for custom search engine. Desktop only for now, project on hold due to uni.
+![Screenshot 2025-05-15 at 21 56 36](https://github.com/user-attachments/assets/b94245c0-6f36-4825-8a43-d6cae88d30cf)
 
-Currently powered by Google Custom Search Engine API as proof of concept. Default free API is subjected to rate limit from Google.
+Preview demo with rate limited google api key: https://spyglass-cyclone.vercel.app
+
+A frontend for custom search engine. Desktop only for now, project on hold due to uni.
 
 A custom backend is being written. For more information check out https://github.com/Cyclone1070/spyglass-backend
 
