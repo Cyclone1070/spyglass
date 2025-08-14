@@ -1,1 +1,25 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+	--bg: hsl(0, 0%, 90%);
+	--bg-hover: hsl(0, 0%, 80%);
+	--bg-layer-1: hsl(0, 0%, 90%);
+	--accent: theme("colors.blue.700");
+	--text: hsl(0, 0%, 10%);
+}
+
+.dark {
+	--bg: hsl(0, 0%, 10%);
+	--bg-hover: hsl(0, 0%, 30%);
+	--bg-layer-1: hsl(0, 0%, 20%);
+	--accent: theme("colors.blue.400");
+	--text: hsl(0, 0%, 90%);
+}
+
+@media (width >=48rem) {
+	.scrollbar-hide {
+		scrollbar-width: none;
+	}
+}
