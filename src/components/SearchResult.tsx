@@ -1,5 +1,6 @@
 import { useSearchParams } from "react-router";
 import { mergeClasses } from "../utils/mergeClasses";
+import { ResultCard } from "./ResultCard";
 import { SearchBar } from "./SearchBar";
 
 interface Props {
@@ -11,7 +12,7 @@ export function SearchResult({ className }: Props) {
 	return (
 		<div
 			className={mergeClasses(
-				`flex flex-col items-center px-4 py-2`,
+				`flex flex-col items-center px-4 py-2 gap-20`,
 				className,
 			)}
 		>
@@ -19,6 +20,9 @@ export function SearchResult({ className }: Props) {
 				className={`w-full h-10`}
 				initialQuery={searchParams.get("q") || undefined}
 			/>
+			<div className={`flex`}>
+				<ResultCard className={``} />
+			</div>
 		</div>
 	);
 }
