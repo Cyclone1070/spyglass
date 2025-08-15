@@ -11,7 +11,7 @@ function Home() {
 		>
 			<SearchBar
 				className={`w-full h-14`}
-				placeholder="Enter your search query"
+				placeholder="Enter your search"
 			/>
 			<SpyglassSvg className={`max-w-100`} />
 		</div>

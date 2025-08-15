@@ -15,15 +15,15 @@ export function SearchBar({ className, initialQuery, placeholder }: Props) {
 			"All",
 			"Books",
 			"Movies",
+			"Abandonware/ROM",
 			"Games Download",
 			"Games Repack",
-			"Abandonware/ROM",
-			"Mac Games",
-			"Linux Games",
 			"Windows Software",
+			"Mac Games",
 			"Mac Software",
 			"Android",
-			"IOS",
+			"iOS",
+			"Linux Games",
 		],
 		[],
 	);
@@ -59,6 +59,8 @@ export function SearchBar({ className, initialQuery, placeholder }: Props) {
 				)}
 			>
 				<input
+					required
+					autoComplete="off"
 					defaultValue={initialQuery}
 					placeholder={placeholder}
 					type="text"
