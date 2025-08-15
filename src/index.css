@@ -22,3 +22,7 @@ body {
 	background-color: var(--bg);
 	color: var(--text);
 }
+
+input {
+	min-width: 0;
+}

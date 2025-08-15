@@ -5,9 +5,11 @@ import { mergeClasses } from "../utils/mergeClasses";
 
 interface Props {
 	className?: string;
+	initialQuery?: string;
+	placeholder?: string;
 }
 
-export function SearchBar({ className }: Props) {
+export function SearchBar({ className, initialQuery, placeholder }: Props) {
 	const categories = useMemo(
 		() => [
 			"All",
@@ -20,18 +22,22 @@ export function SearchBar({ className }: Props) {
 			"Linux Games",
 			"Windows Software",
 			"Mac Software",
-			"Android apps",
-			"IOS apps",
+			"Android",
+			"IOS",
 		],
 		[],
 	);
 	const [currentCategory, setCurentCategory] = useState<string>(
 		categories[0],
 	);
+
+	// useEmblaCarousel hook to create a carousel for categories
 	const [emblaRef, emblaApi] = useEmblaCarousel({
 		align: "start",
 		dragFree: true,
 	});
+
+	// remember last category in localStorage and scroll to it
 	useEffect(() => {
 		const lastCategory = localStorage.getItem("searchCategory");
 		if (lastCategory) {
@@ -43,52 +49,54 @@ export function SearchBar({ className }: Props) {
 	}, [categories, emblaApi]);
 
 	return (
-		<div
-			className={mergeClasses(
-				"flex flex-col items-center gap-2 md:gap-4",
-				className,
-			)}
-		>
+		<>
 			<form
-				className={
-					`flex shadow-[0_0_0.5rem_0_hsl(0,0%,0%,0.25)] rounded-md p-2 pl-4 md:text-lg w-full max-w-150 ` +
-					` dark:shadow-none dark:bg-(--bg-hover)`
-				}
+				action="/search"
+				className={mergeClasses(
+					`relative flex shadow-[0_0_0.5rem_0_hsl(0,0%,0%,0.25)] rounded-md p-2 pl-4 md:text-lg w-full max-w-150 ` +
+						` dark:shadow-none dark:bg-(--bg-hover)`,
+					className,
+				)}
 			>
 				<input
+					defaultValue={initialQuery}
+					placeholder={placeholder}
 					type="text"
-					name="query"
+					name="q"
 					className={`flex-1 outline-none`}
 				/>
-				<button className={`w-9 h-9 p-1 cursor-pointer`}>
-					<SearchSvg />
+				<button
+					className={`w-auto h-full aspect-square p-1 cursor-pointer`}
+				>
+					<SearchSvg className={`text-(--accent)`} />
 				</button>
-			</form>
-			<div
-				ref={emblaRef}
-				className={`w-full p-2 max-w-190 overflow-hidden`}
-			>
-				<div className={`flex gap-4`}>
-					{categories.map((category) => (
-						<button
-							key={category}
-							className={
-								`p-1 px-2 border-b-2 whitespace-nowrap cursor-pointer select-none ` +
-								`${currentCategory === category ? `border-(--accent) text-(--accent)` : `border-transparent`}`
-							}
-							onClick={() => {
-								setCurentCategory(category);
-								localStorage.setItem(
-									"searchCategory",
-									category,
-								);
-							}}
-						>
-							{category}
-						</button>
-					))}
+				<div
+					ref={emblaRef}
+					className={`p-2 overflow-hidden absolute top-full mt-2 inset-x-0 md:-inset-x-10`}
+				>
+					<div className={`flex gap-4`}>
+						{categories.map((category) => (
+							<button
+								type="button"
+								key={category}
+								className={
+									`p-1 px-2 border-b-2 whitespace-nowrap cursor-pointer select-none ` +
+									`${currentCategory === category ? `border-(--accent) text-(--accent)` : `border-transparent`}`
+								}
+								onClick={() => {
+									setCurentCategory(category);
+									localStorage.setItem(
+										"searchCategory",
+										category,
+									);
+								}}
+							>
+								{category}
+							</button>
+						))}
+					</div>
 				</div>
-			</div>
-		</div>
+			</form>
+		</>
 	);
 }
