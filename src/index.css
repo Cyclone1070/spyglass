@@ -18,8 +18,7 @@
 	--text: hsl(0, 0%, 90%);
 }
 
-@media (width >=48rem) {
-	.scrollbar-hide {
-		scrollbar-width: none;
-	}
+body {
+	background-color: var(--bg);
+	color: var(--text);
 }

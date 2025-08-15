@@ -20,15 +20,11 @@ export function NavBar({ className }: Props) {
 			)}
 		>
 			<button className={navButtonClass}>
-				<HomeSvg className={`text-(--text)`} />
+				<HomeSvg />
 			</button>
 
 			<button className={navButtonClass} onClick={toggleTheme}>
-				{isDarkMode ? (
-					<DarkModeSvg className={`text-(--text)`} />
-				) : (
-					<LightModeSvg className={`text-(--text)`} />
-				)}
+				{isDarkMode ? <DarkModeSvg /> : <LightModeSvg />}
 			</button>
 		</div>
 	);
