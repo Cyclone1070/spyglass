@@ -1,6 +1,6 @@
 # Spyglass
 
-Custom search engine for safe and reliable internet freeware.
+Your one-stop search engine for safe and reliable internet freeware.
 
-<img width="1680" height="939" alt="Screenshot 2025-08-16 at 23 01 40" src="https://github.com/user-attachments/assets/211ba779-e0f7-47ed-912a-f464d82b08d3" />
-<img width="1680" height="938" alt="Screenshot 2025-08-16 at 23 04 05" src="https://github.com/user-attachments/assets/533ed298-72b7-416d-8d14-76973425fa38" />
+ <img width="1680" height="938" alt="Screenshot 2025-08-16 at 23 05 07" src="https://github.com/user-attachments/assets/2912646c-10f9-4db0-af3f-ea1052f405be" />
+<img width="1680" height="938" alt="Screenshot 2025-08-16 at 23 05 14" src="https://github.com/user-attachments/assets/108ec3f7-64db-4eec-9518-6165b9ece5cf" />
