@@ -19,6 +19,7 @@ export function SearchResult({ className }: Props) {
 			<SearchBar
 				className={`w-full h-10`}
 				initialQuery={searchParams.get("q") || undefined}
+				displayCategories={true}
 			/>
 			<div className={`flex`}>
 				<ResultCard className={``} />

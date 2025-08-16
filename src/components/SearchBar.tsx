@@ -7,9 +7,15 @@ interface Props {
 	className?: string;
 	initialQuery?: string;
 	placeholder?: string;
+	displayCategories?: boolean;
 }
 
-export function SearchBar({ className, initialQuery, placeholder }: Props) {
+export function SearchBar({
+	className,
+	initialQuery,
+	placeholder,
+	displayCategories,
+}: Props) {
 	const categories = useMemo(
 		() => [
 			"All",
@@ -72,32 +78,34 @@ export function SearchBar({ className, initialQuery, placeholder }: Props) {
 				>
 					<SearchSvg className={`text-(--accent)`} />
 				</button>
-				<div
-					ref={emblaRef}
-					className={`p-2 overflow-hidden absolute top-full mt-2 inset-x-0 md:-inset-x-10`}
-				>
-					<div className={`flex gap-4`}>
-						{categories.map((category) => (
-							<button
-								type="button"
-								key={category}
-								className={
-									`p-1 px-2 border-b-2 whitespace-nowrap cursor-pointer select-none ` +
-									`${currentCategory === category ? `border-(--accent) text-(--accent)` : `border-transparent`}`
-								}
-								onClick={() => {
-									setCurentCategory(category);
-									localStorage.setItem(
-										"searchCategory",
-										category,
-									);
-								}}
-							>
-								{category}
-							</button>
-						))}
+				{displayCategories && (
+					<div
+						ref={emblaRef}
+						className={`p-2 overflow-hidden absolute top-full mt-2 inset-x-0 md:-inset-x-16`}
+					>
+						<div className={`flex gap-4`}>
+							{categories.map((category) => (
+								<button
+									type="button"
+									key={category}
+									className={
+										`p-1 px-2 border-b-2 whitespace-nowrap cursor-pointer select-none ` +
+										`${currentCategory === category ? `border-(--accent) text-(--accent)` : `border-transparent`}`
+									}
+									onClick={() => {
+										setCurentCategory(category);
+										localStorage.setItem(
+											"searchCategory",
+											category,
+										);
+									}}
+								>
+									{category}
+								</button>
+							))}
+						</div>
 					</div>
-				</div>
+				)}
 			</form>
 		</>
 	);
