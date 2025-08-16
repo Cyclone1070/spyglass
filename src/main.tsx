@@ -1,10 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router";
+import Home from "./components/Home";
 import { NavBar } from "./components/NavBar";
 import { SearchResult } from "./components/SearchResult";
 import { ThemeProvider } from "./context/ThemeProvider";
-import Home from "./Home";
 import "./index.css";
 
 const router = createBrowserRouter([

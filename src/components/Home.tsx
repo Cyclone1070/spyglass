@@ -1,5 +1,5 @@
-import { SearchBar } from "./components/SearchBar";
-import SpyglassSvg from "./assets/spyglass.svg?react";
+import SpyglassSvg from "../assets/spyglass.svg?react";
+import { SearchBar } from "./SearchBar";
 
 function Home() {
 	return (
