@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import type { Result } from "../../types";
+import useIsOnScreen from "../hooks/useIsOnScreen";
 import { mergeClasses } from "../utils/mergeClasses";
 import { ResultCard } from "./ResultCard";
 import { SearchBar } from "./SearchBar";
@@ -10,7 +12,7 @@ interface Props {
 }
 
 export function SearchResult({ className }: Props) {
-	const API_BASE_URL = "http://localhost:5250";
+	const API_BASE_URL = "http://localhost:52500";
 	const [currentCategory, setCurrentCategory] = useState("All");
 
 	const [searchParams] = useSearchParams();
@@ -19,6 +21,12 @@ export function SearchResult({ className }: Props) {
 	const [results, setResults] = useState<Result[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
+
+	// Create a ref to attach to the element you want to watch
+	const myElementRef = useRef<HTMLDivElement>(null);
+
+	// Use the custom hook. isOnScreen will be true/false
+	const isOnScreen = useIsOnScreen(myElementRef);
 
 	// Fetch the data stream from the server
 	useEffect(() => {
@@ -37,8 +45,9 @@ export function SearchResult({ className }: Props) {
 		setError(null);
 		setResults([]);
 
-		const fetchStream = async () => {
+		async function fetchStream() {
 			try {
+				if (!query) return;
 				const searchUrl = new URL(`${API_BASE_URL}/api/search`);
 				searchUrl.searchParams.append("q", query);
 				// searchUrl.searchParams.append('category', category); // If you use it
@@ -123,7 +132,7 @@ export function SearchResult({ className }: Props) {
 			} finally {
 				setIsLoading(false);
 			}
-		};
+		}
 
 		fetchStream();
 
@@ -138,17 +147,45 @@ export function SearchResult({ className }: Props) {
 	return (
 		<div
 			className={mergeClasses(
-				`flex flex-col items-center px-4 py-2 gap-20`,
+				`relative flex flex-col items-center px-4 py-2 gap-15`,
 				className,
 			)}
 		>
+			<AnimatePresence>
+				{isOnScreen === false && (
+					<motion.div
+						className={`w-full fixed top-0 pt-2`}
+						initial={{ y: -200 }}
+						animate={{ y: 0 }}
+						exit={{ y: -200 }}
+						transition={{
+							type: "spring",
+							stiffness: 300,
+							damping: 30,
+							duration: 0.2,
+						}}
+					>
+						<SearchBar
+							className={`w-full`}
+							initialQuery={searchParams.get("q") || undefined}
+							smallBar
+						/>
+					</motion.div>
+				)}
+			</AnimatePresence>
+
 			<SearchBar
-				className={`w-full h-10`}
+				ref={myElementRef}
+				className={`w-full`}
 				initialQuery={searchParams.get("q") || undefined}
 				currentCategory={currentCategory}
-				setCurentCategory={setCurrentCategory}
+				setCurrentCategory={setCurrentCategory}
+				smallBar
 			/>
-			<div className={`flex`}>
+			<div className={`flex flex-wrap justify-center gap-4`}>
+				{[1, 2, 3, 4, 5, 6, 7, 23, 42, 423, 212].map((result) => (
+					<ResultCard key={result} />
+				))}
 				{results.map((result) => (
 					<ResultCard key={result.resultUrl} />
 				))}
