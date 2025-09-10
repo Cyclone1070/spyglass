@@ -1,5 +1,6 @@
 import useEmblaCarousel from "embla-carousel-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
+import { useNavigate, useSearchParams } from "react-router";
 import SearchSvg from "../assets/search.svg?react";
 import { mergeClasses } from "../utils/mergeClasses";
 
@@ -7,14 +8,16 @@ interface Props {
 	className?: string;
 	initialQuery?: string;
 	placeholder?: string;
-	displayCategories?: boolean;
+	currentCategory?: string;
+	setCurentCategory?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export function SearchBar({
 	className,
 	initialQuery,
 	placeholder,
-	displayCategories,
+	currentCategory,
+	setCurentCategory: setCurrentCategory,
 }: Props) {
 	const categories = useMemo(
 		() => [
@@ -25,16 +28,12 @@ export function SearchBar({
 			"Games Download",
 			"Games Repack",
 			"Windows Software",
-			"Mac Games",
-			"Mac Software",
+			"Mac",
 			"Android",
 			"iOS",
 			"Linux Games",
 		],
 		[],
-	);
-	const [currentCategory, setCurentCategory] = useState<string>(
-		categories[0],
 	);
 
 	// useEmblaCarousel hook to create a carousel for categories
@@ -43,21 +42,26 @@ export function SearchBar({
 		dragFree: true,
 	});
 
+	const navigate = useNavigate();
+	const [currentSearchParams] = useSearchParams();
+
 	// remember last category in localStorage and scroll to it
 	useEffect(() => {
+		if (!currentCategory || !setCurrentCategory) return;
+		// get last category from localStorage
 		const lastCategory = localStorage.getItem("searchCategory");
 		if (lastCategory) {
-			setCurentCategory(lastCategory);
+			setCurrentCategory(lastCategory);
 			if (emblaApi) {
 				emblaApi.scrollTo(categories.indexOf(lastCategory));
 			}
 		}
-	}, [categories, emblaApi]);
+	}, [emblaApi, setCurrentCategory]);
 
 	return (
 		<>
 			<form
-				action="/search"
+				onSubmit={handleSearchSubmit}
 				className={mergeClasses(
 					`relative flex shadow-[0_0_0.5rem_0_hsl(0,0%,0%,0.25)] rounded-md p-2 pl-4 md:text-lg w-full max-w-150 ` +
 						` dark:shadow-none dark:bg-(--bg-hover)`,
@@ -78,10 +82,10 @@ export function SearchBar({
 				>
 					<SearchSvg className={`text-(--accent)`} />
 				</button>
-				{displayCategories && (
+				{currentCategory && setCurrentCategory && (
 					<div
 						ref={emblaRef}
-						className={`p-2 overflow-hidden absolute top-full mt-2 inset-x-0 md:-inset-x-16`}
+						className={`p-2 overflow-hidden absolute top-full mt-2 inset-x-0 md:-inset-x-14`}
 					>
 						<div className={`flex gap-4`}>
 							{categories.map((category) => (
@@ -93,7 +97,7 @@ export function SearchBar({
 										`${currentCategory === category ? `border-(--accent) text-(--accent)` : `border-transparent`}`
 									}
 									onClick={() => {
-										setCurentCategory(category);
+										setCurrentCategory(category);
 										localStorage.setItem(
 											"searchCategory",
 											category,
@@ -109,4 +113,18 @@ export function SearchBar({
 			</form>
 		</>
 	);
+
+	function handleSearchSubmit(e: React.FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
+		const newQuery = formData.get("q")?.toString();
+		const currentQuery = currentSearchParams.get("q");
+		if (!newQuery?.trim() || newQuery.trim() === currentQuery) return;
+		// redirect to /search with query and category as parameters
+		const searchParams = new URLSearchParams({
+			q: newQuery,
+		});
+
+		navigate(`/search?${searchParams.toString()}`);
+	}
 }

@@ -1,7 +1,9 @@
+import { useState } from "react";
 import SpyglassSvg from "../assets/spyglass.svg?react";
 import { SearchBar } from "./SearchBar";
 
 function Home() {
+	const [currentCategory, setCurentCategory] = useState("All");
 	return (
 		<div
 			className={
