@@ -2,10 +2,11 @@ import { mergeClasses } from "../utils/mergeClasses";
 
 interface Props {
 	className?: string;
+	title: string;
 	imgSrc?: string;
 }
 
-export function ResultCard({ className, imgSrc }: Props) {
+export function ResultCard({ className, title, imgSrc }: Props) {
 	return (
 		<div
 			className={mergeClasses(
@@ -22,12 +23,11 @@ export function ResultCard({ className, imgSrc }: Props) {
 			>
 				{imgSrc ? <img src={imgSrc} alt="an image" /> : null}
 			</div>
-			{/* the title of the card */}
 			<a
 				href="test"
-				className={`text-lg font-semibold group-hover:underline`}
+				className={`text-lg font-semibold group-hover:underline text-center`}
 			>
-				Title of the Result
+				{title}
 			</a>
 		</div>
 	);

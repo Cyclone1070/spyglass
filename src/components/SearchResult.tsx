@@ -1,9 +1,9 @@
-import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import type { Result } from "../../types";
 import useIsOnScreen from "../hooks/useIsOnScreen";
 import { mergeClasses } from "../utils/mergeClasses";
+import { CategoriesBar } from "./CategoriesBar";
 import { ResultCard } from "./ResultCard";
 import { SearchBar } from "./SearchBar";
 
@@ -12,7 +12,7 @@ interface Props {
 }
 
 export function SearchResult({ className }: Props) {
-	const API_BASE_URL = "http://localhost:52500";
+	const API_BASE_URL = "http://localhost:5250";
 	const [currentCategory, setCurrentCategory] = useState("All");
 
 	const [searchParams] = useSearchParams();
@@ -22,11 +22,8 @@ export function SearchResult({ className }: Props) {
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
-	// Create a ref to attach to the element you want to watch
-	const myElementRef = useRef<HTMLDivElement>(null);
-
-	// Use the custom hook. isOnScreen will be true/false
-	const isOnScreen = useIsOnScreen(myElementRef);
+	const categoriesRef = useRef<HTMLDivElement | null>(null);
+	const isOnScreen = useIsOnScreen(categoriesRef);
 
 	// Fetch the data stream from the server
 	useEffect(() => {
@@ -147,48 +144,35 @@ export function SearchResult({ className }: Props) {
 	return (
 		<div
 			className={mergeClasses(
-				`relative flex flex-col items-center px-4 py-2 gap-15`,
+				`relative flex flex-col items-center px-4 py-2`,
 				className,
 			)}
 		>
-			<AnimatePresence>
-				{isOnScreen === false && (
-					<motion.div
-						className={`w-full fixed top-0 pt-2`}
-						initial={{ y: -200 }}
-						animate={{ y: 0 }}
-						exit={{ y: -200 }}
-						transition={{
-							type: "spring",
-							stiffness: 300,
-							damping: 30,
-							duration: 0.2,
-						}}
-					>
-						<SearchBar
-							className={`w-full`}
-							initialQuery={searchParams.get("q") || undefined}
-							smallBar
-						/>
-					</motion.div>
-				)}
-			</AnimatePresence>
-
 			<SearchBar
-				ref={myElementRef}
-				className={`w-full`}
+				className={`w-[90%] max-w-140 h-10 z-1 ${!isOnScreen ? "sticky top-2" : ""}`}
+				placeholder="Enter your search"
 				initialQuery={searchParams.get("q") || undefined}
+			/>
+			<CategoriesBar
+				className={`mt-2 w-full max-w-165`}
 				currentCategory={currentCategory}
 				setCurrentCategory={setCurrentCategory}
-				smallBar
+				ref={categoriesRef}
 			/>
-			<div className={`flex flex-wrap justify-center gap-4`}>
-				{[1, 2, 3, 4, 5, 6, 7, 23, 42, 423, 212].map((result) => (
-					<ResultCard key={result} />
-				))}
-				{results.map((result) => (
-					<ResultCard key={result.resultUrl} />
-				))}
+
+			<div
+				className={`w-full max-w-230 grid grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] justify-center gap-y-12 gap-x-6 mt-15`}
+			>
+				{results.map((result) => {
+					console.log(result);
+					return (
+						<ResultCard
+							className={``}
+							key={result.resultUrl}
+							title={result.title}
+						/>
+					);
+				})}
 			</div>
 			{error}
 		</div>
