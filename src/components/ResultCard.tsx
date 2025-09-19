@@ -2,6 +2,15 @@ import { motion } from "motion/react";
 import { useState } from "react";
 import { mergeClasses } from "../utils/mergeClasses";
 
+import AndroidSvg from "../assets/android.svg?react";
+import BookSvg from "../assets/book.svg?react";
+import GameSvg from "../assets/game.svg?react";
+import IosSvg from "../assets/ios.svg?react";
+import MacSvg from "../assets/mac.svg?react";
+import MovieSvg from "../assets/movie.svg?react";
+import RepackSvg from "../assets/repack.svg?react";
+import WindowsSvg from "../assets/windows.svg?react";
+
 interface Props {
 	className?: string;
 	title: string;
@@ -68,10 +77,37 @@ export function ResultCard({
 					) : (
 						<div
 							className={
-								`w-48 h-48 rounded-md ` +
+								`w-48 h-48 rounded-md flex justify-center items-center ` +
 								`dark:shadow-none bg-(--bg-layer-1)`
 							}
-						/>
+						>
+							{category === "Books" && (
+								<BookSvg className="w-30 h-30 text-blue-600" />
+							)}
+							{(category === "Movies" ||
+								category === "Anime") && (
+								<MovieSvg className="w-30 h-30 text-blue-600" />
+							)}
+							{category === "Games Repack" && (
+								<RepackSvg className="w-30 h-30 text-blue-600" />
+							)}
+							{(category === "Games Download" ||
+								category === "Abandonware/ROM") && (
+								<GameSvg className="w-30 h-30 text-blue-600" />
+							)}
+							{category === "Windows Software" && (
+								<WindowsSvg className="w-30 h-30 text-blue-600" />
+							)}
+							{category === "Mac" && (
+								<MacSvg className="w-30 h-30 text-blue-600" />
+							)}
+							{category === "iOS" && (
+								<IosSvg className="w-30 h-30 text-blue-600" />
+							)}
+							{category === "Android" && (
+								<AndroidSvg className="w-30 h-30 text-blue-600" />
+							)}
+						</div>
 					)}
 					{/* small extension on the bottom to ensure smooth hovering when image animates up and down */}
 					<div className="absolute -bottom-[20px] h-[20px] w-full"></div>
