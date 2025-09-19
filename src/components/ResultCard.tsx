@@ -1,3 +1,4 @@
+import { motion } from "motion/react";
 import { useState } from "react";
 import { mergeClasses } from "../utils/mergeClasses";
 
@@ -15,7 +16,7 @@ interface Props {
 }
 
 export function ResultCard({
-	className,
+	className = "",
 	title,
 	resultUrl,
 	category,
@@ -27,50 +28,65 @@ export function ResultCard({
 	altText,
 }: Props) {
 	const [imageError, setImageError] = useState(false);
+	const [isHovered, setIsHovered] = useState(false);
 	return (
 		<>
 			<div
 				className={mergeClasses(
-					`flex flex-col items-center gap-4`,
+					`flex flex-col justify-end items-center`,
 					className,
 				)}
 			>
-				{/* image container in order to align the title top on desktop, not clickable */}
-				<div
+				{/* image */}
+				<motion.a
+					animate={isHovered ? { y: -10 } : { y: 0 }}
+					href={resultUrl}
 					className={
-						`flex items-end justify-center ` + `md:h-60 md:w-60`
+						`rounded-md cursor-pointer relative ` +
+						`${
+							websiteStarred
+								? "glow"
+								: "shadow-md/35 dark:shadow-none"
+						}`
 					}
+					onMouseEnter={() => setIsHovered(true)}
+					onMouseLeave={() => setIsHovered(false)}
 				>
-					{/* image */}
+					{/* card badges */}
+					{year && (
+						<div className="absolute top-1 right-1 text-xs bg-blue-600 text-white p-1 px-2 rounded-md shadow-md/35">
+							{year}
+						</div>
+					)}
 					{imageUrl && !imageError ? (
-						<a
-							href={resultUrl}
-							className={
-								`shadow-md/35 cursor-pointer` +
-								`dark:shadow-none`
-							}
-						>
-							<img
-								className={`max-w-60 max-h-60 rounded-md`}
-								src={imageUrl}
-								alt={altText || title}
-								onError={() => setImageError(true)}
-							/>
-						</a>
+						<img
+							className={`max-w-60 max-h-60 rounded-md`}
+							src={imageUrl}
+							alt={altText || title}
+							onError={() => setImageError(true)}
+						/>
 					) : (
-						<a
-							href={resultUrl}
+						<div
 							className={
-								`bg-(--bg-layer-1) w-48 h-48 rounded-md shadow-md/35 ` +
-								`dark:shadow-none`
+								`w-48 h-48 rounded-md ` +
+								`dark:shadow-none bg-(--bg-layer-1)`
 							}
 						/>
 					)}
-				</div>
+					{/* small extension on the bottom to ensure smooth hovering when image animates up and down */}
+					<div className="absolute -bottom-[20px] h-[20px] w-full"></div>
+				</motion.a>
 				{/* title */}
 				<a
 					href={resultUrl}
-					className={`text-lg font-semibold text-center px-2 line-clamp-3 w-full`}
+					title={title}
+					className={
+						"text-lg font-semibold text-center line-clamp-2 h-18 pt-4 " +
+						"md:h-11 md:line-clamp-1 " +
+						`${isHovered ? "underline text-(--accent)" : ""}`
+					}
+					onMouseEnter={() => setIsHovered(true)}
+					onMouseLeave={() => setIsHovered(false)}
 				>
 					{title}
 				</a>

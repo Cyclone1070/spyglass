@@ -10,7 +10,7 @@ interface Props {
 	className?: string;
 }
 
-export function NavBar({ className }: Props) {
+export function NavBar({ className = "" }: Props) {
 	const [searchParams] = useSearchParams();
 	const { isDarkMode, toggleTheme } = useTheme();
 	const navButtonClass =
@@ -32,7 +32,7 @@ export function NavBar({ className }: Props) {
 
 			{location.pathname !== "/" && (
 				<SearchBar
-					className={`w-[90%] max-w-140 h-10 bg-(--bg) sticky top-2`}
+					className={`w-[90%] max-w-140 h-10 sticky top-2`}
 					placeholder="Enter your search"
 					initialQuery={searchParams.get("q") || undefined}
 				/>

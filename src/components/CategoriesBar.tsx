@@ -10,7 +10,7 @@ interface Props {
 }
 
 export function CategoriesBar({
-	className,
+	className = "",
 	currentCategory,
 	setCurrentCategory,
 	ref,
@@ -27,7 +27,6 @@ export function CategoriesBar({
 			"Mac",
 			"Android",
 			"iOS",
-			"Linux Games",
 		],
 		[],
 	);

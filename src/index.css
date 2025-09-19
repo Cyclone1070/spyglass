@@ -3,19 +3,21 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-	--bg: hsl(0, 0%, 90%);
-	--bg-hover: hsl(0, 0%, 80%);
-	--bg-layer-1: hsl(0, 0%, 90%);
+	--bg: oklch(90% 0.01 258.338);
+	--bg-hover: oklch(86% 0.01 258.338);
+	--bg-layer-1: oklch(91.5% 0.01 258.338);
+	--bg-layer-2: oklch(92% 0.01 258.338);
 	--accent: theme("colors.blue.700");
-	--text: hsl(0, 0%, 10%);
+	--text: oklch(21.8% 0 0);
 }
 
 .dark {
-	--bg: hsl(0, 0%, 10%);
-	--bg-hover: hsl(0, 0%, 30%);
-	--bg-layer-1: hsl(0, 0%, 20%);
+	--bg: oklch(21.8% 0 0);
+	--bg-hover: oklch(40% 0 0);
+	--bg-layer-1: oklch(31% 0 0);
+	--bg-layer-2: oklch(38% 0 0);
 	--accent: theme("colors.blue.400");
-	--text: hsl(0, 0%, 90%);
+	--text: oklch(92.5% 0 0);
 }
 
 body {
@@ -25,4 +27,12 @@ body {
 
 input {
 	min-width: 0;
+}
+
+.glow {
+	box-shadow: 0 0 10px 6px oklch(79.5% 0.184 86.047 / 0.75), 0 4px 6px -1px rgb(0 0 0 / 0.8), 0 2px 4px -2px rgb(0 0 0 / 0.8);
+}
+
+.dark .glow {
+	box-shadow: 0 0 10px 6px oklch(85.2% 0.199 91.936 / 0.5);
 }

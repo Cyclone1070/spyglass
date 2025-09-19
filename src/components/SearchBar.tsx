@@ -9,7 +9,11 @@ interface Props {
 	ref?: React.Ref<HTMLFormElement>;
 }
 
-export function SearchBar({ className, initialQuery, placeholder }: Props) {
+export function SearchBar({
+	className = "",
+	initialQuery,
+	placeholder,
+}: Props) {
 	const navigate = useNavigate();
 	const [currentSearchParams] = useSearchParams();
 
@@ -18,7 +22,7 @@ export function SearchBar({ className, initialQuery, placeholder }: Props) {
 			onSubmit={handleSearchSubmit}
 			className={mergeClasses(
 				`sticky flex shadow-[0_0_0.5rem_0_hsl(0,0%,0%,0.25)] rounded-md p-2 pl-4 md:text-lg w-full max-w-150 h-12 ` +
-					`dark:shadow-none dark:bg-(--bg-hover)`,
+					`dark:shadow-none bg-(--bg-layer-2)`,
 				className,
 			)}
 		>

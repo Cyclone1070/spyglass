@@ -9,7 +9,7 @@ interface Props {
 	className?: string;
 }
 
-export function SearchResult({ className }: Props) {
+export function SearchResult({ className = "" }: Props) {
 	const API_BASE_URL = "http://localhost:5250";
 	const [currentCategory, setCurrentCategory] = useState("All");
 
@@ -151,30 +151,28 @@ export function SearchResult({ className }: Props) {
 				setCurrentCategory={setCurrentCategory}
 				ref={categoriesRef}
 			/>
-
-			{!isLoading ? (
-				<div
-					className={`w-full max-w-230 grid grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] justify-center justify-items-center items-end gap-y-16 gap-x-6 mt-15`}
-				>
-					{results.map((result) => (
-						<ResultCard
-							className={`w-full h-full`}
-							key={result.resultUrl}
-							title={result.title}
-							resultUrl={result.resultUrl}
-							category={result.category}
-							websiteTitle={result.websiteTitle}
-							websiteUrl={result.websiteUrl}
-							websiteStarred={result.websiteStarred}
-							year={result.year}
-							imageUrl={result.imageUrl}
-							altText={result.altText}
-						/>
-					))}
-				</div>
-			) : (
-				<div>Loading...</div>
-			)}
+			<div
+				className={
+					"w-full max-w-250 grid grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] justify-center justify-items-center items-end gap-y-12 gap-x-6 mt-15 " +
+					"md:gap-y-20"
+				}
+			>
+				{results.map((result) => (
+					<ResultCard
+						className={`w-full h-full`}
+						key={result.resultUrl}
+						title={result.title}
+						resultUrl={result.resultUrl}
+						category={result.category}
+						websiteTitle={result.websiteTitle}
+						websiteUrl={result.websiteUrl}
+						websiteStarred={result.websiteStarred}
+						year={result.year}
+						imageUrl={result.imageUrl}
+						altText={result.altText}
+					/>
+				))}
+			</div>
 			{error}
 		</div>
 	);
