@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import type { Result } from "../../types";
-import useIsOnScreen from "../hooks/useIsOnScreen";
 import { mergeClasses } from "../utils/mergeClasses";
 import { CategoriesBar } from "./CategoriesBar";
 import { ResultCard } from "./ResultCard";
-import { SearchBar } from "./SearchBar";
 
 interface Props {
 	className?: string;
@@ -23,7 +21,6 @@ export function SearchResult({ className }: Props) {
 	const [error, setError] = useState<string | null>(null);
 
 	const categoriesRef = useRef<HTMLDivElement | null>(null);
-	const isOnScreen = useIsOnScreen(categoriesRef);
 
 	// Fetch the data stream from the server
 	useEffect(() => {
@@ -144,36 +141,40 @@ export function SearchResult({ className }: Props) {
 	return (
 		<div
 			className={mergeClasses(
-				`relative flex flex-col items-center px-4 py-2`,
+				`relative flex flex-col items-center px-4`,
 				className,
 			)}
 		>
-			<SearchBar
-				className={`w-[90%] max-w-140 h-10 z-1 ${!isOnScreen ? "sticky top-2" : ""}`}
-				placeholder="Enter your search"
-				initialQuery={searchParams.get("q") || undefined}
-			/>
 			<CategoriesBar
-				className={`mt-2 w-full max-w-165`}
+				className={`w-full max-w-165`}
 				currentCategory={currentCategory}
 				setCurrentCategory={setCurrentCategory}
 				ref={categoriesRef}
 			/>
 
-			<div
-				className={`w-full max-w-230 grid grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] justify-center gap-y-12 gap-x-6 mt-15`}
-			>
-				{results.map((result) => {
-					console.log(result);
-					return (
+			{!isLoading ? (
+				<div
+					className={`w-full max-w-230 grid grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] justify-center justify-items-center items-end gap-y-16 gap-x-6 mt-15`}
+				>
+					{results.map((result) => (
 						<ResultCard
-							className={``}
+							className={`w-full h-full`}
 							key={result.resultUrl}
 							title={result.title}
+							resultUrl={result.resultUrl}
+							category={result.category}
+							websiteTitle={result.websiteTitle}
+							websiteUrl={result.websiteUrl}
+							websiteStarred={result.websiteStarred}
+							year={result.year}
+							imageUrl={result.imageUrl}
+							altText={result.altText}
 						/>
-					);
-				})}
-			</div>
+					))}
+				</div>
+			) : (
+				<div>Loading...</div>
+			)}
 			{error}
 		</div>
 	);
