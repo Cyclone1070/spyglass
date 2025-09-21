@@ -9,6 +9,7 @@
 	--bg-layer-2: oklch(92% 0.01 258.338);
 	--accent: theme("colors.blue.700");
 	--text: oklch(21.8% 0 0);
+	--pulse: oklch(80.8% 0.0.8 261.325);
 }
 
 .dark {
@@ -18,6 +19,7 @@
 	--bg-layer-2: oklch(38% 0 0);
 	--accent: theme("colors.blue.400");
 	--text: oklch(92.5% 0 0);
+	--pulse: oklch(35% 0 0);
 }
 
 body {
@@ -30,9 +32,5 @@ input {
 }
 
 .glow {
-	box-shadow: 0 0 10px 6px oklch(79.5% 0.184 86.047 / 0.75), 0 4px 6px -1px rgb(0 0 0 / 0.8), 0 2px 4px -2px rgb(0 0 0 / 0.8);
-}
-
-.dark .glow {
-	box-shadow: 0 0 10px 6px oklch(85.2% 0.199 91.936 / 0.5);
+	filter: drop-shadow(0 0 6px oklch(85.2% 0.199 91.936 / 0.8)) drop-shadow(0 0 6px oklch(0 0 0 / 0.8))
 }

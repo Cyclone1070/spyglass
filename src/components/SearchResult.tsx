@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router";
 import type { Result } from "../../types";
 import { mergeClasses } from "../utils/mergeClasses";
 import { CategoriesBar } from "./CategoriesBar";
-import { ResultCard } from "./ResultCard";
+import { LazyCard } from "./LazyCard";
 
 interface Props {
 	className?: string;
@@ -158,16 +158,15 @@ export function SearchResult({ className = "" }: Props) {
 				}
 			>
 				{results.map((result) => (
-					<ResultCard
+					<LazyCard
 						className={`w-full h-full`}
 						key={result.resultUrl}
 						title={result.title}
 						resultUrl={result.resultUrl}
 						category={result.category}
 						websiteTitle={result.websiteTitle}
-						websiteUrl={result.websiteUrl}
+						searchUrl={result.searchUrl}
 						websiteStarred={result.websiteStarred}
-						year={result.year}
 						imageUrl={result.imageUrl}
 						altText={result.altText}
 					/>

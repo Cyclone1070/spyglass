@@ -9,6 +9,7 @@ import IosSvg from "../assets/ios.svg?react";
 import MacSvg from "../assets/mac.svg?react";
 import MovieSvg from "../assets/movie.svg?react";
 import RepackSvg from "../assets/repack.svg?react";
+import StarSvg from "../assets/star.svg?react";
 import WindowsSvg from "../assets/windows.svg?react";
 
 interface Props {
@@ -17,7 +18,7 @@ interface Props {
 	resultUrl: string;
 	category: string;
 	websiteTitle: string;
-	websiteUrl: string;
+	searchUrl: string;
 	websiteStarred?: boolean;
 	year?: string;
 	imageUrl?: string;
@@ -30,9 +31,8 @@ export function ResultCard({
 	resultUrl,
 	category,
 	websiteTitle,
-	websiteUrl,
+	searchUrl,
 	websiteStarred,
-	year,
 	imageUrl,
 	altText,
 }: Props) {
@@ -48,25 +48,26 @@ export function ResultCard({
 			>
 				{/* image */}
 				<motion.a
-					animate={isHovered ? { y: -10 } : { y: 0 }}
+					animate={isHovered ? { scale: 1.05 } : { scale: 1 }}
+					target="_blank"
 					href={resultUrl}
-					className={
-						`rounded-md cursor-pointer relative ` +
-						`${
-							websiteStarred
-								? "glow"
-								: "shadow-md/35 dark:shadow-none"
-						}`
-					}
-					onMouseEnter={() => setIsHovered(true)}
+					className={`rounded-md cursor-pointer relative shadow-md/35`}
 					onMouseLeave={() => setIsHovered(false)}
+					onMouseEnter={() => setIsHovered(true)}
 				>
 					{/* card badges */}
-					{year && (
-						<div className="absolute top-1 right-1 text-xs bg-blue-600 text-white p-1 px-2 rounded-md shadow-md/35">
-							{year}
-						</div>
+					<div
+						onClick={() => {
+							window.open(searchUrl, "_blank");
+						}}
+						className="absolute bottom-2 right-0 mx-2 text-xs max-w-full overflow-hidden text-white bg-blue-600 p-1 px-2 rounded-md shadow-md/35 hover:underline"
+					>
+						{websiteTitle}
+					</div>
+					{websiteStarred && (
+						<StarSvg className="text-yellow-400 absolute top-2 right-0 mx-2 w-6 h-6 glow" />
 					)}
+					{/* image */}
 					{imageUrl && !imageError ? (
 						<img
 							className={`max-w-60 max-h-60 rounded-md`}
@@ -78,7 +79,7 @@ export function ResultCard({
 						<div
 							className={
 								`w-48 h-48 rounded-md flex justify-center items-center ` +
-								`dark:shadow-none bg-(--bg-layer-1)`
+								`bg-(--bg-layer-1)`
 							}
 						>
 							{category === "Books" && (
@@ -109,23 +110,24 @@ export function ResultCard({
 							)}
 						</div>
 					)}
-					{/* small extension on the bottom to ensure smooth hovering when image animates up and down */}
-					<div className="absolute -bottom-[20px] h-[20px] w-full"></div>
 				</motion.a>
 				{/* title */}
-				<a
-					href={resultUrl}
-					title={title}
-					className={
-						"text-lg font-semibold text-center line-clamp-2 h-18 pt-4 " +
-						"md:h-11 md:line-clamp-1 " +
-						`${isHovered ? "underline text-(--accent)" : ""}`
-					}
-					onMouseEnter={() => setIsHovered(true)}
-					onMouseLeave={() => setIsHovered(false)}
-				>
-					{title}
-				</a>
+				<div className={`w-full overflow-hidden flex justify-center`}>
+					<a
+						target="_blank"
+						href={resultUrl}
+						title={title}
+						className={
+							"font-semibold text-center line-clamp-2 h-18 pt-4 " +
+							"md:h-11 md:line-clamp-1 " +
+							`${isHovered ? "underline text-(--accent)" : ""}`
+						}
+						onMouseEnter={() => setIsHovered(true)}
+						onMouseLeave={() => setIsHovered(false)}
+					>
+						{title}
+					</a>
+				</div>
 			</div>
 		</>
 	);
