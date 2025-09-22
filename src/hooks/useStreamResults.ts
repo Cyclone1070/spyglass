@@ -112,7 +112,6 @@ export function useStreamResults(query: string | null) {
                     // Handle all other, real errors.
                     console.error("Search failed:", e);
                     setError("Something went wrong. Please try again.");
-                    setIsLoading(false);
                 }
             }
         }

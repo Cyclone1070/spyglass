@@ -67,13 +67,14 @@ export function SearchResult({ className = "" }: Props) {
 						query={query}
 					/>
 				))}
-				{filteredResults.length === 0 &&
+				{!error &&
+					filteredResults.length === 0 &&
 					isLoading &&
 					Array.from({ length: 12 }).map((_, i) => (
 						<LoadingCard key={i} className={"w-full h-full"} />
 					))}
 
-				{filteredResults.length === 0 && !isLoading && (
+				{!error && filteredResults.length === 0 && !isLoading && (
 					<h1 className={"text-lg p-10"}>No Results Found</h1>
 				)}
 				{error && (
