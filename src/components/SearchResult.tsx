@@ -78,7 +78,11 @@ export function SearchResult({ className = "" }: Props) {
 					<h1 className={"text-lg p-10"}>No Results Found</h1>
 				)}
 				{error && (
-					<h1 className={"text-lg p-10 text-(red-600 dark:red-400)"}>
+					<h1
+						className={
+							"text-lg p-10 text-red-600 dark:text-red-400"
+						}
+					>
 						{error}
 					</h1>
 				)}
