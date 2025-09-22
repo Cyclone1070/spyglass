@@ -22,7 +22,7 @@ export function LazyCard({ className = "", ...props }: Props) {
 	const { ref, inView } = useInView({
 		triggerOnce: true, // Only trigger once when the element enters the viewport
 		threshold: 0, // When 10% of the element is visible
-		rootMargin: "200px 0px", // Start loading when it's 200px away from the viewport (vertical)
+		rootMargin: "500px 0px", // Start loading when it's 200px away from the viewport (vertical)
 	});
 
 	const [hasBeenInView, setHasBeenInView] = useState(false);

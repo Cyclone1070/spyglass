@@ -1,9 +1,10 @@
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useStreamResults } from "../hooks/useStreamResults";
 import { mergeClasses } from "../utils/mergeClasses";
 import { CategoriesBar } from "./CategoriesBar";
 import { LazyCard } from "./LazyCard";
+import { LoadingCard } from "./LoadingCard";
 
 interface Props {
 	className?: string;
@@ -18,6 +19,19 @@ export function SearchResult({ className = "" }: Props) {
 	const categoriesRef = useRef<HTMLDivElement | null>(null);
 
 	const { results, error } = useStreamResults(query);
+
+	const filteredResults = useMemo(() => {
+		// If the category is "All", return the original, unfiltered array.
+		if (currentCategory === "All") {
+			return results;
+		}
+		// Otherwise, return a new array containing only the matching items.
+		return results.filter((result) => result.category === currentCategory);
+	}, [results, currentCategory]); // The dependencies for the memoization
+
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, []);
 
 	return (
 		<div
@@ -38,7 +52,7 @@ export function SearchResult({ className = "" }: Props) {
 					"md:gap-y-20"
 				}
 			>
-				{results.map((result) => (
+				{filteredResults.map((result) => (
 					<LazyCard
 						className={`w-full h-full`}
 						key={result.resultUrl}
@@ -53,6 +67,10 @@ export function SearchResult({ className = "" }: Props) {
 						query={query}
 					/>
 				))}
+				{results.length === 0 &&
+					Array.from({ length: 12 }).map((_, i) => (
+						<LoadingCard key={i} className={"w-full h-full"} />
+					))}
 			</div>
 			{error}
 		</div>

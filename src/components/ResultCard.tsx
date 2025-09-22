@@ -39,6 +39,7 @@ export function ResultCard({
 	query,
 }: Props) {
 	const [imageError, setImageError] = useState(false);
+	const [imageLoaded, setImageLoaded] = useState(false);
 	const [isCardHovered, setIsCardHovered] = useState(false);
 	const [isBadgeHovered, setIsBadgeHovered] = useState(false);
 	const formattedSearchUrl = query
@@ -58,37 +59,42 @@ export function ResultCard({
 					onMouseLeave={() => setIsCardHovered(false)}
 					onMouseEnter={() => setIsCardHovered(true)}
 				>
-					{/* badge */}
-					<a
-						target="_blank"
-						href={formattedSearchUrl || ""}
-						onClick={(e) => {
-							e.stopPropagation();
-							if (!query) {
-								e.preventDefault();
-							}
-						}}
-						className="absolute bottom-2 right-0 mx-2 text-xs max-w-full overflow-hidden text-white bg-blue-600 p-1 px-2 rounded-md shadow-md/35 hover:underline"
-						onMouseEnter={() => setIsBadgeHovered(true)}
-						onMouseLeave={() => setIsBadgeHovered(false)}
-					>
-						{websiteTitle}
-					</a>
-					{websiteStarred && (
-						<StarSvg className="text-yellow-400 absolute top-2 right-0 mx-2 w-6 h-6 glow" />
-					)}
-
 					{/* image */}
 					<a target="_blank" href={resultUrl}>
 						{/* card badges */}
 						{/* image */}
 						{imageUrl && !imageError ? (
-							<img
-								className={`max-w-60 max-h-60 rounded-md`}
-								src={imageUrl}
-								alt={altText || title}
-								onError={() => setImageError(true)}
-							/>
+							<>
+								<img
+									className={
+										"max-w-60 max-h-60 rounded-md " +
+										(imageLoaded ? "" : "hidden")
+									}
+									src={imageUrl}
+									alt={altText || title}
+									onError={() => setImageError(true)}
+									onLoad={(e) => {
+										const { naturalWidth, naturalHeight } =
+											e.currentTarget;
+
+										if (
+											naturalWidth < 100 &&
+											naturalHeight < 100
+										) {
+											// If the image is too small, treat it as an error
+											setImageError(true);
+											return;
+										}
+										setImageLoaded(true);
+									}}
+								/>
+								<div
+									className={
+										"w-48 h-48 rounded-md bg-(--pulse) animate-pulse " +
+										(imageLoaded ? "hidden" : "")
+									}
+								/>
+							</>
 						) : (
 							<div
 								className={
@@ -125,6 +131,25 @@ export function ResultCard({
 							</div>
 						)}
 					</a>
+					{/* badge */}
+					<a
+						target="_blank"
+						href={formattedSearchUrl || ""}
+						onClick={(e) => {
+							e.stopPropagation();
+							if (!query) {
+								e.preventDefault();
+							}
+						}}
+						className="absolute bottom-2 right-0 mx-2 text-xs max-w-full overflow-hidden text-white bg-blue-600 p-1 px-2 rounded-md shadow-md/35 hover:underline"
+						onMouseEnter={() => setIsBadgeHovered(true)}
+						onMouseLeave={() => setIsBadgeHovered(false)}
+					>
+						{websiteTitle}
+					</a>
+					{websiteStarred && (
+						<StarSvg className="text-yellow-400 absolute top-2 right-0 mx-2 w-6 h-6 glow" />
+					)}
 				</motion.div>
 				{/* title */}
 				<div className={`w-full overflow-hidden flex justify-center`}>
@@ -133,8 +158,7 @@ export function ResultCard({
 						href={resultUrl}
 						title={title}
 						className={
-							"font-semibold text-center line-clamp-2 h-18 pt-4 " +
-							"md:h-11 md:line-clamp-1 " +
+							"font-semibold text-center line-clamp-2 h-16 pt-4 " +
 							`${isCardHovered && !isBadgeHovered ? "underline text-(--accent)" : ""}`
 						}
 						onMouseEnter={() => setIsCardHovered(true)}

@@ -13,17 +13,11 @@ export function useStreamResults(query: string | null) {
         // Don't fetch if there's no query.
         if (!query) {
             setIsLoading(false);
-            setResults([]);
             return;
         }
 
         // Create an AbortController for this specific fetch request.
         const controller = new AbortController();
-
-        // Reset the state for every new search.
-        setIsLoading(true);
-        setError(null);
-        setResults([]);
 
         async function fetchStream() {
             try {
