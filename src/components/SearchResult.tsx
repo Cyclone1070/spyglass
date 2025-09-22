@@ -169,6 +169,7 @@ export function SearchResult({ className = "" }: Props) {
 						websiteStarred={result.websiteStarred}
 						imageUrl={result.imageUrl}
 						altText={result.altText}
+						query={query}
 					/>
 				))}
 			</div>

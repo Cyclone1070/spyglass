@@ -23,6 +23,7 @@ interface Props {
 	year?: string;
 	imageUrl?: string;
 	altText?: string;
+	query?: string;
 }
 
 export function ResultCard({
@@ -35,9 +36,14 @@ export function ResultCard({
 	websiteStarred,
 	imageUrl,
 	altText,
+	query,
 }: Props) {
 	const [imageError, setImageError] = useState(false);
-	const [isHovered, setIsHovered] = useState(false);
+	const [isCardHovered, setIsCardHovered] = useState(false);
+	const [isBadgeHovered, setIsBadgeHovered] = useState(false);
+	const formattedSearchUrl = query
+		? searchUrl.replace("{0}", encodeURIComponent(query))
+		: null;
 	return (
 		<>
 			<div
@@ -48,22 +54,29 @@ export function ResultCard({
 			>
 				{/* image */}
 				<motion.a
-					animate={isHovered ? { scale: 1.05 } : { scale: 1 }}
+					animate={isCardHovered ? { scale: 1.05 } : { scale: 1 }}
 					target="_blank"
 					href={resultUrl}
 					className={`rounded-md cursor-pointer relative shadow-md/35`}
-					onMouseLeave={() => setIsHovered(false)}
-					onMouseEnter={() => setIsHovered(true)}
+					onMouseLeave={() => setIsCardHovered(false)}
+					onMouseEnter={() => setIsCardHovered(true)}
 				>
 					{/* card badges */}
-					<div
-						onClick={() => {
-							window.open(searchUrl, "_blank");
+					<a
+						target="_blank"
+						href={formattedSearchUrl || ""}
+						onClick={(e) => {
+							e.stopPropagation();
+							if (!query) {
+								e.preventDefault();
+							}
 						}}
 						className="absolute bottom-2 right-0 mx-2 text-xs max-w-full overflow-hidden text-white bg-blue-600 p-1 px-2 rounded-md shadow-md/35 hover:underline"
+						onMouseEnter={() => setIsBadgeHovered(true)}
+						onMouseLeave={() => setIsBadgeHovered(false)}
 					>
 						{websiteTitle}
-					</div>
+					</a>
 					{websiteStarred && (
 						<StarSvg className="text-yellow-400 absolute top-2 right-0 mx-2 w-6 h-6 glow" />
 					)}
@@ -120,10 +133,10 @@ export function ResultCard({
 						className={
 							"font-semibold text-center line-clamp-2 h-18 pt-4 " +
 							"md:h-11 md:line-clamp-1 " +
-							`${isHovered ? "underline text-(--accent)" : ""}`
+							`${isCardHovered && !isBadgeHovered ? "underline text-(--accent)" : ""}`
 						}
-						onMouseEnter={() => setIsHovered(true)}
-						onMouseLeave={() => setIsHovered(false)}
+						onMouseEnter={() => setIsCardHovered(true)}
+						onMouseLeave={() => setIsCardHovered(false)}
 					>
 						{title}
 					</a>
