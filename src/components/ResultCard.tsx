@@ -23,7 +23,7 @@ interface Props {
 	year?: string;
 	imageUrl?: string;
 	altText?: string;
-	query?: string;
+	query: string | null;
 }
 
 export function ResultCard({
@@ -52,16 +52,13 @@ export function ResultCard({
 					className,
 				)}
 			>
-				{/* image */}
-				<motion.a
+				<motion.div
 					animate={isCardHovered ? { scale: 1.05 } : { scale: 1 }}
-					target="_blank"
-					href={resultUrl}
 					className={`rounded-md cursor-pointer relative shadow-md/35`}
 					onMouseLeave={() => setIsCardHovered(false)}
 					onMouseEnter={() => setIsCardHovered(true)}
 				>
-					{/* card badges */}
+					{/* badge */}
 					<a
 						target="_blank"
 						href={formattedSearchUrl || ""}
@@ -80,50 +77,55 @@ export function ResultCard({
 					{websiteStarred && (
 						<StarSvg className="text-yellow-400 absolute top-2 right-0 mx-2 w-6 h-6 glow" />
 					)}
+
 					{/* image */}
-					{imageUrl && !imageError ? (
-						<img
-							className={`max-w-60 max-h-60 rounded-md`}
-							src={imageUrl}
-							alt={altText || title}
-							onError={() => setImageError(true)}
-						/>
-					) : (
-						<div
-							className={
-								`w-48 h-48 rounded-md flex justify-center items-center ` +
-								`bg-(--bg-layer-1)`
-							}
-						>
-							{category === "Books" && (
-								<BookSvg className="w-30 h-30 text-blue-600" />
-							)}
-							{(category === "Movies" ||
-								category === "Anime") && (
-								<MovieSvg className="w-30 h-30 text-blue-600" />
-							)}
-							{category === "Games Repack" && (
-								<RepackSvg className="w-30 h-30 text-blue-600" />
-							)}
-							{(category === "Games Download" ||
-								category === "Abandonware/ROM") && (
-								<GameSvg className="w-30 h-30 text-blue-600" />
-							)}
-							{category === "Windows Software" && (
-								<WindowsSvg className="w-30 h-30 text-blue-600" />
-							)}
-							{category === "Mac" && (
-								<MacSvg className="w-30 h-30 text-blue-600" />
-							)}
-							{category === "iOS" && (
-								<IosSvg className="w-30 h-30 text-blue-600" />
-							)}
-							{category === "Android" && (
-								<AndroidSvg className="w-30 h-30 text-blue-600" />
-							)}
-						</div>
-					)}
-				</motion.a>
+					<a target="_blank" href={resultUrl}>
+						{/* card badges */}
+						{/* image */}
+						{imageUrl && !imageError ? (
+							<img
+								className={`max-w-60 max-h-60 rounded-md`}
+								src={imageUrl}
+								alt={altText || title}
+								onError={() => setImageError(true)}
+							/>
+						) : (
+							<div
+								className={
+									`w-48 h-48 rounded-md flex justify-center items-center ` +
+									`bg-(--bg-layer-1)`
+								}
+							>
+								{category === "Books" && (
+									<BookSvg className="w-30 h-30 text-blue-600" />
+								)}
+								{(category === "Movies" ||
+									category === "Anime") && (
+									<MovieSvg className="w-30 h-30 text-blue-600" />
+								)}
+								{category === "Games Repack" && (
+									<RepackSvg className="w-30 h-30 text-blue-600" />
+								)}
+								{(category === "Games Download" ||
+									category === "Abandonware/ROM") && (
+									<GameSvg className="w-30 h-30 text-blue-600" />
+								)}
+								{category === "Windows Software" && (
+									<WindowsSvg className="w-30 h-30 text-blue-600" />
+								)}
+								{category === "Mac" && (
+									<MacSvg className="w-30 h-30 text-blue-600" />
+								)}
+								{category === "iOS" && (
+									<IosSvg className="w-30 h-30 text-blue-600" />
+								)}
+								{category === "Android" && (
+									<AndroidSvg className="w-30 h-30 text-blue-600" />
+								)}
+							</div>
+						)}
+					</a>
+				</motion.div>
 				{/* title */}
 				<div className={`w-full overflow-hidden flex justify-center`}>
 					<a

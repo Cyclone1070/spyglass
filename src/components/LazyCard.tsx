@@ -15,7 +15,7 @@ interface Props {
 	year?: string;
 	imageUrl?: string;
 	altText?: string;
-	query?: string;
+	query: string | null;
 }
 
 export function LazyCard({ className = "", ...props }: Props) {
