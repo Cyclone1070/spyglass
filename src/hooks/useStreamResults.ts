@@ -24,7 +24,6 @@ export function useStreamResults(query: string | null) {
                 if (!query) return;
                 const searchUrl = new URL(`${API_BASE_URL}/api/search`);
                 searchUrl.searchParams.append("q", query);
-                // searchUrl.searchParams.append('category', category); // If you use it
 
                 // Pass the controller's signal to the fetch call.
                 const response = await fetch(searchUrl, {
@@ -104,6 +103,7 @@ export function useStreamResults(query: string | null) {
                         }
                     }
                 }
+                setIsLoading(false);
             } catch (e) {
                 if (e instanceof Error && e.name === "AbortError") {
                     // We know it's a fetch cancellation. Do nothing.
@@ -112,9 +112,8 @@ export function useStreamResults(query: string | null) {
                     // Handle all other, real errors.
                     console.error("Search failed:", e);
                     setError("Something went wrong. Please try again.");
+                    setIsLoading(false);
                 }
-            } finally {
-                setIsLoading(false);
             }
         }
 

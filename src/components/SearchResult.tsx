@@ -18,7 +18,7 @@ export function SearchResult({ className = "" }: Props) {
 
 	const categoriesRef = useRef<HTMLDivElement | null>(null);
 
-	const { results, error } = useStreamResults(query);
+	const { results, error, isLoading } = useStreamResults(query);
 
 	const filteredResults = useMemo(() => {
 		// If the category is "All", return the original, unfiltered array.
@@ -67,12 +67,21 @@ export function SearchResult({ className = "" }: Props) {
 						query={query}
 					/>
 				))}
-				{results.length === 0 &&
+				{filteredResults.length === 0 &&
+					isLoading &&
 					Array.from({ length: 12 }).map((_, i) => (
 						<LoadingCard key={i} className={"w-full h-full"} />
 					))}
+
+				{filteredResults.length === 0 && !isLoading && (
+					<h1 className={"text-lg p-10"}>No Results Found</h1>
+				)}
+				{error && (
+					<h1 className={"text-lg p-10 text-(red-600 dark:red-400)"}>
+						{error}
+					</h1>
+				)}
 			</div>
-			{error}
 		</div>
 	);
 }
