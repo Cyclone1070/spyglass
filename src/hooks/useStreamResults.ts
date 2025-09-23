@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Result } from "../../types";
 
-const API_BASE_URL = "http://localhost:5250";
+const API_BASE_URL = "https://api-spyglass.cyc.fyi";
 
 export function useStreamResults(query: string | null) {
     const [results, setResults] = useState<Result[]>([]);

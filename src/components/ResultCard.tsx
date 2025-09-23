@@ -103,30 +103,30 @@ export function ResultCard({
 								}
 							>
 								{category === "Books" && (
-									<BookSvg className="w-30 h-30 text-blue-600" />
+									<BookSvg className="w-20 h-20 text-blue-600" />
 								)}
 								{(category === "Movies" ||
 									category === "Anime") && (
-									<MovieSvg className="w-30 h-30 text-blue-600" />
+									<MovieSvg className="w-20 h-20 text-blue-600" />
 								)}
 								{category === "Games Repack" && (
-									<RepackSvg className="w-30 h-30 text-blue-600" />
+									<RepackSvg className="w-20 h-20 text-blue-600" />
 								)}
 								{(category === "Games Download" ||
 									category === "Abandonware/ROM") && (
-									<GameSvg className="w-30 h-30 text-blue-600" />
+									<GameSvg className="w-20 h-20 text-blue-600" />
 								)}
 								{category === "Windows Software" && (
-									<WindowsSvg className="w-30 h-30 text-blue-600" />
+									<WindowsSvg className="w-20 h-20 text-blue-600" />
 								)}
 								{category === "Mac" && (
-									<MacSvg className="w-30 h-30 text-blue-600" />
+									<MacSvg className="w-20 h-20 text-blue-600" />
 								)}
 								{category === "iOS" && (
-									<IosSvg className="w-30 h-30 text-blue-600" />
+									<IosSvg className="w-20 h-20 text-blue-600" />
 								)}
 								{category === "Android" && (
-									<AndroidSvg className="w-30 h-30 text-blue-600" />
+									<AndroidSvg className="w-20 h-20 text-blue-600" />
 								)}
 							</div>
 						)}
