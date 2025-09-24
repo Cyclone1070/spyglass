@@ -7,12 +7,14 @@ interface Props {
 	initialQuery?: string;
 	placeholder?: string;
 	ref?: React.Ref<HTMLFormElement>;
+	autoFocus?: boolean;
 }
 
 export function SearchBar({
 	className = "",
 	initialQuery,
 	placeholder,
+	autoFocus,
 }: Props) {
 	const navigate = useNavigate();
 	const [currentSearchParams] = useSearchParams();
@@ -30,6 +32,7 @@ export function SearchBar({
 				<SearchSvg className={`text-(--accent)`} />
 			</button>
 			<input
+				autoFocus={autoFocus}
 				required
 				autoComplete="off"
 				defaultValue={initialQuery}

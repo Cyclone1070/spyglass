@@ -12,6 +12,7 @@ function Home() {
 			<SearchBar
 				className={`w-full h-14`}
 				placeholder="Enter your search"
+				autoFocus={true}
 			/>
 			<SpyglassSvg className={`max-w-100 mx-8`} />
 		</div>
