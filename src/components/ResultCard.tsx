@@ -58,6 +58,8 @@ export function ResultCard({
 					className={`rounded-md cursor-pointer relative shadow-md/35`}
 					onMouseLeave={() => setIsCardHovered(false)}
 					onMouseEnter={() => setIsCardHovered(true)}
+					onTouchStart={() => setIsCardHovered(true)}
+					onTouchEnd={() => setIsCardHovered(false)}
 				>
 					{/* image */}
 					<a target="_blank" href={resultUrl}>
@@ -141,9 +143,14 @@ export function ResultCard({
 								e.preventDefault();
 							}
 						}}
-						className="absolute bottom-2 right-0 mx-2 text-xs max-w-full overflow-hidden text-white bg-blue-600 p-1 px-2 rounded-md shadow-md/35 hover:underline"
+						className={
+							"absolute bottom-2 right-0 mx-2 text-xs max-w-full overflow-hidden text-white bg-blue-600 p-1 px-2 rounded-md shadow-md/35 " +
+							(isBadgeHovered ? "underline" : "")
+						}
 						onMouseEnter={() => setIsBadgeHovered(true)}
 						onMouseLeave={() => setIsBadgeHovered(false)}
+						onTouchStart={() => setIsBadgeHovered(true)}
+						onTouchEnd={() => setIsBadgeHovered(false)}
 					>
 						{websiteTitle}
 					</a>
@@ -170,6 +177,8 @@ export function ResultCard({
 						}
 						onMouseEnter={() => setIsCardHovered(true)}
 						onMouseLeave={() => setIsCardHovered(false)}
+						onTouchStart={() => setIsCardHovered(true)}
+						onTouchEnd={() => setIsCardHovered(false)}
 					>
 						{title}
 					</a>
