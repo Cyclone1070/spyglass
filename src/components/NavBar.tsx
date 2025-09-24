@@ -79,7 +79,7 @@ export function NavBar({ className = "" }: Props) {
 					onClick={() =>
 						window.scrollTo({ top: 0, behavior: "smooth" })
 					}
-					className="fixed top-20 right-8 bg-(--bg-layer-2) hover:bg-(--bg-hover) active:bg-(--bg-hover) w-10 h-10 p-2 rounded-full shadow-lg/35 "
+					className="fixed top-15 right-8 bg-(--bg-layer-2) hover:bg-(--bg-hover) active:bg-(--bg-hover) w-10 h-10 p-2 rounded-full shadow-lg/35 "
 				>
 					<ArrowUpSvg />
 				</button>
