@@ -149,8 +149,14 @@ export function ResultCard({
 						}
 						onMouseEnter={() => setIsBadgeHovered(true)}
 						onMouseLeave={() => setIsBadgeHovered(false)}
-						onTouchStart={() => setIsBadgeHovered(true)}
-						onTouchEnd={() => setIsBadgeHovered(false)}
+						onTouchStart={(e) => {
+							e.stopPropagation();
+							setIsBadgeHovered(true);
+						}}
+						onTouchEnd={(e) => {
+							e.stopPropagation();
+							setIsBadgeHovered(false);
+						}}
 					>
 						{websiteTitle}
 					</a>
