@@ -21,7 +21,7 @@ export function SearchBar({
 		<form
 			onSubmit={handleSearchSubmit}
 			className={mergeClasses(
-				`flex shadow-[0_0_0.5rem_0_hsl(0,0%,0%,0.25)] items-center rounded-full px-4 gap-4 md:text-lg max-w-150 ` +
+				`flex shadow-[0_0_0.5rem_0_hsl(0,0%,0%,0.25)] items-center rounded-full px-4 md:text-lg max-w-150 ` +
 					`dark:shadow-none bg-(--bg-layer-2)`,
 				className,
 			)}
@@ -34,9 +34,9 @@ export function SearchBar({
 				autoComplete="off"
 				defaultValue={initialQuery}
 				placeholder={placeholder}
-				type="text"
+				type="search"
 				name="q"
-				className={`flex-1 outline-none`}
+				className={`flex-1 outline-none pl-4`}
 			/>
 		</form>
 	);

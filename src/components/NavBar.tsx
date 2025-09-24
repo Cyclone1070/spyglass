@@ -1,11 +1,14 @@
+import { useEffect, useState } from "react";
 import { NavLink, useLocation, useSearchParams } from "react-router";
 import DarkModeSvg from "../assets/dark-mode.svg?react";
 import HomeSvg from "../assets/home.svg?react";
 import LightModeSvg from "../assets/light-mode.svg?react";
+import SpyglassHorizontalSvg from "../assets/spyglass-horizontal.svg?react";
 import { useTheme } from "../context/useTheme";
+import { useIsMobile } from "../hooks/useIsMobile";
 import { mergeClasses } from "../utils/mergeClasses";
 import { SearchBar } from "./SearchBar";
-import SpyglassHorizontalSvg from "../assets/spyglass-horizontal.svg?react";
+import ArrowUpSvg from "../assets/arrow-up.svg?react";
 
 interface Props {
 	className?: string;
@@ -14,16 +17,36 @@ interface Props {
 export function NavBar({ className = "" }: Props) {
 	const [searchParams] = useSearchParams();
 	const { isDarkMode, toggleTheme } = useTheme();
+	const isMobile = useIsMobile();
 	const navButtonClass =
 		"cursor-pointer p-1 relative rounded-md w-10 h-10 shadow-none hover:bg-(--bg-hover) active:bg-(--bg-hover) shrink-0 " +
 		"md:w-12 md:h-12 md:p-2 ";
 	const location = useLocation();
 
+	const [isScrollUpVisible, setIsScrollUpVisible] = useState(false);
+
+	useEffect(() => {
+		const rem = parseFloat(
+			getComputedStyle(document.documentElement).fontSize,
+		); // usually 16
+
+		const handleScroll = () => {
+			setIsScrollUpVisible(window.scrollY > 70 * rem); // show after 300px scroll
+		};
+
+		window.addEventListener("scroll", handleScroll);
+
+		// run once in case user already scrolled
+		handleScroll();
+
+		return () => window.removeEventListener("scroll", handleScroll);
+	}, []);
+
 	return (
 		<div
 			className={mergeClasses(
-				"w-full p-2 gap-4 grid grid-cols-[2.5rem_1fr_2.5rem] justify-items-center items-center bg-(--bg) sticky -top-14 z-10 " +
-					"md:px-6 md:top-0",
+				"w-full p-2 gap-4 grid grid-cols-[2.5rem_1fr_2.5rem] justify-items-center items-center bg-(--bg) z-10 " +
+					"md:px-6 md:top-0 md:sticky",
 				className,
 			)}
 		>
@@ -51,6 +74,16 @@ export function NavBar({ className = "" }: Props) {
 			>
 				{isDarkMode ? <DarkModeSvg /> : <LightModeSvg />}
 			</button>
+			{isMobile && isScrollUpVisible && (
+				<button
+					onClick={() =>
+						window.scrollTo({ top: 0, behavior: "smooth" })
+					}
+					className="fixed bottom-[30dvh] right-8 bg-(--bg-layer-2) hover:bg-(--bg-hover) active:bg-(--bg-hover) w-10 h-10 p-2 rounded-full shadow-lg "
+				>
+					<ArrowUpSvg />
+				</button>
+			)}
 		</div>
 	);
 }
