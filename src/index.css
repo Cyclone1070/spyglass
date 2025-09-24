@@ -9,7 +9,7 @@
 	--bg-layer-2: oklch(92% 0.01 258.338);
 	--accent: theme("colors.blue.700");
 	--text: oklch(21.8% 0 0);
-	--pulse: oklch(80.8% 0.0.8 261.325);
+	--pulse: oklch(83.8% 0.01 258.338);
 }
 
 .dark {
@@ -33,4 +33,8 @@ input {
 
 .glow {
 	filter: drop-shadow(0 0 6px oklch(85.2% 0.199 91.936 / 0.8)) drop-shadow(0 0 6px oklch(0 0 0 / 0.8))
+}
+
+.glow-yellow {
+	filter: drop-shadow(0 0 6px oklch(85.2% 0.199 91.936 / 0.8)) drop-shadow(0 0 6px oklch(0 0 0 / 0.4))
 }

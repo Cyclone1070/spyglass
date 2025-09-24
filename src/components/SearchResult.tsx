@@ -36,7 +36,7 @@ export function SearchResult({ className = "" }: Props) {
 	return (
 		<div
 			className={mergeClasses(
-				`relative flex flex-col items-center px-4`,
+				`relative flex flex-col items-center gap-2 pt-2 px-4`,
 				className,
 			)}
 		>

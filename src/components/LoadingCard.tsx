@@ -13,7 +13,7 @@ export function LoadingCard({ className = "" }: Props) {
 			)}
 		>
 			<div
-				className={`w-48 h-48 bg-(--pulse) rounded-md shadow-md/35 dark:shadow-none`}
+				className={`w-48 h-48 bg-(--pulse) animate-pulse rounded-md shadow-md/35 dark:shadow-none`}
 			></div>
 			<div className={`bg-(--pulse) w-42 h-6 mt-4 rounded-md`}></div>
 			<div className={`bg-(--pulse) w-42 h-6 mt-2 rounded-md`}></div>

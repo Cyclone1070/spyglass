@@ -48,7 +48,7 @@ export function CategoriesBar({
 				emblaApi.scrollTo(categories.indexOf(lastCategory));
 			}
 		}
-	}, [emblaApi, setCurrentCategory]);
+	}, [emblaApi]);
 
 	return (
 		<div

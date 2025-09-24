@@ -21,11 +21,14 @@ export function SearchBar({
 		<form
 			onSubmit={handleSearchSubmit}
 			className={mergeClasses(
-				`sticky flex shadow-[0_0_0.5rem_0_hsl(0,0%,0%,0.25)] rounded-md p-2 pl-4 md:text-lg w-full max-w-150 h-12 ` +
+				`flex shadow-[0_0_0.5rem_0_hsl(0,0%,0%,0.25)] items-center rounded-full px-4 gap-4 md:text-lg max-w-150 ` +
 					`dark:shadow-none bg-(--bg-layer-2)`,
 				className,
 			)}
 		>
+			<button className={`w-4 h-4 aspect-square cursor-pointer`}>
+				<SearchSvg className={`text-(--accent)`} />
+			</button>
 			<input
 				required
 				autoComplete="off"
@@ -35,11 +38,6 @@ export function SearchBar({
 				name="q"
 				className={`flex-1 outline-none`}
 			/>
-			<button
-				className={`w-auto h-full aspect-square p-1 cursor-pointer`}
-			>
-				<SearchSvg className={`text-(--accent)`} />
-			</button>
 		</form>
 	);
 

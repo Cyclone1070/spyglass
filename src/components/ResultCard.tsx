@@ -148,7 +148,14 @@ export function ResultCard({
 						{websiteTitle}
 					</a>
 					{websiteStarred && (
-						<StarSvg className="text-yellow-400 absolute top-2 right-0 mx-2 w-6 h-6 glow" />
+						<StarSvg
+							className={
+								"text-yellow-400 absolute top-2 right-0 mx-2 w-6 h-6 " +
+								(imageUrl && !imageError
+									? "glow"
+									: "glow-yellow")
+							}
+						/>
 					)}
 				</motion.div>
 				{/* title */}

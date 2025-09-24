@@ -5,6 +5,7 @@ import LightModeSvg from "../assets/light-mode.svg?react";
 import { useTheme } from "../context/useTheme";
 import { mergeClasses } from "../utils/mergeClasses";
 import { SearchBar } from "./SearchBar";
+import SpyglassHorizontalSvg from "../assets/spyglass-horizontal.svg?react";
 
 interface Props {
 	className?: string;
@@ -21,24 +22,33 @@ export function NavBar({ className = "" }: Props) {
 	return (
 		<div
 			className={mergeClasses(
-				`w-full p-2 gap-4 flex justify-between items-center bg-(--bg) sticky top-0 z-10 ` +
-					`md:px-6`,
+				"w-full p-2 gap-4 grid grid-cols-[2.5rem_1fr_2.5rem] justify-items-center items-center bg-(--bg) sticky -top-14 z-10 " +
+					"md:px-6 md:top-0",
 				className,
 			)}
 		>
-			<NavLink to="/" className={navButtonClass}>
+			<NavLink to="/" className={navButtonClass + "col-start-1"}>
 				<HomeSvg />
 			</NavLink>
 
 			{location.pathname !== "/" && (
-				<SearchBar
-					className={`w-[90%] max-w-140 h-10 sticky top-2`}
-					placeholder="Enter your search"
-					initialQuery={searchParams.get("q") || undefined}
-				/>
+				<>
+					<SearchBar
+						className={
+							"w-full max-w-140 h-10 sticky top-2 row-start-2 col-span-3 " +
+							"md:row-start-1 md:col-span-1 md:col-start-2"
+						}
+						placeholder="Enter your search"
+						initialQuery={searchParams.get("q") || undefined}
+					/>
+					<SpyglassHorizontalSvg className={"h-10 " + "md:hidden"} />
+				</>
 			)}
 
-			<button className={navButtonClass} onClick={toggleTheme}>
+			<button
+				className={navButtonClass + "col-start-3"}
+				onClick={toggleTheme}
+			>
 				{isDarkMode ? <DarkModeSvg /> : <LightModeSvg />}
 			</button>
 		</div>

@@ -9,7 +9,10 @@ function Home() {
 				`md:pt-30 md:gap-35`
 			}
 		>
-			<SearchBar className={`w-full`} placeholder="Enter your search" />
+			<SearchBar
+				className={`w-full h-14`}
+				placeholder="Enter your search"
+			/>
 			<SpyglassSvg className={`max-w-100 mx-8`} />
 		</div>
 	);
