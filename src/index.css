@@ -9,7 +9,7 @@
 	--bg-layer-2: oklch(92% 0.01 258.338);
 	--accent: theme("colors.blue.700");
 	--text: oklch(21.8% 0 0);
-	--pulse: oklch(83.8% 0.01 258.338);
+	--pulse: oklch(82% 0.01 258.338);
 }
 
 .dark {
