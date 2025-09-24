@@ -144,7 +144,7 @@ export function ResultCard({
 							}
 						}}
 						className={
-							"absolute bottom-2 right-0 mx-2 text-xs max-w-full overflow-hidden text-white bg-blue-600 p-1 px-2 rounded-md shadow-md/35 " +
+							"absolute bottom-2 right-0 mx-2 text-xs text-white bg-blue-600 p-1 px-2 rounded-md shadow-md/35 " +
 							(isBadgeHovered ? "underline" : "")
 						}
 						onMouseEnter={() => setIsBadgeHovered(true)}
