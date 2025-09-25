@@ -69,7 +69,7 @@ export function ResultCard({
 							<>
 								<img
 									className={
-										"max-w-60 max-h-60 rounded-md " +
+										"max-w-60 max-h-60 rounded-md bg-(--bg-layer-1)" +
 										(imageLoaded ? "" : "hidden")
 									}
 									src={imageUrl}

@@ -48,7 +48,7 @@ export function SearchResult({ className = "" }: Props) {
 			/>
 			<div
 				className={
-					"w-full max-w-250 grid grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] justify-center justify-items-center items-end gap-y-12 gap-x-6 mt-15 " +
+					"w-full max-w-250 grid grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] justify-center justify-items-center items-end gap-y-12 gap-x-10 mt-15 " +
 					"md:gap-y-20"
 				}
 			>
