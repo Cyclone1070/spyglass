@@ -15,6 +15,15 @@ function Home() {
 				autoFocus={true}
 			/>
 			<SpyglassSvg className={`max-w-100 mx-8`} />
+			<a
+				className={
+					"fixed bottom-0 right-0 m-6 text-(--accent) hover:underline"
+				}
+				href="https://fmhy.net"
+				target="_blank"
+			>
+				Visit the megathread
+			</a>
 		</div>
 	);
 }
