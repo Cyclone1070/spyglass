@@ -1,4 +1,4 @@
-import { useNavigate, useSearchParams } from "react-router";
+import { useLocation, useNavigate, useSearchParams } from "react-router";
 import SearchSvg from "../assets/search.svg?react";
 import { mergeClasses } from "../utils/mergeClasses";
 
@@ -17,6 +17,7 @@ export function SearchBar({
 	autoFocus,
 }: Props) {
 	const navigate = useNavigate();
+	const location = useLocation();
 	const [currentSearchParams] = useSearchParams();
 
 	return (
@@ -55,6 +56,8 @@ export function SearchBar({
 			q: newQuery,
 		});
 
-		navigate(`/search?${searchParams.toString()}`);
+		navigate(`/search?${searchParams.toString()}`, {
+			state: { referer: location.pathname },
+		});
 	}
 }

@@ -1,5 +1,6 @@
 import useEmblaCarousel from "embla-carousel-react";
 import { useEffect, useMemo } from "react";
+import { useLocation } from "react-router";
 import { mergeClasses } from "../utils/mergeClasses";
 
 interface Props {
@@ -15,6 +16,7 @@ export function CategoriesBar({
 	setCurrentCategory,
 	ref,
 }: Props) {
+	const location = useLocation();
 	const categories = useMemo(
 		() => [
 			"All",
@@ -40,6 +42,15 @@ export function CategoriesBar({
 	// remember last category in localStorage and scroll to it
 	useEffect(() => {
 		if (!currentCategory || !setCurrentCategory) return;
+		// if coming from home page, reset to "All"
+		if (location.state?.referer === "/") {
+			setCurrentCategory("All");
+			localStorage.setItem("searchCategory", "All");
+			if (emblaApi) {
+				emblaApi.scrollTo(0);
+			}
+			return;
+		}
 		// get last category from localStorage
 		const lastCategory = localStorage.getItem("searchCategory");
 		if (lastCategory) {
@@ -48,7 +59,7 @@ export function CategoriesBar({
 				emblaApi.scrollTo(categories.indexOf(lastCategory));
 			}
 		}
-	}, [emblaApi]);
+	}, [emblaApi, location.state?.referer]);
 
 	return (
 		<div
