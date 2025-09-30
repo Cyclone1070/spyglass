@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { useState } from "react";
-import { mergeClasses } from "../utils/mergeClasses";
 
+import { twMerge } from "tailwind-merge";
 import AndroidSvg from "../assets/android.svg?react";
 import BookSvg from "../assets/book.svg?react";
 import GameSvg from "../assets/game.svg?react";
@@ -48,7 +48,7 @@ export function ResultCard({
 	return (
 		<>
 			<div
-				className={mergeClasses(
+				className={twMerge(
 					`flex flex-col justify-end items-center`,
 					className,
 				)}

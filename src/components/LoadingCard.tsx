@@ -1,4 +1,4 @@
-import { mergeClasses } from "../utils/mergeClasses";
+import { twMerge } from "tailwind-merge";
 
 interface Props {
 	className?: string;
@@ -7,7 +7,7 @@ interface Props {
 export function LoadingCard({ className = "" }: Props) {
 	return (
 		<div
-			className={mergeClasses(
+			className={twMerge(
 				`flex flex-col justify-end items-center animate-pulse`,
 				className,
 			)}

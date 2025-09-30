@@ -1,6 +1,6 @@
 import { useLocation, useNavigate, useSearchParams } from "react-router";
+import { twMerge } from "tailwind-merge";
 import SearchSvg from "../assets/search.svg?react";
-import { mergeClasses } from "../utils/mergeClasses";
 
 interface Props {
 	className?: string;
@@ -23,7 +23,7 @@ export function SearchBar({
 	return (
 		<form
 			onSubmit={handleSearchSubmit}
-			className={mergeClasses(
+			className={twMerge(
 				`flex shadow-[0_0_0.5rem_0_hsl(0,0%,0%,0.25)] items-center rounded-full px-4 md:text-lg max-w-150 ` +
 					`dark:shadow-none bg-(--bg-layer-2)`,
 				className,

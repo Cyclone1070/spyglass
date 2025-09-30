@@ -1,7 +1,7 @@
 import useEmblaCarousel from "embla-carousel-react";
 import { useEffect, useMemo } from "react";
 import { useLocation } from "react-router";
-import { mergeClasses } from "../utils/mergeClasses";
+import { twMerge } from "tailwind-merge";
 
 interface Props {
 	className?: string;
@@ -64,7 +64,7 @@ export function CategoriesBar({
 	return (
 		<div
 			ref={emblaRef}
-			className={mergeClasses(`p-2 overflow-hidden w-full`, className)}
+			className={twMerge(`p-2 overflow-hidden w-full`, className)}
 		>
 			<div ref={ref} className={`flex gap-4`}>
 				{categories.map((category) => (

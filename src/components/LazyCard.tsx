@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { mergeClasses } from "../utils/mergeClasses";
+import { twMerge } from "tailwind-merge";
 import { ResultCard } from "./ResultCard";
 
 interface Props {
@@ -33,7 +33,7 @@ export function LazyCard({ className = "", ...props }: Props) {
 	}
 
 	return (
-		<div ref={ref} className={mergeClasses("", className)}>
+		<div ref={ref} className={twMerge("", className)}>
 			{hasBeenInView ? (
 				<ResultCard className={"w-full h-full"} {...props}></ResultCard>
 			) : (

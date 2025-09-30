@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { NavLink, useLocation, useSearchParams } from "react-router";
+import { twMerge } from "tailwind-merge";
+import ArrowUpSvg from "../assets/arrow-up.svg?react";
 import DarkModeSvg from "../assets/dark-mode.svg?react";
 import HomeSvg from "../assets/home.svg?react";
 import LightModeSvg from "../assets/light-mode.svg?react";
 import SpyglassHorizontalSvg from "../assets/spyglass-horizontal.svg?react";
 import { useTheme } from "../context/useTheme";
 import { useIsMobile } from "../hooks/useIsMobile";
-import { mergeClasses } from "../utils/mergeClasses";
 import { SearchBar } from "./SearchBar";
-import ArrowUpSvg from "../assets/arrow-up.svg?react";
 
 interface Props {
 	className?: string;
@@ -44,7 +44,7 @@ export function NavBar({ className = "" }: Props) {
 
 	return (
 		<div
-			className={mergeClasses(
+			className={twMerge(
 				"w-full p-2 gap-4 grid grid-cols-[2.5rem_1fr_2.5rem] justify-items-center items-center bg-(--bg) z-10 " +
 					"md:px-6 md:top-0 md:sticky",
 				className,

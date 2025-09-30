@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
+import { twMerge } from "tailwind-merge";
 import { useStreamResults } from "../hooks/useStreamResults";
-import { mergeClasses } from "../utils/mergeClasses";
 import { CategoriesBar } from "./CategoriesBar";
 import { LazyCard } from "./LazyCard";
 import { LoadingCard } from "./LoadingCard";
@@ -35,7 +35,7 @@ export function SearchResult({ className = "" }: Props) {
 
 	return (
 		<div
-			className={mergeClasses(
+			className={twMerge(
 				`relative flex flex-col items-center gap-2 pt-2 px-4`,
 				className,
 			)}
