@@ -59,7 +59,7 @@ export function CategoriesBar({
 				emblaApi.scrollTo(categories.indexOf(lastCategory));
 			}
 		}
-	}, [emblaApi, location.state?.referer]);
+	}, [emblaApi, location.state?.referer, categories, setCurrentCategory]);
 
 	return (
 		<div

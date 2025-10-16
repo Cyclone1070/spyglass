@@ -11,6 +11,9 @@ export function useStreamResults(query: string | null) {
 
     // Fetch the data stream from the server
     useEffect(() => {
+        setResults([]);
+        setIsLoading(true);
+        setError(null);
         // Don't fetch if there's no query.
         if (!query) {
             setIsLoading(false);
