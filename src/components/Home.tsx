@@ -11,7 +11,7 @@ function Home() {
 		>
 			<SearchBar
 				className={`w-full h-14`}
-				placeholder="Search for title only for best results"
+				placeholder="Search for any media, title only for best results"
 				autoFocus={true}
 			/>
 			<SpyglassSvg className={`max-w-100 mx-8`} />
