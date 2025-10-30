@@ -1,6 +1,6 @@
 # Spyglass
 
-Your one-stop search engine for safe and reliable free media on the internet. No more confusing megathreads!
+Your one-stop search engine for safe and reliable free media on the internet. No more confusing megathreads! Search for free books, movies, tv shows, games and more!
 
 Built with React, React Router, TypeScript, Tailwind CSS, Framer Motion and Embla Carousel. Utilised React Compiler for optimised performance.
 
