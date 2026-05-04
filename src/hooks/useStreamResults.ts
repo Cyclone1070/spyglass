@@ -136,16 +136,24 @@ export function useStreamResults(query: string | null) {
 function mergeSortedResults(prev: Result[], newResults: Result[]): Result[] {
     // 1. Sort only the new results
     newResults.sort(function (a, b) {
-        return b.score - a.score;
+        if (b.score !== a.score) {
+            return b.score - a.score;
+        }
+        return (b.websiteStarred ? 1 : 0) - (a.websiteStarred ? 1 : 0);
     });
 
     const merged = [];
     let i = 0; // Pointer for prev (already sorted)
     let j = 0; // Pointer for newResults (now sorted)
 
+    const isBetterOrEqual = (a: Result, b: Result) => {
+        if (a.score !== b.score) return a.score > b.score;
+        return (a.websiteStarred ? 1 : 0) >= (b.websiteStarred ? 1 : 0);
+    };
+
     // 2. Merge the two sorted arrays
     while (i < prev.length && j < newResults.length) {
-        if (prev[i].score >= newResults[j].score) {
+        if (isBetterOrEqual(prev[i], newResults[j])) {
             merged.push(prev[i]);
             i++;
         } else {
