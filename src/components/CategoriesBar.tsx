@@ -3,6 +3,10 @@ import { useEffect, useMemo } from "react";
 import { useLocation } from "react-router";
 import { twMerge } from "tailwind-merge";
 import { getCategoryWheelAction } from "../utils/categoryWheel";
+import {
+	CategoryWheelQueue,
+	getWheelStepDuration,
+} from "../utils/categoryWheelQueue";
 
 interface Props {
 	className?: string;
@@ -72,15 +76,64 @@ export function CategoriesBar({
 		const reducedMotion = window.matchMedia(
 			"(prefers-reduced-motion: reduce)",
 		);
-		let lastScrollAt = 0;
-		let transitionTimer: number | undefined;
+		const wheelQueue = new CategoryWheelQueue(4);
+		let stepTimer: number | undefined;
 
 		const clearTransition = () => {
-			if (transitionTimer !== undefined) {
-				window.clearTimeout(transitionTimer);
-				transitionTimer = undefined;
+			if (stepTimer !== undefined) {
+				window.clearTimeout(stepTimer);
+				stepTimer = undefined;
 			}
+			wheelQueue.cancel();
 			container.classList.remove("category-wheel-scrolling");
+			container.style.transitionDuration = "";
+		};
+
+		const startStep = (direction: -1 | 1) => {
+			const canScroll =
+				direction > 0 ? emblaApi.canScrollNext() : emblaApi.canScrollPrev();
+			if (!canScroll) {
+				clearTransition();
+				return;
+			}
+
+			const engine = emblaApi.internalEngine();
+			const startTarget = engine.target.get();
+
+			container.classList.add("category-wheel-scrolling");
+			if (direction > 0) emblaApi.scrollNext(true);
+			else emblaApi.scrollPrev(true);
+
+			const distance = Math.abs(engine.target.get() - startTarget);
+			if (distance === 0) {
+				clearTransition();
+				return;
+			}
+
+			const duration = getWheelStepDuration(distance);
+			container.style.transitionDuration = `${duration}ms`;
+
+			stepTimer = window.setTimeout(() => {
+				stepTimer = undefined;
+				const nextDirection = wheelQueue.finish();
+				if (nextDirection === 0) {
+					container.classList.remove("category-wheel-scrolling");
+					container.style.transitionDuration = "";
+					return;
+				}
+				startStep(nextDirection);
+			}, duration + 10);
+		};
+
+		const runNextStep = () => {
+			if (stepTimer !== undefined) return;
+
+			const direction = wheelQueue.next();
+			if (direction === 0) {
+				container.classList.remove("category-wheel-scrolling");
+				return;
+			}
+			startStep(direction);
 		};
 
 		const onWheel = (event: WheelEvent) => {
@@ -97,22 +150,14 @@ export function CategoriesBar({
 
 			if (action.direction === 0) return;
 
-			const now = performance.now();
-			if (now - lastScrollAt < 120) return;
-			lastScrollAt = now;
-
 			if (reducedMotion.matches) {
-				clearTransition();
-			} else {
-				container.classList.add("category-wheel-scrolling");
-				if (transitionTimer !== undefined) {
-					window.clearTimeout(transitionTimer);
-				}
-				transitionTimer = window.setTimeout(clearTransition, 240);
+				if (action.direction > 0) emblaApi.scrollNext(true);
+				else emblaApi.scrollPrev(true);
+				return;
 			}
 
-			if (action.direction > 0) emblaApi.scrollNext(true);
-			else emblaApi.scrollPrev(true);
+			wheelQueue.enqueue(action.direction);
+			runNextStep();
 		};
 
 		const stopTransition = () => clearTransition();
