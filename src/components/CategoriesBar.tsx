@@ -2,6 +2,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useEffect, useMemo } from "react";
 import { useLocation } from "react-router";
 import { twMerge } from "tailwind-merge";
+import { getCategoryWheelDirection } from "../utils/categoryWheel";
 
 interface Props {
 	className?: string;
@@ -61,6 +62,38 @@ export function CategoriesBar({
 			}
 		}
 	}, [emblaApi, location.state?.referer, categories, setCurrentCategory]);
+
+	// Let Shift + wheel (and horizontal trackpad gestures) move the category bar.
+	useEffect(() => {
+		if (!emblaApi) return;
+
+		const viewport = emblaApi.rootNode();
+		let lastScrollAt = 0;
+
+		const onWheel = (event: WheelEvent) => {
+			const direction = getCategoryWheelDirection(
+				event,
+				emblaApi.canScrollPrev(),
+				emblaApi.canScrollNext(),
+			);
+			if (direction === 0) return;
+
+			event.preventDefault();
+
+			const now = performance.now();
+			if (now - lastScrollAt < 150) return;
+			lastScrollAt = now;
+
+			const instant = window.matchMedia(
+				"(prefers-reduced-motion: reduce)",
+			).matches;
+			if (direction > 0) emblaApi.scrollNext(instant);
+			else emblaApi.scrollPrev(instant);
+		};
+
+		viewport.addEventListener("wheel", onWheel, { passive: false });
+		return () => viewport.removeEventListener("wheel", onWheel);
+	}, [emblaApi]);
 
 	return (
 		<div
