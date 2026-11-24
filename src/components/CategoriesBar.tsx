@@ -63,12 +63,25 @@ export function CategoriesBar({
 		}
 	}, [emblaApi, location.state?.referer, categories, setCurrentCategory]);
 
-	// Let Shift + wheel (and horizontal trackpad gestures) move the category bar.
+	// A plain wheel scrolls the bar linearly; modified wheels stay with the browser.
 	useEffect(() => {
 		if (!emblaApi) return;
 
 		const viewport = emblaApi.rootNode();
+		const container = emblaApi.containerNode();
+		const reducedMotion = window.matchMedia(
+			"(prefers-reduced-motion: reduce)",
+		);
 		let lastScrollAt = 0;
+		let transitionTimer: number | undefined;
+
+		const clearTransition = () => {
+			if (transitionTimer !== undefined) {
+				window.clearTimeout(transitionTimer);
+				transitionTimer = undefined;
+			}
+			container.classList.remove("category-wheel-scrolling");
+		};
 
 		const onWheel = (event: WheelEvent) => {
 			const direction = getCategoryWheelDirection(
@@ -81,18 +94,34 @@ export function CategoriesBar({
 			event.preventDefault();
 
 			const now = performance.now();
-			if (now - lastScrollAt < 150) return;
+			if (now - lastScrollAt < 120) return;
 			lastScrollAt = now;
 
-			const instant = window.matchMedia(
-				"(prefers-reduced-motion: reduce)",
-			).matches;
-			if (direction > 0) emblaApi.scrollNext(instant);
-			else emblaApi.scrollPrev(instant);
+			if (reducedMotion.matches) {
+				clearTransition();
+			} else {
+				container.classList.add("category-wheel-scrolling");
+				if (transitionTimer !== undefined) {
+					window.clearTimeout(transitionTimer);
+				}
+				transitionTimer = window.setTimeout(clearTransition, 240);
+			}
+
+			if (direction > 0) emblaApi.scrollNext(true);
+			else emblaApi.scrollPrev(true);
 		};
 
+		const stopTransition = () => clearTransition();
+
 		viewport.addEventListener("wheel", onWheel, { passive: false });
-		return () => viewport.removeEventListener("wheel", onWheel);
+		viewport.addEventListener("pointerdown", stopTransition);
+		viewport.addEventListener("touchstart", stopTransition, { passive: true });
+		return () => {
+			viewport.removeEventListener("wheel", onWheel);
+			viewport.removeEventListener("pointerdown", stopTransition);
+			viewport.removeEventListener("touchstart", stopTransition);
+			clearTransition();
+		};
 	}, [emblaApi]);
 
 	return (

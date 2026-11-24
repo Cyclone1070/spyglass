@@ -27,6 +27,16 @@ body {
 	color: var(--text);
 }
 
+.category-wheel-scrolling {
+	transition: transform 180ms linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.category-wheel-scrolling {
+		transition: none;
+	}
+}
+
 input {
 	min-width: 0;
 }
