@@ -2,7 +2,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useEffect, useMemo } from "react";
 import { useLocation } from "react-router";
 import { twMerge } from "tailwind-merge";
-import { getCategoryWheelDirection } from "../utils/categoryWheel";
+import { getCategoryWheelAction } from "../utils/categoryWheel";
 
 interface Props {
 	className?: string;
@@ -63,7 +63,7 @@ export function CategoriesBar({
 		}
 	}, [emblaApi, location.state?.referer, categories, setCurrentCategory]);
 
-	// A plain wheel scrolls the bar linearly; modified wheels stay with the browser.
+	// Shift + wheel (and horizontal trackpad gestures) moves the bar; plain wheel stays with the page.
 	useEffect(() => {
 		if (!emblaApi) return;
 
@@ -84,14 +84,18 @@ export function CategoriesBar({
 		};
 
 		const onWheel = (event: WheelEvent) => {
-			const direction = getCategoryWheelDirection(
+			const action = getCategoryWheelAction(
 				event,
 				emblaApi.canScrollPrev(),
 				emblaApi.canScrollNext(),
 			);
-			if (direction === 0) return;
+			if (!action.handled) return;
 
+			// Consume Shift+wheel even at the ends so the browser's previous-page
+			// gesture cannot fire while the pointer is over the bar.
 			event.preventDefault();
+
+			if (action.direction === 0) return;
 
 			const now = performance.now();
 			if (now - lastScrollAt < 120) return;
@@ -107,7 +111,7 @@ export function CategoriesBar({
 				transitionTimer = window.setTimeout(clearTransition, 240);
 			}
 
-			if (direction > 0) emblaApi.scrollNext(true);
+			if (action.direction > 0) emblaApi.scrollNext(true);
 			else emblaApi.scrollPrev(true);
 		};
 

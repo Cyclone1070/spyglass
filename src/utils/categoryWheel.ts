@@ -3,27 +3,42 @@ type WheelLike = Pick<
 	"deltaX" | "deltaY" | "shiftKey" | "ctrlKey" | "metaKey" | "altKey"
 >;
 
+export type CategoryWheelAction = {
+	handled: boolean;
+	direction: -1 | 0 | 1;
+};
+
+const NOT_HANDLED: CategoryWheelAction = { handled: false, direction: 0 };
+
 /**
- * Maps a wheel gesture over the category bar to a carousel direction.
- * Plain vertical wheel and horizontal trackpad gestures scroll the bar;
- * modified wheels are left for the browser (for example, Shift+wheel is
- * the browser's previous-page gesture).
+ * Maps a wheel gesture over the category bar to a carousel action.
+ * Shift + wheel is always consumed while the pointer is over the bar,
+ * including at either end, so the browser's previous-page gesture cannot
+ * fire. Plain vertical wheels stay with the page; horizontal trackpad
+ * gestures move the bar.
  */
-export function getCategoryWheelDirection(
+export function getCategoryWheelAction(
 	event: WheelLike,
 	canScrollPrev: boolean,
 	canScrollNext: boolean,
-): -1 | 0 | 1 {
-	if (event.shiftKey || event.ctrlKey || event.metaKey || event.altKey) {
-		return 0;
-	}
+): CategoryWheelAction {
+	if (event.ctrlKey || event.metaKey || event.altKey) return NOT_HANDLED;
 
 	const delta =
 		Math.abs(event.deltaX) > Math.abs(event.deltaY)
 			? event.deltaX
 			: event.deltaY;
-	if (delta === 0) return 0;
+	if (delta === 0) return NOT_HANDLED;
 
-	if (delta > 0) return canScrollNext ? 1 : 0;
-	return canScrollPrev ? -1 : 0;
+	const direction: -1 | 0 | 1 =
+		delta > 0 ? (canScrollNext ? 1 : 0) : canScrollPrev ? -1 : 0;
+
+	if (event.shiftKey) {
+		return { handled: true, direction };
+	}
+
+	const isHorizontal = Math.abs(event.deltaX) > Math.abs(event.deltaY);
+	if (!isHorizontal || direction === 0) return NOT_HANDLED;
+
+	return { handled: true, direction };
 }
