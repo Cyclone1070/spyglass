@@ -25,3 +25,7 @@ pnpm run deploy
 ```
 
 `VITE_API_URL` is baked in at build time. `wrangler deploy` needs a `CLOUDFLARE_API_TOKEN` with Workers Scripts/Routes edit; the Worker name in the dashboard must match `spyglass-web`.
+
+## Credits
+
+Favicon: ["Spyglass"](https://game-icons.net/1x1/lorc/spyglass.html) by Lorc, licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/). Recolored for the tab icon.
