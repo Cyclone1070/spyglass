@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useLocation } from "react-router";
 import { twMerge } from "tailwind-merge";
+import {
+	getDragScrollLeft,
+	isCategoryDrag,
+} from "../utils/categoryDrag";
 import { getCategoryWheelScroll } from "../utils/categoryWheel";
 
 interface Props {
@@ -113,6 +117,102 @@ export function CategoriesBar({
 
 		scroller.addEventListener("wheel", onWheel, { passive: false });
 		return () => scroller.removeEventListener("wheel", onWheel);
+	}, []);
+
+	// Mouse drag is an enhancement on top of native scrolling; touch stays native.
+	useEffect(() => {
+		const scroller = scrollRef.current;
+		if (!scroller) return;
+
+		let pointerId: number | null = null;
+		let startX = 0;
+		let startScrollLeft = 0;
+		let dragging = false;
+		let suppressClick = false;
+		let clickResetTimer: number | undefined;
+
+		const onPointerDown = (event: PointerEvent) => {
+			if (event.pointerType !== "mouse" || event.button !== 0) return;
+
+			pointerId = event.pointerId;
+			startX = event.clientX;
+			startScrollLeft = scroller.scrollLeft;
+			dragging = false;
+		};
+
+		const onPointerMove = (event: PointerEvent) => {
+			if (event.pointerId !== pointerId) return;
+			if (!dragging && !isCategoryDrag(startX, event.clientX)) return;
+
+			if (!dragging) {
+				dragging = true;
+				scroller.classList.add("is-dragging");
+				try {
+					scroller.setPointerCapture(event.pointerId);
+				} catch {
+					// The pointer can end between the threshold and capture.
+				}
+			}
+
+			event.preventDefault();
+			scroller.scrollLeft = getDragScrollLeft(
+				startScrollLeft,
+				startX,
+				event.clientX,
+			);
+		};
+
+		const stopDragging = (event: PointerEvent) => {
+			if (event.pointerId !== pointerId) return;
+
+			if (dragging) {
+				suppressClick = true;
+				if (clickResetTimer !== undefined) {
+					window.clearTimeout(clickResetTimer);
+				}
+				clickResetTimer = window.setTimeout(() => {
+					suppressClick = false;
+					clickResetTimer = undefined;
+				}, 0);
+			}
+
+			if (scroller.hasPointerCapture(event.pointerId)) {
+				scroller.releasePointerCapture(event.pointerId);
+			}
+			scroller.classList.remove("is-dragging");
+			pointerId = null;
+			dragging = false;
+		};
+
+		const onClickCapture = (event: MouseEvent) => {
+			if (!suppressClick) return;
+
+			event.preventDefault();
+			event.stopPropagation();
+			suppressClick = false;
+			if (clickResetTimer !== undefined) {
+				window.clearTimeout(clickResetTimer);
+				clickResetTimer = undefined;
+			}
+		};
+
+		scroller.addEventListener("pointerdown", onPointerDown);
+		window.addEventListener("pointermove", onPointerMove);
+		window.addEventListener("pointerup", stopDragging);
+		window.addEventListener("pointercancel", stopDragging);
+		scroller.addEventListener("click", onClickCapture, true);
+
+		return () => {
+			if (clickResetTimer !== undefined) {
+				window.clearTimeout(clickResetTimer);
+			}
+			scroller.classList.remove("is-dragging");
+			scroller.removeEventListener("pointerdown", onPointerDown);
+			window.removeEventListener("pointermove", onPointerMove);
+			window.removeEventListener("pointerup", stopDragging);
+			window.removeEventListener("pointercancel", stopDragging);
+			scroller.removeEventListener("click", onClickCapture, true);
+		};
 	}, []);
 
 	return (
