@@ -11,6 +11,7 @@ import { getCategoryWheelScroll } from "../utils/categoryWheel";
 
 const WHEEL_IDLE_SPRING_MS = 60;
 const WHEEL_MAX_HOLD_MS = 180;
+const WHEEL_RESIDUAL_COOLDOWN_MS = 250;
 
 interface Props {
 	className?: string;
@@ -100,6 +101,7 @@ export function CategoriesBar({
 		let wheelBounceTimer: number | undefined;
 		let wheelHoldTimer: number | undefined;
 		let wheelBounceLocked = false;
+		let wheelCooldownUntil = 0;
 		let wheelOverscroll = 0;
 
 		const clearWheelIdleTimer = () => {
@@ -130,12 +132,14 @@ export function CategoriesBar({
 			clearWheelTimers();
 			cancelBounceAnimation();
 			wheelBounceLocked = false;
+			wheelCooldownUntil = 0;
 			wheelOverscroll = 0;
 			if (track) track.style.transform = "";
 		};
 
-		const springTrackBack = () => {
+		const springTrackBack = (source: "wheel" | "drag" = "drag") => {
 			clearWheelTimers();
+			wheelCooldownUntil = 0;
 			if (!track || track.style.transform === "") {
 				wheelBounceLocked = false;
 				wheelOverscroll = 0;
@@ -148,6 +152,10 @@ export function CategoriesBar({
 
 			if (reducedMotion.matches) {
 				wheelBounceLocked = false;
+				if (source === "wheel") {
+					wheelCooldownUntil =
+						performance.now() + WHEEL_RESIDUAL_COOLDOWN_MS;
+				}
 				return;
 			}
 
@@ -165,6 +173,10 @@ export function CategoriesBar({
 				if (bounceAnimation !== animation) return;
 				bounceAnimation = null;
 				wheelBounceLocked = false;
+				if (source === "wheel") {
+					wheelCooldownUntil =
+						performance.now() + WHEEL_RESIDUAL_COOLDOWN_MS;
+				}
 				track.style.transform = "";
 			};
 			animation.oncancel = () => {
@@ -207,6 +219,16 @@ export function CategoriesBar({
 					return;
 				}
 
+				const wouldOverscroll =
+					rawScrollLeft < 0 || rawScrollLeft > maxScroll;
+				if (
+					wouldOverscroll &&
+					performance.now() < wheelCooldownUntil
+				) {
+					return;
+				}
+				wheelCooldownUntil = 0;
+
 				clearWheelIdleTimer();
 				cancelBounceAnimation();
 				wheelOverscroll = accumulateCategoryOverscroll(
@@ -222,12 +244,12 @@ export function CategoriesBar({
 				if (wheelOverscroll !== 0) {
 					wheelBounceTimer = window.setTimeout(() => {
 						wheelBounceTimer = undefined;
-						springTrackBack();
+						springTrackBack("wheel");
 					}, WHEEL_IDLE_SPRING_MS);
 					if (wheelHoldTimer === undefined) {
 						wheelHoldTimer = window.setTimeout(() => {
 							wheelHoldTimer = undefined;
-							springTrackBack();
+							springTrackBack("wheel");
 						}, WHEEL_MAX_HOLD_MS);
 					}
 				} else {
