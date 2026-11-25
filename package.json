@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "test": "node --test tests/categoryWheel.test.mjs tests/categoryDrag.test.mjs",
+    "test": "node --test tests/categoryDrag.test.mjs",
     "preview": "vite preview",
     "deploy": "wrangler deploy"
   },

@@ -1,17 +1,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useLocation } from "react-router";
 import { twMerge } from "tailwind-merge";
-import {
-	accumulateCategoryOverscroll,
-	getCategoryOverscrollOffset,
-	getDragScrollLeft,
-	isCategoryDrag,
-} from "../utils/categoryDrag";
-import { getCategoryWheelScroll } from "../utils/categoryWheel";
-
-const WHEEL_IDLE_SPRING_MS = 60;
-const WHEEL_MAX_HOLD_MS = 180;
-const WHEEL_RESIDUAL_COOLDOWN_MS = 250;
+import { getDragScrollLeft, isCategoryDrag } from "../utils/categoryDrag";
 
 interface Props {
 	className?: string;
@@ -82,200 +72,21 @@ export function CategoriesBar({
 		}
 	}, [location.state?.referer, setCurrentCategory]);
 
-	// Native wheel/trackpad scrolling plus mouse drag; touch stays native.
+	// Native wheel/trackpad scrolling is untouched; mouse drag is the only enhancement.
 	useEffect(() => {
 		const scroller = scrollRef.current;
 		if (!scroller) return;
 
-		const track = scroller.firstElementChild as HTMLElement | null;
-		const reducedMotion = window.matchMedia(
-			"(prefers-reduced-motion: reduce)",
-		);
 		let pointerId: number | null = null;
 		let startX = 0;
 		let startScrollLeft = 0;
 		let dragging = false;
 		let suppressClick = false;
 		let clickResetTimer: number | undefined;
-		let bounceAnimation: Animation | null = null;
-		let wheelBounceTimer: number | undefined;
-		let wheelHoldTimer: number | undefined;
-		let wheelBounceLocked = false;
-		let wheelCooldownUntil = 0;
-		let wheelOverscroll = 0;
-
-		const clearWheelIdleTimer = () => {
-			if (wheelBounceTimer !== undefined) {
-				window.clearTimeout(wheelBounceTimer);
-				wheelBounceTimer = undefined;
-			}
-		};
-
-		const clearWheelHoldTimer = () => {
-			if (wheelHoldTimer !== undefined) {
-				window.clearTimeout(wheelHoldTimer);
-				wheelHoldTimer = undefined;
-			}
-		};
-
-		const clearWheelTimers = () => {
-			clearWheelIdleTimer();
-			clearWheelHoldTimer();
-		};
-
-		const cancelBounceAnimation = () => {
-			bounceAnimation?.cancel();
-			bounceAnimation = null;
-		};
-
-		const clearBounce = () => {
-			clearWheelTimers();
-			cancelBounceAnimation();
-			wheelBounceLocked = false;
-			wheelCooldownUntil = 0;
-			wheelOverscroll = 0;
-			if (track) track.style.transform = "";
-		};
-
-		const springTrackBack = (source: "wheel" | "drag" = "drag") => {
-			clearWheelTimers();
-			wheelCooldownUntil = 0;
-			if (!track || track.style.transform === "") {
-				wheelBounceLocked = false;
-				wheelOverscroll = 0;
-				return;
-			}
-
-			const from = track.style.transform;
-			track.style.transform = "";
-			wheelOverscroll = 0;
-
-			if (reducedMotion.matches) {
-				wheelBounceLocked = false;
-				if (source === "wheel") {
-					wheelCooldownUntil =
-						performance.now() + WHEEL_RESIDUAL_COOLDOWN_MS;
-				}
-				return;
-			}
-
-			cancelBounceAnimation();
-			wheelBounceLocked = true;
-			const animation = track.animate(
-				[{ transform: from }, { transform: "translateX(0)" }],
-				{
-					duration: 360,
-					easing: "cubic-bezier(0.22, 1, 0.36, 1)",
-				},
-			);
-			bounceAnimation = animation;
-			animation.onfinish = () => {
-				if (bounceAnimation !== animation) return;
-				bounceAnimation = null;
-				wheelBounceLocked = false;
-				if (source === "wheel") {
-					wheelCooldownUntil =
-						performance.now() + WHEEL_RESIDUAL_COOLDOWN_MS;
-				}
-				track.style.transform = "";
-			};
-			animation.oncancel = () => {
-				if (bounceAnimation === animation) {
-					bounceAnimation = null;
-					wheelBounceLocked = false;
-				}
-			};
-		};
-
-		const onWheel = (event: WheelEvent) => {
-			const action = getCategoryWheelScroll(event);
-			if (!action.handled) return;
-
-			const maxScroll = scroller.scrollWidth - scroller.clientWidth;
-			const multiplier =
-				event.deltaMode === 1
-					? 16
-					: event.deltaMode === 2
-						? scroller.clientWidth
-						: 1;
-			const delta = action.delta * multiplier;
-
-			if (event.shiftKey) {
-				// Consume Shift+wheel even at the ends so the browser's
-				// previous-page gesture cannot fire over the bar.
-				event.preventDefault();
-				const rawScrollLeft = scroller.scrollLeft + delta;
-				scroller.scrollLeft = Math.max(
-					0,
-					Math.min(maxScroll, rawScrollLeft),
-				);
-
-				if (!track) return;
-
-				if (wheelBounceLocked) {
-					if (rawScrollLeft > 0 && rawScrollLeft < maxScroll) {
-						clearBounce();
-					}
-					return;
-				}
-
-				const wouldOverscroll =
-					rawScrollLeft < 0 || rawScrollLeft > maxScroll;
-				if (
-					wouldOverscroll &&
-					performance.now() < wheelCooldownUntil
-				) {
-					return;
-				}
-				wheelCooldownUntil = 0;
-
-				clearWheelIdleTimer();
-				cancelBounceAnimation();
-				wheelOverscroll = accumulateCategoryOverscroll(
-					wheelOverscroll,
-					rawScrollLeft,
-					maxScroll,
-				);
-				track.style.transform =
-					wheelOverscroll === 0
-						? ""
-						: `translateX(${wheelOverscroll}px)`;
-
-				if (wheelOverscroll !== 0) {
-					wheelBounceTimer = window.setTimeout(() => {
-						wheelBounceTimer = undefined;
-						springTrackBack("wheel");
-					}, WHEEL_IDLE_SPRING_MS);
-					if (wheelHoldTimer === undefined) {
-						wheelHoldTimer = window.setTimeout(() => {
-							wheelHoldTimer = undefined;
-							springTrackBack("wheel");
-						}, WHEEL_MAX_HOLD_MS);
-					}
-				} else {
-					clearWheelHoldTimer();
-				}
-				return;
-			}
-
-			// Horizontal trackpad gestures only take over when the bar can move.
-			if (
-				(delta < 0 && scroller.scrollLeft > 0) ||
-				(delta > 0 && scroller.scrollLeft < maxScroll)
-			) {
-				event.preventDefault();
-				if (wheelOverscroll !== 0 || bounceAnimation) clearBounce();
-				scroller.scrollLeft = Math.max(
-					0,
-					Math.min(maxScroll, scroller.scrollLeft + delta),
-				);
-			}
-		};
 
 		const onPointerDown = (event: PointerEvent) => {
 			if (event.pointerType !== "mouse" || event.button !== 0) return;
 
-			clearBounce();
 			pointerId = event.pointerId;
 			startX = event.clientX;
 			startScrollLeft = scroller.scrollLeft;
@@ -303,22 +114,11 @@ export function CategoriesBar({
 			}
 
 			event.preventDefault();
-			const maxScroll = scroller.scrollWidth - scroller.clientWidth;
-			const rawScrollLeft = getDragScrollLeft(
+			scroller.scrollLeft = getDragScrollLeft(
 				startScrollLeft,
 				startX,
 				event.clientX,
 			);
-			scroller.scrollLeft = Math.max(
-				0,
-				Math.min(maxScroll, rawScrollLeft),
-			);
-
-			if (track) {
-				const offset = getCategoryOverscrollOffset(rawScrollLeft, maxScroll);
-				track.style.transform =
-					offset === 0 ? "" : `translateX(${offset}px)`;
-			}
 		};
 
 		const stopDragging = (event: PointerEvent) => {
@@ -334,8 +134,6 @@ export function CategoriesBar({
 					clickResetTimer = undefined;
 				}, 0);
 			}
-
-			springTrackBack();
 
 			if (scroller.hasPointerCapture(event.pointerId)) {
 				scroller.releasePointerCapture(event.pointerId);
@@ -357,7 +155,6 @@ export function CategoriesBar({
 			}
 		};
 
-		scroller.addEventListener("wheel", onWheel, { passive: false });
 		scroller.addEventListener("pointerdown", onPointerDown);
 		window.addEventListener("pointermove", onPointerMove);
 		window.addEventListener("pointerup", stopDragging);
@@ -368,9 +165,7 @@ export function CategoriesBar({
 			if (clickResetTimer !== undefined) {
 				window.clearTimeout(clickResetTimer);
 			}
-			clearBounce();
 			scroller.classList.remove("is-dragging");
-			scroller.removeEventListener("wheel", onWheel);
 			scroller.removeEventListener("pointerdown", onPointerDown);
 			window.removeEventListener("pointermove", onPointerMove);
 			window.removeEventListener("pointerup", stopDragging);
