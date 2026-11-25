@@ -1,7 +1,11 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useLocation } from "react-router";
 import { twMerge } from "tailwind-merge";
-import { getDragScrollLeft, isCategoryDrag } from "../utils/categoryDrag";
+import {
+	getCategoryOverscrollOffset,
+	getDragScrollLeft,
+	isCategoryDrag,
+} from "../utils/categoryDrag";
 
 interface Props {
 	className?: string;
@@ -72,21 +76,60 @@ export function CategoriesBar({
 		}
 	}, [location.state?.referer, setCurrentCategory]);
 
-	// Native wheel/trackpad scrolling is untouched; mouse drag is the only enhancement.
+	// Native wheel/trackpad scrolling is untouched; mouse drag adds the spring.
 	useEffect(() => {
 		const scroller = scrollRef.current;
 		if (!scroller) return;
 
+		const track = scroller.firstElementChild as HTMLElement | null;
+		const reducedMotion = window.matchMedia(
+			"(prefers-reduced-motion: reduce)",
+		);
 		let pointerId: number | null = null;
 		let startX = 0;
 		let startScrollLeft = 0;
 		let dragging = false;
 		let suppressClick = false;
 		let clickResetTimer: number | undefined;
+		let bounceAnimation: Animation | null = null;
+
+		const clearBounce = () => {
+			bounceAnimation?.cancel();
+			bounceAnimation = null;
+			if (track) track.style.transform = "";
+		};
+
+		const springTrackBack = () => {
+			if (!track || track.style.transform === "") return;
+
+			const from = track.style.transform;
+			track.style.transform = "";
+
+			if (reducedMotion.matches) return;
+
+			bounceAnimation?.cancel();
+			const animation = track.animate(
+				[{ transform: from }, { transform: "translateX(0)" }],
+				{
+					duration: 320,
+					easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+				},
+			);
+			bounceAnimation = animation;
+			animation.onfinish = () => {
+				if (bounceAnimation !== animation) return;
+				bounceAnimation = null;
+				track.style.transform = "";
+			};
+			animation.oncancel = () => {
+				if (bounceAnimation === animation) bounceAnimation = null;
+			};
+		};
 
 		const onPointerDown = (event: PointerEvent) => {
 			if (event.pointerType !== "mouse" || event.button !== 0) return;
 
+			clearBounce();
 			pointerId = event.pointerId;
 			startX = event.clientX;
 			startScrollLeft = scroller.scrollLeft;
@@ -114,11 +157,31 @@ export function CategoriesBar({
 			}
 
 			event.preventDefault();
-			scroller.scrollLeft = getDragScrollLeft(
+			const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+			if (maxScroll <= 0) {
+				scroller.scrollLeft = 0;
+				if (track) track.style.transform = "";
+				return;
+			}
+
+			const rawScrollLeft = getDragScrollLeft(
 				startScrollLeft,
 				startX,
 				event.clientX,
 			);
+			scroller.scrollLeft = Math.max(
+				0,
+				Math.min(maxScroll, rawScrollLeft),
+			);
+
+			if (track) {
+				const offset = getCategoryOverscrollOffset(
+					rawScrollLeft,
+					maxScroll,
+				);
+				track.style.transform =
+					offset === 0 ? "" : `translateX(${offset}px)`;
+			}
 		};
 
 		const stopDragging = (event: PointerEvent) => {
@@ -134,6 +197,8 @@ export function CategoriesBar({
 					clickResetTimer = undefined;
 				}, 0);
 			}
+
+			springTrackBack();
 
 			if (scroller.hasPointerCapture(event.pointerId)) {
 				scroller.releasePointerCapture(event.pointerId);
@@ -165,6 +230,7 @@ export function CategoriesBar({
 			if (clickResetTimer !== undefined) {
 				window.clearTimeout(clickResetTimer);
 			}
+			clearBounce();
 			scroller.classList.remove("is-dragging");
 			scroller.removeEventListener("pointerdown", onPointerDown);
 			window.removeEventListener("pointermove", onPointerMove);
