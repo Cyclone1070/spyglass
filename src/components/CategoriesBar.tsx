@@ -95,13 +95,27 @@ export function CategoriesBar({
 		let clickResetTimer: number | undefined;
 		let bounceAnimation: Animation | null = null;
 		let wheelBounceTimer: number | undefined;
+		let wheelHoldTimer: number | undefined;
+		let wheelBounceLocked = false;
 		let wheelOverscroll = 0;
 
-		const clearWheelBounceTimer = () => {
+		const clearWheelIdleTimer = () => {
 			if (wheelBounceTimer !== undefined) {
 				window.clearTimeout(wheelBounceTimer);
 				wheelBounceTimer = undefined;
 			}
+		};
+
+		const clearWheelHoldTimer = () => {
+			if (wheelHoldTimer !== undefined) {
+				window.clearTimeout(wheelHoldTimer);
+				wheelHoldTimer = undefined;
+			}
+		};
+
+		const clearWheelTimers = () => {
+			clearWheelIdleTimer();
+			clearWheelHoldTimer();
 		};
 
 		const cancelBounceAnimation = () => {
@@ -110,15 +124,17 @@ export function CategoriesBar({
 		};
 
 		const clearBounce = () => {
-			clearWheelBounceTimer();
+			clearWheelTimers();
 			cancelBounceAnimation();
+			wheelBounceLocked = false;
 			wheelOverscroll = 0;
 			if (track) track.style.transform = "";
 		};
 
 		const springTrackBack = () => {
-			clearWheelBounceTimer();
+			clearWheelTimers();
 			if (!track || track.style.transform === "") {
+				wheelBounceLocked = false;
 				wheelOverscroll = 0;
 				return;
 			}
@@ -127,9 +143,13 @@ export function CategoriesBar({
 			track.style.transform = "";
 			wheelOverscroll = 0;
 
-			if (reducedMotion.matches) return;
+			if (reducedMotion.matches) {
+				wheelBounceLocked = false;
+				return;
+			}
 
 			cancelBounceAnimation();
+			wheelBounceLocked = true;
 			const animation = track.animate(
 				[{ transform: from }, { transform: "translateX(0)" }],
 				{
@@ -141,10 +161,14 @@ export function CategoriesBar({
 			animation.onfinish = () => {
 				if (bounceAnimation !== animation) return;
 				bounceAnimation = null;
+				wheelBounceLocked = false;
 				track.style.transform = "";
 			};
 			animation.oncancel = () => {
-				if (bounceAnimation === animation) bounceAnimation = null;
+				if (bounceAnimation === animation) {
+					bounceAnimation = null;
+					wheelBounceLocked = false;
+				}
 			};
 		};
 
@@ -173,7 +197,14 @@ export function CategoriesBar({
 
 				if (!track) return;
 
-				clearWheelBounceTimer();
+				if (wheelBounceLocked) {
+					if (rawScrollLeft > 0 && rawScrollLeft < maxScroll) {
+						clearBounce();
+					}
+					return;
+				}
+
+				clearWheelIdleTimer();
 				cancelBounceAnimation();
 				wheelOverscroll = accumulateCategoryOverscroll(
 					wheelOverscroll,
@@ -190,6 +221,14 @@ export function CategoriesBar({
 						wheelBounceTimer = undefined;
 						springTrackBack();
 					}, 160);
+					if (wheelHoldTimer === undefined) {
+						wheelHoldTimer = window.setTimeout(() => {
+							wheelHoldTimer = undefined;
+							springTrackBack();
+						}, 400);
+					}
+				} else {
+					clearWheelHoldTimer();
 				}
 				return;
 			}
