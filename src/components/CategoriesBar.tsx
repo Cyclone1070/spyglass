@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { useLocation } from "react-router";
 import { twMerge } from "tailwind-merge";
 import {
+	getCategoryOverscrollOffset,
 	getDragScrollLeft,
 	isCategoryDrag,
 } from "../utils/categoryDrag";
@@ -124,16 +125,28 @@ export function CategoriesBar({
 		const scroller = scrollRef.current;
 		if (!scroller) return;
 
+		const track = scroller.firstElementChild as HTMLElement | null;
+		const reducedMotion = window.matchMedia(
+			"(prefers-reduced-motion: reduce)",
+		);
 		let pointerId: number | null = null;
 		let startX = 0;
 		let startScrollLeft = 0;
 		let dragging = false;
 		let suppressClick = false;
 		let clickResetTimer: number | undefined;
+		let bounceAnimation: Animation | null = null;
+
+		const cancelBounce = () => {
+			bounceAnimation?.cancel();
+			bounceAnimation = null;
+			if (track) track.style.transform = "";
+		};
 
 		const onPointerDown = (event: PointerEvent) => {
 			if (event.pointerType !== "mouse" || event.button !== 0) return;
 
+			cancelBounce();
 			pointerId = event.pointerId;
 			startX = event.clientX;
 			startScrollLeft = scroller.scrollLeft;
@@ -146,6 +159,12 @@ export function CategoriesBar({
 
 			if (!dragging) {
 				dragging = true;
+				if (
+					document.activeElement instanceof HTMLElement &&
+					scroller.contains(document.activeElement)
+				) {
+					document.activeElement.blur();
+				}
 				scroller.classList.add("is-dragging");
 				try {
 					scroller.setPointerCapture(event.pointerId);
@@ -155,11 +174,22 @@ export function CategoriesBar({
 			}
 
 			event.preventDefault();
-			scroller.scrollLeft = getDragScrollLeft(
+			const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+			const rawScrollLeft = getDragScrollLeft(
 				startScrollLeft,
 				startX,
 				event.clientX,
 			);
+			scroller.scrollLeft = Math.max(
+				0,
+				Math.min(maxScroll, rawScrollLeft),
+			);
+
+			if (track) {
+				const offset = getCategoryOverscrollOffset(rawScrollLeft, maxScroll);
+				track.style.transform =
+					offset === 0 ? "" : `translateX(${offset}px)`;
+			}
 		};
 
 		const stopDragging = (event: PointerEvent) => {
@@ -174,6 +204,31 @@ export function CategoriesBar({
 					suppressClick = false;
 					clickResetTimer = undefined;
 				}, 0);
+			}
+
+			if (track && track.style.transform !== "") {
+				const from = track.style.transform;
+				track.style.transform = "";
+
+				if (!reducedMotion.matches) {
+					bounceAnimation = track.animate(
+						[
+							{ transform: from },
+							{ transform: "translateX(0)" },
+						],
+						{
+							duration: 360,
+							easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+						},
+					);
+					bounceAnimation.onfinish = () => {
+						bounceAnimation = null;
+						track.style.transform = "";
+					};
+					bounceAnimation.oncancel = () => {
+						bounceAnimation = null;
+					};
+				}
 			}
 
 			if (scroller.hasPointerCapture(event.pointerId)) {
@@ -206,6 +261,7 @@ export function CategoriesBar({
 			if (clickResetTimer !== undefined) {
 				window.clearTimeout(clickResetTimer);
 			}
+			cancelBounce();
 			scroller.classList.remove("is-dragging");
 			scroller.removeEventListener("pointerdown", onPointerDown);
 			window.removeEventListener("pointermove", onPointerMove);
