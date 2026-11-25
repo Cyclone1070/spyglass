@@ -9,6 +9,9 @@ import {
 } from "../utils/categoryDrag";
 import { getCategoryWheelScroll } from "../utils/categoryWheel";
 
+const WHEEL_IDLE_SPRING_MS = 60;
+const WHEEL_MAX_HOLD_MS = 180;
+
 interface Props {
 	className?: string;
 	currentCategory: string;
@@ -220,12 +223,12 @@ export function CategoriesBar({
 					wheelBounceTimer = window.setTimeout(() => {
 						wheelBounceTimer = undefined;
 						springTrackBack();
-					}, 160);
+					}, WHEEL_IDLE_SPRING_MS);
 					if (wheelHoldTimer === undefined) {
 						wheelHoldTimer = window.setTimeout(() => {
 							wheelHoldTimer = undefined;
 							springTrackBack();
-						}, 400);
+						}, WHEEL_MAX_HOLD_MS);
 					}
 				} else {
 					clearWheelHoldTimer();
