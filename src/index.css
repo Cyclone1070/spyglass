@@ -27,14 +27,13 @@ body {
 	color: var(--text);
 }
 
-.category-wheel-scrolling {
-	transition: transform 180ms linear;
+.category-scroll {
+	overscroll-behavior-x: contain;
+	scrollbar-width: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-	.category-wheel-scrolling {
-		transition: none;
-	}
+.category-scroll::-webkit-scrollbar {
+	display: none;
 }
 
 input {
